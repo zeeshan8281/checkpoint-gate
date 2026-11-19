@@ -1,0 +1,34 @@
+{
+  "date": "2026-11-19",
+  "status": "local_verified_cloud_not_run",
+  "python_tests": 29,
+  "node_state_tests": 3,
+  "local_cloudflare_integration_assertions": 10,
+  "cloudflare_dry_run": "passed; not deployed",
+  "dataset_tasks": 600,
+  "train": 200,
+  "development": 200,
+  "test": 200,
+  "scripted_rollouts": 400,
+  "real_model_calls": 0,
+  "paid_compute_spend_usd": 0,
+  "sdk": "baseten-loops==0.36.0",
+  "worker_tooling": "wrangler==4.50.0",
+  "tested": [
+    "adversarial SQLite queries",
+    "row semantics",
+    "dataset tamper detection",
+    "budget race and crash ambiguity",
+    "SDK SFT/RL masks",
+    "full controller with fake remote service",
+    "local workerd + Durable Object + R2",
+    "dashboard browser layout"
+  ],
+  "not_verified": [
+    "Baseten workspace capability",
+    "real GPU training and quality",
+    "actual token billing",
+    "Cloudflare production deployment",
+    "automatic checkpoint resume"
+  ]
+}

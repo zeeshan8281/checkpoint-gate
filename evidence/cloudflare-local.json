@@ -1,0 +1,6 @@
+{
+  "passed": 10,
+  "runtime": "local workerd, SQLite Durable Object and R2",
+  "campaign": "integration-ce5140ae-9639-40ba-8bdf-4a8cc9bce5e6",
+  "sha256": "12848e196b1966b654e4051767b6c544a8f1cdcdba145b1a72966f3ab450a5a3"
+}

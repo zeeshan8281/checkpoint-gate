@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=75"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "checkpoint-gate"
+version = "0.1.0"
+description = "Verifier-driven SQL agent experiments with bounded spending and checkpoint provenance"
+requires-python = ">=3.12"
+license = "MIT"
+dependencies = []
+
+[project.optional-dependencies]
+baseten = ["baseten-loops==0.36.0"]
+
+[project.scripts]
+checkpoint-gate = "checkpoint_gate.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
