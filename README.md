@@ -2,7 +2,7 @@
 
 A verifier-driven SQL agent experiment with Baseten Loops and a Cloudflare evidence layer.
 
-**First real pilot complete: SFT reduced held-out SQL accuracy from 94% to 56%.** The trained checkpoint eliminated strict-format violations but regressed on latest-row and NULL-safe anti-join tasks. All 18 sampled reward groups had equal rewards, so no RL update occurred. The results site is deployed on Cloudflare Workers; R2 activation, the production evidence API, and invoice reconciliation remain pending.
+**First real pilot complete: SFT reduced held-out SQL accuracy from 94% to 56%.** The trained checkpoint eliminated strict-format violations but regressed on latest-row and NULL-safe anti-join tasks. All 18 sampled reward groups had equal rewards, so no RL update occurred. The results site and authenticated evidence API are deployed on Cloudflare Workers. The completed pilot's evidence was archived to private R2 storage after the run; Cloudflare did not coordinate its original compute. Provider invoice reconciliation remains pending.
 
 **[Open the results and all held-out traces](https://checkpoint-gate-results.zeeshan8281.workers.dev)**
 
@@ -109,6 +109,14 @@ The local ledger is the only spending authority. Do not run copies of the campai
 
 ## Cloudflare control layer
 
+The deployed evidence service is
+`https://checkpoint-gate.zeeshan8281.workers.dev`.
+Its API requires a bearer token. The deployment passed ten integration assertions
+and a separate check through the Python `CloudMirror` client. The post-run archive
+contains 57 evidence files; publication receipts and independent remote readback
+checks are retained in `evidence/cloudflare-*.json`. The bucket is private.
+The publisher makes no model calls.
+
 The public results site uses the separate static-only configuration below. It
 does not provision R2, Durable Objects, or an API, and does not require an R2
 subscription:
@@ -149,7 +157,12 @@ node test/integration.mjs
 
 This tests the real local workerd runtime, SQLite Durable Objects, and R2 emulation. It does not require a Cloudflare account.
 
-For a cloud deployment, authenticate Wrangler, create the R2 bucket named in `wrangler.toml`, set `CONTROL_TOKEN` with `wrangler secret put CONTROL_TOKEN`, and deploy. These are explicit setup steps; the Python runner never provisions Cloudflare resources.
+For a cloud deployment, authenticate Wrangler, create the R2 bucket named in
+`wrangler.toml`, and deploy. The API rejects all requests until you set
+`CONTROL_TOKEN` with `wrangler secret put CONTROL_TOKEN`. These are explicit setup
+steps; the Python runner never provisions Cloudflare resources. Verify the
+deployment with `TEST_WORKER_URL=https://YOUR-WORKER.workers.dev node test/integration.mjs`
+using the matching `CHECKPOINT_GATE_TOKEN`.
 
 The public site displays the exported real pilot and all held-out traces. `self-test.html` separately shows scripted infrastructure checks. All `/api/` routes require the secret. Publishing completed results is an explicit export step; private campaigns are not automatically added to the public site.
 
@@ -179,6 +192,9 @@ Evidence can be retrieved with the authenticated R2 tooling using the returned o
 The training code was frozen at commit `768b0171ca9e7eee815652ae1b532f17542709e5`.
 Its file hashes, checkpoint references, operation reservations, raw reward samples,
 and all offered test traces are retained in `evidence/pilot-seed7/`.
+Subsequent deployment work adds an explicit HTTP User-Agent to the optional
+Cloudflare client because the deployed endpoint rejected Python's default
+urllib User-Agent. This post-run change does not alter the frozen pilot code.
 See [analysis instructions](analysis/README.md) to export a completed run, render the
 graph, and inspect a live run through read-only SQLite.
 

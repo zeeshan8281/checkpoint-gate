@@ -1,0 +1,20 @@
+{
+  "date": "2026-11-20",
+  "url": "https://checkpoint-gate.zeeshan8281.workers.dev",
+  "r2_bucket": "checkpoint-gate-evidence",
+  "r2_activated": true,
+  "r2_public_access": false,
+  "workers_paid_plan_added": false,
+  "campaign": "pilot-seed7-post-run-v1",
+  "files": 57,
+  "source_bytes": 2672743,
+  "upload_timing": "after training and evaluation completed",
+  "coordinated_original_compute": false,
+  "readback_receipt": "cloudflare-readback.json",
+  "production_integration_receipt": "cloudflare-production-integration.json",
+  "python_client_receipt": "cloudflare-python-integration.json",
+  "api_requires_bearer_token": true,
+  "model_calls_during_deployment": 0,
+  "actual_cloudflare_invoice_usd": null,
+  "deployed_version": "b5d23da3-88eb-42c4-912a-aa3797d2b208"
+}

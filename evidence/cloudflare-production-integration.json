@@ -1,0 +1,9 @@
+{
+  "passed": 10,
+  "target": "https://checkpoint-gate.zeeshan8281.workers.dev",
+  "runtime": "deployed Cloudflare Worker, SQLite Durable Object and R2",
+  "campaign": "integration-cb01d32d-8b1c-4628-b57a-90b3dcfefba4",
+  "sha256": "ec7a8d99e25a7353bab223a44a6d13c24e5f82b2d67126579606f10bb64dcfbc",
+  "object_key": "sha256/ec7a8d99e25a7353bab223a44a6d13c24e5f82b2d67126579606f10bb64dcfbc.json",
+  "date": "2026-11-20"
+}

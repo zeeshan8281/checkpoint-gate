@@ -1,10 +1,10 @@
 {
   "date": "2026-11-19",
-  "status": "real_pilot_and_public_static_site_verified",
+  "status": "real_pilot_public_site_and_production_evidence_verified",
   "python_tests": 31,
   "node_state_tests": 3,
   "local_cloudflare_integration_assertions": 10,
-  "cloudflare_dry_run": "full evidence backend passed locally; static-only config passed and deployed",
+  "cloudflare_dry_run": "both configurations passed; static site and full evidence backend deployed",
   "dataset_tasks": 600,
   "train": 200,
   "development": 200,
@@ -32,11 +32,14 @@
     "authenticated confirmation that pilot trainer and samplers are inactive",
     "public HTTPS page and byte-identical graph/data",
     "public static-only API path returns 404",
-    "public results dashboard rendered in browser"
+    "public results dashboard rendered in browser",
+    "production Worker authentication, fencing and immutable receipt conflicts",
+    "production Python CloudMirror initialization, renewal and evidence upload",
+    "57 post-run evidence files archived and read back from remote R2 with exact byte matches",
+    "R2 public dev URL disabled"
   ],
   "not_verified": [
     "actual provider invoice",
-    "production Cloudflare Durable Object/R2 evidence API",
     "automatic checkpoint resume",
     "cross-engine adapter portability",
     "repeatability across training seeds"
@@ -46,5 +49,10 @@
   "conservative_total_reservation_usd": 0.889506428,
   "cloudflare_static_url": "https://checkpoint-gate-results.zeeshan8281.workers.dev",
   "cloudflare_https_verified": true,
-  "cloudflare_r2_activated": false
+  "cloudflare_r2_activated": true,
+  "cloudflare_evidence_url": "https://checkpoint-gate.zeeshan8281.workers.dev",
+  "production_cloudflare_integration_assertions": 10,
+  "production_python_cloudmirror_verified": true,
+  "r2_evidence_files_verified": 57,
+  "r2_source_bytes_verified": 2672743
 }

@@ -1,0 +1,14 @@
+{
+  "date": "2026-11-20",
+  "campaign": "python-integration-396221870f0f4666b72ce9eb38f46446",
+  "initialized": true,
+  "lease_renewed": true,
+  "receipt": {
+    "key": "sha256/50f2d9329102875d906ba644b37540d49baf9e21b9592e39c900772f88c6fd2c.json",
+    "sha256": "50f2d9329102875d906ba644b37540d49baf9e21b9592e39c900772f88c6fd2c",
+    "bytes": 43,
+    "created": 1795115535377,
+    "duplicate": false
+  },
+  "model_calls": 0
+}

@@ -29,7 +29,8 @@ class CloudMirror:
         body = canonical(payload).encode()
         request = urllib.request.Request(
             f"{self.url}/api/campaigns/{self.campaign}/{action}", data=body,
-            headers={"Content-Type": "application/json", "Authorization": f"Bearer {self.token}"})
+            headers={"Content-Type": "application/json", "Authorization": f"Bearer {self.token}",
+                     "User-Agent": "CheckpointGate/0.1"})
         with urllib.request.urlopen(request, timeout=15) as response:
             return json.load(response)
 
