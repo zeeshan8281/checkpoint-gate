@@ -2,7 +2,9 @@
 
 A verifier-driven SQL agent experiment with Baseten Loops and a Cloudflare evidence layer.
 
-**First real pilot complete: SFT reduced held-out SQL accuracy from 94% to 56%.** The trained checkpoint eliminated strict-format violations but regressed on latest-row and NULL-safe anti-join tasks. All 18 sampled reward groups had equal rewards, so no RL update occurred. Cloudflare is tested locally; production storage activation and invoice reconciliation are pending.
+**First real pilot complete: SFT reduced held-out SQL accuracy from 94% to 56%.** The trained checkpoint eliminated strict-format violations but regressed on latest-row and NULL-safe anti-join tasks. All 18 sampled reward groups had equal rewards, so no RL update occurred. The results site is deployed on Cloudflare Workers; R2 activation, the production evidence API, and invoice reconciliation remain pending.
+
+**[Open the results and all held-out traces](https://checkpoint-gate-results.zeeshan8281.workers.dev)**
 
 ![Held-out results](web/heldout-results.png)
 
@@ -106,6 +108,21 @@ Rates are the inspected 19 November 2026 promotional rates multiplied by 1.25 as
 The local ledger is the only spending authority. Do not run copies of the campaign from multiple machines or delete its ledger. Cloudflare leases coordinate evidence ownership; they do not create globally exactly-once model execution or a global billing cap.
 
 ## Cloudflare control layer
+
+The public results site uses the separate static-only configuration below. It
+does not provision R2, Durable Objects, or an API, and does not require an R2
+subscription:
+
+```bash
+cd worker
+npm ci
+npx wrangler deploy --config wrangler.site.toml
+```
+
+The full evidence backend uses `worker/wrangler.toml` and the setup below.
+These are separate Workers, so updating the static site does not alter the
+evidence service. R2's usage-based subscription requires separate activation;
+do not treat its free allowance as an enforced billing cap.
 
 Node 22+:
 

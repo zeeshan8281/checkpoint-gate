@@ -1,0 +1,42 @@
+{
+  "url": "https://checkpoint-gate-results.zeeshan8281.workers.dev",
+  "version_id": "e1c3cce3-03aa-4fa9-ba86-81f041afd2ad",
+  "checked_at": "2026-11-19T19:06:51.170772+00:00",
+  "mode": "static_results_only",
+  "r2_activated": false,
+  "paid_plan_added": false,
+  "https_verified": true,
+  "checks": [
+    {
+      "path": "/",
+      "status": 200,
+      "bytes": 4841,
+      "sha256": "a1ca57a1950d040d4d326a2bbfb4f85bd2ec3062d7c1cff84849735e37def881"
+    },
+    {
+      "path": "/pilot.json",
+      "status": 200,
+      "bytes": 505322,
+      "sha256": "f043dc3ba4b369771d7684a7a8ab9cf451eb3dacbc5fa5c9c0569a9c168cfe6d",
+      "accuracies": {
+        "sft": 0.56,
+        "base": 0.94
+      },
+      "matches_local": true
+    },
+    {
+      "path": "/heldout-results.png",
+      "status": 200,
+      "bytes": 149044,
+      "sha256": "afcfd88a19d075f42740580fa14632d5c38a84ae6fb140cecc8bbb8e16bf743b",
+      "matches_local": true
+    },
+    {
+      "path": "/api/campaigns/probe/status",
+      "status": 404,
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "note": "TLS verification enabled. No API is exposed on this static-only Worker."
+}

@@ -1,0 +1,8 @@
+# Public results only. Does not provision R2, Durable Objects, or an API.
+name = "checkpoint-gate-results"
+compatibility_date = "2025-11-01"
+workers_dev = true
+
+[assets]
+directory = "../web"
+not_found_handling = "none"

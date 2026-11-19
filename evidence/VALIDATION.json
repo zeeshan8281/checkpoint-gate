@@ -1,10 +1,10 @@
 {
   "date": "2026-11-19",
-  "status": "real_serverless_pilot_complete",
+  "status": "real_pilot_and_public_static_site_verified",
   "python_tests": 31,
   "node_state_tests": 3,
   "local_cloudflare_integration_assertions": 10,
-  "cloudflare_dry_run": "passed; not deployed",
+  "cloudflare_dry_run": "full evidence backend passed locally; static-only config passed and deployed",
   "dataset_tasks": 600,
   "train": 200,
   "development": 200,
@@ -29,16 +29,22 @@
     "400 real held-out SQL task rollouts",
     "200 real elementary regression cases",
     "18 reward groups with zero informative updates",
-    "authenticated confirmation that pilot trainer and samplers are inactive"
+    "authenticated confirmation that pilot trainer and samplers are inactive",
+    "public HTTPS page and byte-identical graph/data",
+    "public static-only API path returns 404",
+    "public results dashboard rendered in browser"
   ],
   "not_verified": [
     "actual provider invoice",
-    "Cloudflare production deployment",
+    "production Cloudflare Durable Object/R2 evidence API",
     "automatic checkpoint resume",
     "cross-engine adapter portability",
     "repeatability across training seeds"
   ],
   "conservative_smoke_reservation_usd": 0.0178521,
   "publication_date": "2026-11-20",
-  "conservative_total_reservation_usd": 0.889506428
+  "conservative_total_reservation_usd": 0.889506428,
+  "cloudflare_static_url": "https://checkpoint-gate-results.zeeshan8281.workers.dev",
+  "cloudflare_https_verified": true,
+  "cloudflare_r2_activated": false
 }
