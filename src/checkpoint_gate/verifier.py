@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import json
 import math
+import re
 import sqlite3
 import time
 from collections import Counter
@@ -98,7 +99,7 @@ def equivalent(actual, expected, ordered: bool) -> bool:
         return False
 
 
-def parse_action(text: str) -> dict:
+def parse_action(text: str, *, allow_outer_fence=False) -> dict:
     def unique_keys(pairs):
         result = {}
         for key, value in pairs:
@@ -109,6 +110,10 @@ def parse_action(text: str) -> dict:
 
     if len(text.encode()) > 32_768:
         raise ValueError("Action too large")
+    if allow_outer_fence:
+        fence = re.fullmatch(r"```(?:json)?[ \t]*\n(.*?)\n```", text.strip(), flags=re.DOTALL)
+        if fence:
+            text = fence.group(1)
     try:
         action = json.loads(text, object_pairs_hook=unique_keys,
                             parse_constant=lambda _: (_ for _ in ()).throw(ValueError("Non-finite")))

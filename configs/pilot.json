@@ -1,6 +1,7 @@
 {
   "model": "Qwen/Qwen3.6-35B-A3B",
   "scope": "serverless",
+  "action_normalization": "single_outer_markdown_fence",
   "rank": 8,
   "seed": 7,
   "max_seq_len": 4096,

@@ -44,6 +44,18 @@ class SDKContractTests(unittest.TestCase):
     def test_sdk_pinned(self):
         self.assertEqual(baseten.loops.__version__, "0.36.0")
 
+    def test_real_chat_template_dependency(self):
+        from tokenizers import Tokenizer as FastTokenizer
+        from tokenizers.models import WordLevel
+        from transformers import PreTrainedTokenizerFast
+        from checkpoint_gate.baseten_backend import prompt_ids
+        tok = PreTrainedTokenizerFast(
+            tokenizer_object=FastTokenizer(WordLevel({"[UNK]":0, "hello":1}, unk_token="[UNK]")),
+            unk_token="[UNK]",
+            chat_template="{% for message in messages %}{{ message['content'] }}{% endfor %}",
+        )
+        self.assertEqual(prompt_ids(tok, [{"role":"user","content":"hello"}]), [1])
+
     def test_sft_shift_and_prompt_mask(self):
         datum, count = supervised_datum(Tokenizer(), [], "xy", 1024)
         self.assertEqual(datum.model_input.to_ints(), [97,98,99,120,121])

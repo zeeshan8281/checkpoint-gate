@@ -36,7 +36,7 @@ def run(task: dict, root: Path, expected: list, backend, *, rollout_id: str,
         max_tool_calls=2, max_output_tokens=768, seed=7) -> dict:
     messages = initial_messages(task)
     started, calls, generated, succeeded = time.monotonic(), 0, 0, False
-    trace, generations = [], []
+    trace, generations, format_violations = [], [], 0
     result = {"task_id": task["id"], "family": task["family"], "fault": task["fault"],
               "rollout_id": rollout_id, "correct": False, "status": "turn_limit"}
     for turn in range(max_tool_calls + 1):
@@ -51,10 +51,15 @@ def run(task: dict, root: Path, expected: list, backend, *, rollout_id: str,
         messages.append({"role": "assistant", "content": generation.text})
         try:
             action = parse_action(generation.text)
-        except ValueError as exc:
-            trace.append({"assistant": generation.text, "error": str(exc)})
-            result["status"] = "invalid_action"
-            break
+        except ValueError:
+            format_violations += 1
+            try:
+                # Identical deterministic normalization for every arm, no SQL repair.
+                action = parse_action(generation.text, allow_outer_fence=True)
+            except ValueError as exc:
+                trace.append({"assistant": generation.text, "error": str(exc)})
+                result["status"] = "invalid_action"
+                break
         if "answer" in action:
             result["correct"] = succeeded and equivalent(action["answer"], expected, task["ordered"])
             result["status"] = "correct" if result["correct"] else "wrong_answer"
@@ -76,6 +81,7 @@ def run(task: dict, root: Path, expected: list, backend, *, rollout_id: str,
         tool_calls=calls, output_tokens=generated, elapsed_seconds=time.monotonic() - started,
         reward=(1.0 - 0.05 * max(0, calls - 1)) if result["correct"] else 0.0,
         trace=trace, generations=generations,
+        format_violations=format_violations,
     )
     return result
 

@@ -65,6 +65,15 @@ class VerifierTests(unittest.TestCase):
             with self.subTest(text=text), self.assertRaises(ValueError):
                 parse_action(text)
 
+    def test_only_outer_fence_is_normalized(self):
+        self.assertEqual(parse_action('```json\n{"sql":"SELECT 1"}\n```', allow_outer_fence=True),
+                         {"sql":"SELECT 1"})
+        for text in ['Explanation\n```json\n{"sql":"SELECT 1"}\n```',
+                     '```python\n{"sql":"SELECT 1"}\n```',
+                     '```json\n{"sql":"SELECT 1"}\n```\nExtra text']:
+            with self.assertRaises(ValueError):
+                parse_action(text, allow_outer_fence=True)
+
 
 class DatasetTests(unittest.TestCase):
     @classmethod

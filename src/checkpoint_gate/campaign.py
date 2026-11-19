@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import fcntl
+import copy
 import platform
 import random
 import uuid
@@ -22,6 +23,8 @@ from .verifier import equivalent, parse_action
 def validate_config(c: dict):
     if c["scope"] != "serverless":
         raise ValueError("Only serverless is allowed")
+    if c.get("action_normalization") != "single_outer_markdown_fence":
+        raise ValueError("Freeze the common action normalization rule")
     if c["compute_cap_usd"] <= 0 or c["compute_cap_usd"] + sum(c["other_budget_usd"].values()) > 25:
         raise ValueError("Total planning allocation must be within $25")
     for key in ("rank", "max_seq_len", "max_output_tokens", "sft_steps",
@@ -101,6 +104,41 @@ def demo(data: Path, output: Path):
     }
     write_json(output / "demo.json", result)
     return result
+
+
+def smoke(data: Path, output: Path, config: dict):
+    """Eight dev tasks, base sampler only, no optimizer or dedicated deployment."""
+    config = copy.deepcopy(config)
+    config["compute_cap_usd"] = min(config["compute_cap_usd"], 0.25)
+    config["max_seconds"] = min(config["max_seconds"], 900)
+    config["token_caps"] = {"train": 1, "prefill": 50_000, "sample": 10_000}
+    validate_config(config)
+    tasks, gold, manifest = load(data, "dev")
+    tasks = [t for t in tasks if int(t["id"].rsplit("-", 1)[1]) < 2]
+    capabilities = preflight(config)
+    output.mkdir(parents=True, exist_ok=False)
+    write_json(output / "manifest.json", {"config": config, "dataset_sha256": manifest["sha256"],
+                                        "kind": "real_base_model_smoke", "split": "development"})
+    write_json(output / "capabilities.json", capabilities)
+    with runner_lock(output):
+        ledger, session = Ledger(output/"ledger.sqlite", config), None
+        status = {"state": "running", "kind": "real_base_model_smoke"}
+        try:
+            session = LoopsSession(config, ledger, output)
+            sampler = session.create_base()
+            backend = LoopsBackend(sampler, sampler.get_tokenizer(), ledger, config,
+                                   temperature=config["eval_temperature"])
+            result = evaluate(tasks, gold, data, backend, config, "dev-smoke", output)
+            status.update(state="complete", summary=result["summary"])
+            return status
+        except BaseException as exc:
+            status.update(state="stopped", reason_type=type(exc).__name__, reason=str(exc)[:500])
+            raise
+        finally:
+            if session:
+                session.close()
+            status["budget"] = ledger.snapshot()
+            write_json(output/"status.json", status)
 
 
 def execute(data: Path, output: Path, config: dict, *, cloud_url: str | None = None):

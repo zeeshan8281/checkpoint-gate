@@ -1,7 +1,7 @@
 {
   "date": "2026-11-19",
-  "status": "local_verified_cloud_not_run",
-  "python_tests": 29,
+  "status": "local_and_live_serverless_smoke_verified",
+  "python_tests": 31,
   "node_state_tests": 3,
   "local_cloudflare_integration_assertions": 10,
   "cloudflare_dry_run": "passed; not deployed",
@@ -10,8 +10,8 @@
   "development": 200,
   "test": 200,
   "scripted_rollouts": 400,
-  "real_model_calls": 0,
-  "paid_compute_spend_usd": 0,
+  "real_model_calls": 28,
+  "paid_compute_spend_usd": null,
   "sdk": "baseten-loops==0.36.0",
   "worker_tooling": "wrangler==4.50.0",
   "tested": [
@@ -22,13 +22,15 @@
     "SDK SFT/RL masks",
     "full controller with fake remote service",
     "local workerd + Durable Object + R2",
-    "dashboard browser layout"
+    "dashboard browser layout",
+    "authenticated serverless capability check",
+    "28 real base-model sampling requests across two dev smoke protocols"
   ],
   "not_verified": [
-    "Baseten workspace capability",
     "real GPU training and quality",
     "actual token billing",
     "Cloudflare production deployment",
     "automatic checkpoint resume"
-  ]
+  ],
+  "conservative_smoke_reservation_usd": 0.0178521
 }

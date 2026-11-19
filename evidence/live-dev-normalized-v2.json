@@ -1,0 +1,579 @@
+{
+  "model": "Qwen/Qwen3.6-35B-A3B",
+  "protocol": "normalized-v2",
+  "split": "development",
+  "evaluation": {
+    "complete": true,
+    "label": "dev-smoke",
+    "rows": [
+      {
+        "task_id": "dev-conditional_count-0000",
+        "family": "conditional_count",
+        "fault": "none",
+        "rollout_id": "dev-smoke-dev-conditional_count-0000",
+        "correct": false,
+        "status": "wrong_answer",
+        "tool_calls": 1,
+        "output_tokens": 135,
+        "elapsed_seconds": 7.908714416000294,
+        "reward": 0.0,
+        "trace": [
+          {
+            "assistant": "```json\n{\n  \"sql\": \"SELECT t.id, COUNT(tc.id) AS open_children_count FROM teams_241 t LEFT JOIN tickets_241 tc ON t.id = tc.parent_id WHERE tc.stage_241 = 'open' OR tc.stage_241 IS NULL GROUP BY t.id ORDER BY t.id\"\n}\n```",
+            "tool": {
+              "columns": [
+                "id",
+                "open_children_count"
+              ],
+              "rows": [
+                [
+                  1,
+                  4
+                ],
+                [
+                  2,
+                  2
+                ],
+                [
+                  3,
+                  2
+                ],
+                [
+                  4,
+                  3
+                ],
+                [
+                  5,
+                  2
+                ],
+                [
+                  6,
+                  4
+                ],
+                [
+                  7,
+                  1
+                ],
+                [
+                  8,
+                  1
+                ],
+                [
+                  9,
+                  1
+                ],
+                [
+                  10,
+                  1
+                ],
+                [
+                  11,
+                  2
+                ],
+                [
+                  12,
+                  0
+                ]
+              ]
+            }
+          },
+          {
+            "assistant": "{\"answer\":[[1,4],[2,2],[3,2],[4,3],[5,2],[6,4],[7,1],[8,1],[9,1],[10,1],[11,2],[12,0]]}"
+          }
+        ],
+        "format_violations": 1
+      },
+      {
+        "task_id": "dev-conditional_count-0001",
+        "family": "conditional_count",
+        "fault": "transient_first_call",
+        "rollout_id": "dev-smoke-dev-conditional_count-0001",
+        "correct": false,
+        "status": "wrong_answer",
+        "tool_calls": 2,
+        "output_tokens": 195,
+        "elapsed_seconds": 8.063011666003149,
+        "reward": 0.0,
+        "trace": [
+          {
+            "assistant": "```json\n{\"sql\": \"SELECT t.id, COUNT(tc.id) AS open_children_count FROM teams_877 t LEFT JOIN tickets_877 tc ON t.id = tc.parent_id WHERE tc.stage_877 = 'open' OR tc.stage_877 IS NULL GROUP BY t.id ORDER BY t.id\"}\n```",
+            "tool": {
+              "error": "transient_busy",
+              "retryable": true
+            }
+          },
+          {
+            "assistant": "```json\n{\"sql\": \"SELECT t.id, COUNT(tc.id) AS open_children_count FROM teams_877 t LEFT JOIN tickets_877 tc ON t.id = tc.parent_id WHERE tc.stage_877 = 'open' OR tc.stage_877 IS NULL GROUP BY t.id ORDER BY t.id\"}\n```",
+            "tool": {
+              "columns": [
+                "id",
+                "open_children_count"
+              ],
+              "rows": [
+                [
+                  1,
+                  2
+                ],
+                [
+                  3,
+                  2
+                ],
+                [
+                  5,
+                  5
+                ],
+                [
+                  6,
+                  2
+                ],
+                [
+                  7,
+                  1
+                ],
+                [
+                  8,
+                  2
+                ],
+                [
+                  9,
+                  1
+                ],
+                [
+                  10,
+                  4
+                ],
+                [
+                  11,
+                  3
+                ],
+                [
+                  12,
+                  0
+                ]
+              ]
+            }
+          },
+          {
+            "assistant": "{\"answer\":[[1,2],[3,2],[5,5],[6,2],[7,1],[8,2],[9,1],[10,4],[11,3],[12,0]]}"
+          }
+        ],
+        "format_violations": 2
+      },
+      {
+        "task_id": "dev-group_having-0000",
+        "family": "group_having",
+        "fault": "none",
+        "rollout_id": "dev-smoke-dev-group_having-0000",
+        "correct": true,
+        "status": "correct",
+        "tool_calls": 1,
+        "output_tokens": 110,
+        "elapsed_seconds": 4.612295917002484,
+        "reward": 1.0,
+        "trace": [
+          {
+            "assistant": "```json\n{\"sql\": \"SELECT parent_id, SUM(points_908) AS total_points_908 FROM tickets_908 WHERE parent_id IS NOT NULL GROUP BY parent_id HAVING SUM(points_908) > 15 ORDER BY parent_id\"}\n```",
+            "tool": {
+              "columns": [
+                "parent_id",
+                "total_points_908"
+              ],
+              "rows": [
+                [
+                  1,
+                  112
+                ],
+                [
+                  2,
+                  90
+                ],
+                [
+                  4,
+                  40
+                ],
+                [
+                  5,
+                  75
+                ],
+                [
+                  6,
+                  24
+                ],
+                [
+                  7,
+                  22
+                ],
+                [
+                  8,
+                  57
+                ],
+                [
+                  10,
+                  45
+                ]
+              ]
+            }
+          },
+          {
+            "assistant": "{\"answer\":[[1,112],[2,90],[4,40],[5,75],[6,24],[7,22],[8,57],[10,45]]}"
+          }
+        ],
+        "format_violations": 1
+      },
+      {
+        "task_id": "dev-group_having-0001",
+        "family": "group_having",
+        "fault": "transient_first_call",
+        "rollout_id": "dev-smoke-dev-group_having-0001",
+        "correct": true,
+        "status": "correct",
+        "tool_calls": 2,
+        "output_tokens": 171,
+        "elapsed_seconds": 8.62921629199991,
+        "reward": 0.95,
+        "trace": [
+          {
+            "assistant": "```json\n{\"sql\": \"SELECT parent_id, SUM(points_567) AS total_points_567 FROM tickets_567 WHERE parent_id IS NOT NULL GROUP BY parent_id HAVING SUM(points_567) > 15 ORDER BY parent_id\"}\n```",
+            "tool": {
+              "error": "transient_busy",
+              "retryable": true
+            }
+          },
+          {
+            "assistant": "```json\n{\"sql\": \"SELECT parent_id, SUM(points_567) AS total_points_567 FROM tickets_567 WHERE parent_id IS NOT NULL GROUP BY parent_id HAVING SUM(points_567) > 15 ORDER BY parent_id\"}\n```",
+            "tool": {
+              "columns": [
+                "parent_id",
+                "total_points_567"
+              ],
+              "rows": [
+                [
+                  1,
+                  40
+                ],
+                [
+                  2,
+                  75
+                ],
+                [
+                  3,
+                  70
+                ],
+                [
+                  4,
+                  60
+                ],
+                [
+                  6,
+                  22
+                ],
+                [
+                  7,
+                  75
+                ],
+                [
+                  8,
+                  20
+                ],
+                [
+                  10,
+                  22
+                ]
+              ]
+            }
+          },
+          {
+            "assistant": "{\"answer\":[[1,40],[2,75],[3,70],[4,60],[6,22],[7,75],[8,20],[10,22]]}"
+          }
+        ],
+        "format_violations": 2
+      },
+      {
+        "task_id": "dev-top_ties-0000",
+        "family": "top_ties",
+        "fault": "none",
+        "rollout_id": "dev-smoke-dev-top_ties-0000",
+        "correct": true,
+        "status": "correct",
+        "tool_calls": 1,
+        "output_tokens": 75,
+        "elapsed_seconds": 4.326408082997659,
+        "reward": 1.0,
+        "trace": [
+          {
+            "assistant": "```json\n{\"sql\": \"SELECT id, points_966 FROM tickets_966 WHERE points_966 = (SELECT MAX(points_966) FROM tickets_966) ORDER BY id\"}\n```",
+            "tool": {
+              "columns": [
+                "id",
+                "points_966"
+              ],
+              "rows": [
+                [
+                  25,
+                  35
+                ],
+                [
+                  31,
+                  35
+                ],
+                [
+                  52,
+                  35
+                ]
+              ]
+            }
+          },
+          {
+            "assistant": "{\"answer\":[[25,35],[31,35],[52,35]]}"
+          }
+        ],
+        "format_violations": 1
+      },
+      {
+        "task_id": "dev-top_ties-0001",
+        "family": "top_ties",
+        "fault": "transient_first_call",
+        "rollout_id": "dev-smoke-dev-top_ties-0001",
+        "correct": true,
+        "status": "correct",
+        "tool_calls": 2,
+        "output_tokens": 168,
+        "elapsed_seconds": 7.220511624997016,
+        "reward": 0.95,
+        "trace": [
+          {
+            "assistant": "```json\n{\"sql\": \"SELECT id, points_567 FROM tickets_567 WHERE points_567 = (SELECT MAX(points_567) FROM tickets_567) ORDER BY id\"}\n```",
+            "tool": {
+              "error": "transient_busy",
+              "retryable": true
+            }
+          },
+          {
+            "assistant": "```json\n{\"sql\": \"SELECT id, points_567 FROM tickets_567 WHERE points_567 = (SELECT MAX(points_567) FROM tickets_567) ORDER BY id\"}\n```",
+            "tool": {
+              "columns": [
+                "id",
+                "points_567"
+              ],
+              "rows": [
+                [
+                  11,
+                  35
+                ],
+                [
+                  13,
+                  35
+                ],
+                [
+                  20,
+                  35
+                ],
+                [
+                  21,
+                  35
+                ],
+                [
+                  25,
+                  35
+                ],
+                [
+                  28,
+                  35
+                ],
+                [
+                  35,
+                  35
+                ],
+                [
+                  38,
+                  35
+                ],
+                [
+                  39,
+                  35
+                ],
+                [
+                  52,
+                  35
+                ]
+              ]
+            }
+          },
+          {
+            "assistant": "{\"answer\":[[11,35],[13,35],[20,35],[21,35],[25,35],[28,35],[35,35],[38,35],[39,35],[52,35]]}"
+          }
+        ],
+        "format_violations": 2
+      },
+      {
+        "task_id": "dev-correlated_exists-0000",
+        "family": "correlated_exists",
+        "fault": "none",
+        "rollout_id": "dev-smoke-dev-correlated_exists-0000",
+        "correct": true,
+        "status": "correct",
+        "tool_calls": 1,
+        "output_tokens": 112,
+        "elapsed_seconds": 5.113660040980903,
+        "reward": 1.0,
+        "trace": [
+          {
+            "assistant": "```json\n{\n  \"sql\": \"SELECT DISTINCT t1.id, t1.name\\nFROM teams_483 t1\\nJOIN tickets_483 t2 ON t1.id = t2.parent_id\\nWHERE t2.stage_483 = 'closed' AND t2.points_483 > 5\\nORDER BY t1.id;\"\n}\n```",
+            "tool": {
+              "columns": [
+                "id",
+                "name"
+              ],
+              "rows": [
+                [
+                  1,
+                  "item-01"
+                ],
+                [
+                  8,
+                  "item-08"
+                ],
+                [
+                  10,
+                  "item-10"
+                ]
+              ]
+            }
+          },
+          {
+            "assistant": "{\"answer\":[[1,\"item-01\"],[8,\"item-08\"],[10,\"item-10\"]]}"
+          }
+        ],
+        "format_violations": 1
+      },
+      {
+        "task_id": "dev-correlated_exists-0001",
+        "family": "correlated_exists",
+        "fault": "transient_first_call",
+        "rollout_id": "dev-smoke-dev-correlated_exists-0001",
+        "correct": true,
+        "status": "correct",
+        "tool_calls": 2,
+        "output_tokens": 209,
+        "elapsed_seconds": 8.659533208003268,
+        "reward": 0.95,
+        "trace": [
+          {
+            "assistant": "```json\n{\n  \"sql\": \"SELECT DISTINCT t1.id, t1.name\\nFROM teams_685 t1\\nJOIN tickets_685 t2 ON t1.id = t2.parent_id\\nWHERE t2.stage_685 = 'closed' AND t2.points_685 > 5\\nORDER BY t1.id;\"\n}\n```",
+            "tool": {
+              "error": "transient_busy",
+              "retryable": true
+            }
+          },
+          {
+            "assistant": "```json\n{\n  \"sql\": \"SELECT DISTINCT t1.id, t1.name\\nFROM teams_685 t1\\nJOIN tickets_685 t2 ON t1.id = t2.parent_id\\nWHERE t2.stage_685 = 'closed' AND t2.points_685 > 5\\nORDER BY t1.id;\"\n}\n```",
+            "tool": {
+              "columns": [
+                "id",
+                "name"
+              ],
+              "rows": [
+                [
+                  2,
+                  "item-02"
+                ],
+                [
+                  5,
+                  "item-05"
+                ],
+                [
+                  6,
+                  "item-06"
+                ],
+                [
+                  7,
+                  "item-07"
+                ],
+                [
+                  9,
+                  "item-09"
+                ]
+              ]
+            }
+          },
+          {
+            "assistant": "{\"answer\":[[2,\"item-02\"],[5,\"item-05\"],[6,\"item-06\"],[7,\"item-07\"],[9,\"item-09\"]]}"
+          }
+        ],
+        "format_violations": 2
+      }
+    ],
+    "summary": {
+      "offered_tasks": 8,
+      "correct": 6,
+      "accuracy": 0.75,
+      "wilson_95": [
+        0.40927543031017727,
+        0.9285207872478887
+      ],
+      "mean_tool_calls_all_tasks": 1.5,
+      "output_tokens": 1175,
+      "strict_format_violations": 12,
+      "statuses": {
+        "wrong_answer": 2,
+        "correct": 6
+      },
+      "by_fault": {
+        "none": {
+          "n": 4,
+          "correct": 3
+        },
+        "transient_first_call": {
+          "n": 4,
+          "correct": 3
+        }
+      }
+    }
+  },
+  "status": {
+    "state": "complete",
+    "kind": "real_base_model_smoke",
+    "summary": {
+      "offered_tasks": 8,
+      "correct": 6,
+      "accuracy": 0.75,
+      "wilson_95": [
+        0.40927543031017727,
+        0.9285207872478887
+      ],
+      "mean_tool_calls_all_tasks": 1.5,
+      "output_tokens": 1175,
+      "strict_format_violations": 12,
+      "statuses": {
+        "wrong_answer": 2,
+        "correct": 6
+      },
+      "by_fault": {
+        "none": {
+          "n": 4,
+          "correct": 3
+        },
+        "transient_first_call": {
+          "n": 4,
+          "correct": 3
+        }
+      }
+    },
+    "budget": {
+      "states": {
+        "committed": {
+          "operations": 22,
+          "reserved_usd": 0.0129864
+        }
+      },
+      "conservative_reserved_usd": 0.0129864,
+      "compute_cap_usd": 0.25,
+      "billing_note": "Upper reservations at configured rates, NOT an invoice. Successful reservations are not released."
+    }
+  },
+  "shutdown": {
+    "deactivation_errors": [],
+    "note": "Serverless only. Idle token billing stops without deploying dedicated inference."
+  },
+  "warning": "Eight-task development smoke, not held-out training results. Budget is a conservative reservation, not an invoice."
+}

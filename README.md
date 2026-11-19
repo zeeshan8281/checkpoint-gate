@@ -2,7 +2,7 @@
 
 A verifier-driven SQL agent experiment with Baseten Loops and a Cloudflare evidence layer.
 
-**Status: working local research build. No real model training results yet.** The bundled dashboard replays scripted infrastructure checks that deliberately use reference SQL. Baseten account capability, cloud deployment, training quality, and actual billing remain unverified.
+**Status: working research build; real serverless access and sampling verified. No trained-model results yet.** The bundled dashboard replays scripted infrastructure checks that deliberately use reference SQL. Development smoke traces are in `evidence/`; cloud deployment, training quality, and invoice reconciliation remain unverified.
 
 The research question: **does supervised fine-tuning followed by deterministic reward training improve completion on unfamiliar SQL query families, within the same tool and token budget?**
 
@@ -37,7 +37,7 @@ python -m http.server 8080 --bind 127.0.0.1 --directory web
 
 Open [the local dashboard](http://localhost:8080). The committed demo was generated with these commands. A dataset directory cannot be overwritten; its manifest hashes every database and the task/gold files.
 
-The scripted no-retry agent passes the 100 clean test cases and fails the 100 injected-error cases. The scripted retry agent passes all 200. These expected results validate fault plumbing and scoring. **They are not model performance.**
+The scripted no-retry agent passes the 100 clean test cases and fails the 100 injected-error cases. The scripted retry agent passes all 200. These expected results validate fault plumbing and scoring. **They are not model performance.** The initial real dev smoke separately exposed a Markdown-fence confound; protocol version 2 normalizes one outer fence equally for all conditions and records strict-format violations separately.
 
 ## Baseten setup and read-only check
 
@@ -53,6 +53,15 @@ checkpoint-gate preflight --config configs/pilot.json --out runs/capabilities.js
 `preflight` performs one authenticated GET to `/v1/loops/capabilities`. It does not create an SDK session, trainer, sampler, or deployment. It requires `enabled=true`, `serverless=true`, and sufficient enabled sequence length. Rank validation happens on creation; the explicit serverless scope prevents dedicated fallback.
 
 Model: **Qwen/Qwen3.6-35B-A3B, 35B total / 3B active**, rank-8 LoRA. Baseten hosts the heavy forward/backward and sampling work. This Mac handles the verifier, data, coordination, and analysis.
+
+Before training, exercise the real base sampler on eight development tasks:
+
+```bash
+checkpoint-gate smoke --data data/pilot --out runs/dev-smoke \
+  --config configs/pilot.json --execute-paid-run
+```
+
+The smoke test has a separate $0.25 reservation ceiling and a 15-minute dispatch window. It performs no training. Count its spend toward the overall project budget; one smoke plus the configured pilot has a $23.25 maximum planning allocation.
 
 ## Execute the paid pilot
 

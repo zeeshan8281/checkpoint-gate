@@ -21,6 +21,7 @@ def summarize(rows: list[dict]) -> dict:
         "accuracy": correct/n if n else None, "wilson_95": wilson(correct, n),
         "mean_tool_calls_all_tasks": sum(r.get("tool_calls", 0) for r in rows)/n if n else None,
         "output_tokens": sum(r.get("output_tokens", 0) for r in rows),
+        "strict_format_violations": sum(r.get("format_violations", 0) for r in rows),
         "statuses": dict(Counter(r["status"] for r in rows)),
         "by_fault": {s: {
             "n": sum(r["fault"] == s for r in rows),

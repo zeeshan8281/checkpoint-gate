@@ -1,0 +1,223 @@
+{
+  "model": "Qwen/Qwen3.6-35B-A3B",
+  "protocol": "strict-v1",
+  "split": "development",
+  "evaluation": {
+    "complete": true,
+    "label": "dev-smoke",
+    "rows": [
+      {
+        "task_id": "dev-conditional_count-0000",
+        "family": "conditional_count",
+        "fault": "none",
+        "rollout_id": "dev-smoke-dev-conditional_count-0000",
+        "correct": false,
+        "status": "invalid_action",
+        "tool_calls": 0,
+        "output_tokens": 73,
+        "elapsed_seconds": 3.865820957988035,
+        "reward": 0.0,
+        "trace": [
+          {
+            "assistant": "```json\n{\"sql\": \"SELECT t.id, COUNT(tc.id) AS open_children_count FROM teams_241 t LEFT JOIN tickets_241 tc ON t.id = tc.parent_id WHERE tc.stage_241 = 'open' OR tc.stage_241 IS NULL GROUP BY t.id ORDER BY t.id\"}\n```",
+            "error": "Expected one JSON object"
+          }
+        ]
+      },
+      {
+        "task_id": "dev-conditional_count-0001",
+        "family": "conditional_count",
+        "fault": "transient_first_call",
+        "rollout_id": "dev-smoke-dev-conditional_count-0001",
+        "correct": false,
+        "status": "invalid_action",
+        "tool_calls": 0,
+        "output_tokens": 78,
+        "elapsed_seconds": 4.004002500005299,
+        "reward": 0.0,
+        "trace": [
+          {
+            "assistant": "```json\n{\n  \"sql\": \"SELECT t.id, COUNT(tc.id) AS open_children_count FROM teams_877 t LEFT JOIN tickets_877 tc ON t.id = tc.parent_id WHERE tc.stage_877 = 'open' OR tc.stage_877 IS NULL GROUP BY t.id ORDER BY t.id\"\n}\n```",
+            "error": "Expected one JSON object"
+          }
+        ]
+      },
+      {
+        "task_id": "dev-group_having-0000",
+        "family": "group_having",
+        "fault": "none",
+        "rollout_id": "dev-smoke-dev-group_having-0000",
+        "correct": false,
+        "status": "invalid_action",
+        "tool_calls": 0,
+        "output_tokens": 62,
+        "elapsed_seconds": 3.4190327080141287,
+        "reward": 0.0,
+        "trace": [
+          {
+            "assistant": "```json\n{\"sql\": \"SELECT parent_id, SUM(points_908) AS total_points_908 FROM tickets_908 WHERE parent_id IS NOT NULL GROUP BY parent_id HAVING SUM(points_908) > 15 ORDER BY parent_id\"}\n```",
+            "error": "Expected one JSON object"
+          }
+        ]
+      },
+      {
+        "task_id": "dev-group_having-0001",
+        "family": "group_having",
+        "fault": "transient_first_call",
+        "rollout_id": "dev-smoke-dev-group_having-0001",
+        "correct": false,
+        "status": "invalid_action",
+        "tool_calls": 0,
+        "output_tokens": 62,
+        "elapsed_seconds": 3.8599006659933366,
+        "reward": 0.0,
+        "trace": [
+          {
+            "assistant": "```json\n{\"sql\": \"SELECT parent_id, SUM(points_567) AS total_points_567 FROM tickets_567 WHERE parent_id IS NOT NULL GROUP BY parent_id HAVING SUM(points_567) > 15 ORDER BY parent_id\"}\n```",
+            "error": "Expected one JSON object"
+          }
+        ]
+      },
+      {
+        "task_id": "dev-top_ties-0000",
+        "family": "top_ties",
+        "fault": "none",
+        "rollout_id": "dev-smoke-dev-top_ties-0000",
+        "correct": false,
+        "status": "invalid_action",
+        "tool_calls": 0,
+        "output_tokens": 51,
+        "elapsed_seconds": 1.9385391249961685,
+        "reward": 0.0,
+        "trace": [
+          {
+            "assistant": "```json\n{\"sql\": \"SELECT id, points_966 FROM tickets_966 WHERE points_966 = (SELECT MAX(points_966) FROM tickets_966) ORDER BY id\"}\n```",
+            "error": "Expected one JSON object"
+          }
+        ]
+      },
+      {
+        "task_id": "dev-top_ties-0001",
+        "family": "top_ties",
+        "fault": "transient_first_call",
+        "rollout_id": "dev-smoke-dev-top_ties-0001",
+        "correct": false,
+        "status": "invalid_action",
+        "tool_calls": 0,
+        "output_tokens": 51,
+        "elapsed_seconds": 2.546961749991169,
+        "reward": 0.0,
+        "trace": [
+          {
+            "assistant": "```json\n{\"sql\": \"SELECT id, points_567 FROM tickets_567 WHERE points_567 = (SELECT MAX(points_567) FROM tickets_567) ORDER BY id\"}\n```",
+            "error": "Expected one JSON object"
+          }
+        ]
+      },
+      {
+        "task_id": "dev-correlated_exists-0000",
+        "family": "correlated_exists",
+        "fault": "none",
+        "rollout_id": "dev-smoke-dev-correlated_exists-0000",
+        "correct": false,
+        "status": "invalid_action",
+        "tool_calls": 0,
+        "output_tokens": 82,
+        "elapsed_seconds": 3.233221667003818,
+        "reward": 0.0,
+        "trace": [
+          {
+            "assistant": "```json\n{\n  \"sql\": \"SELECT DISTINCT t1.id, t1.name\\nFROM teams_483 t1\\nJOIN tickets_483 t2 ON t1.id = t2.parent_id\\nWHERE t2.stage_483 = 'closed' AND t2.points_483 > 5\\nORDER BY t1.id;\"\n}\n```",
+            "error": "Expected one JSON object"
+          }
+        ]
+      },
+      {
+        "task_id": "dev-correlated_exists-0001",
+        "family": "correlated_exists",
+        "fault": "transient_first_call",
+        "rollout_id": "dev-smoke-dev-correlated_exists-0001",
+        "correct": false,
+        "status": "invalid_action",
+        "tool_calls": 0,
+        "output_tokens": 73,
+        "elapsed_seconds": 2.571991999982856,
+        "reward": 0.0,
+        "trace": [
+          {
+            "assistant": "```json\n{\"sql\": \"SELECT DISTINCT t1.id, t1.name FROM teams_685 t1 JOIN tickets_685 t2 ON t1.id = t2.parent_id WHERE t2.stage_685 = 'closed' AND t2.points_685 > 5 ORDER BY t1.id\"}\n```",
+            "error": "Expected one JSON object"
+          }
+        ]
+      }
+    ],
+    "summary": {
+      "offered_tasks": 8,
+      "correct": 0,
+      "accuracy": 0.0,
+      "wilson_95": [
+        0,
+        0.3244075648838681
+      ],
+      "mean_tool_calls_all_tasks": 0.0,
+      "output_tokens": 532,
+      "statuses": {
+        "invalid_action": 8
+      },
+      "by_fault": {
+        "none": {
+          "n": 4,
+          "correct": 0
+        },
+        "transient_first_call": {
+          "n": 4,
+          "correct": 0
+        }
+      }
+    }
+  },
+  "status": {
+    "state": "complete",
+    "kind": "real_base_model_smoke",
+    "summary": {
+      "offered_tasks": 8,
+      "correct": 0,
+      "accuracy": 0.0,
+      "wilson_95": [
+        0,
+        0.3244075648838681
+      ],
+      "mean_tool_calls_all_tasks": 0.0,
+      "output_tokens": 532,
+      "statuses": {
+        "invalid_action": 8
+      },
+      "by_fault": {
+        "none": {
+          "n": 4,
+          "correct": 0
+        },
+        "transient_first_call": {
+          "n": 4,
+          "correct": 0
+        }
+      }
+    },
+    "budget": {
+      "states": {
+        "committed": {
+          "operations": 10,
+          "reserved_usd": 0.0048657
+        }
+      },
+      "conservative_reserved_usd": 0.0048657,
+      "compute_cap_usd": 0.25,
+      "billing_note": "Upper reservations at configured rates, NOT an invoice. Successful reservations are not released."
+    }
+  },
+  "shutdown": {
+    "deactivation_errors": [],
+    "note": "Serverless only. Idle token billing stops without deploying dedicated inference."
+  },
+  "warning": "Eight-task development smoke, not held-out training results. Budget is a conservative reservation, not an invoice."
+}

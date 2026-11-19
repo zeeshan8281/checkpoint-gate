@@ -17,7 +17,7 @@ def main():
     demo = commands.add_parser("demo", help="Run scripted infrastructure checks; no model or cloud calls")
     demo.add_argument("--data", type=Path, required=True)
     demo.add_argument("--out", type=Path, required=True)
-    for name in ("preflight", "run"):
+    for name in ("preflight", "smoke", "run"):
         p = commands.add_parser(name)
         p.add_argument("--config", type=Path, default=Path("configs/pilot.json"))
         if name == "preflight":
@@ -40,7 +40,7 @@ def main():
             print(result["warning"])
             print(json.dumps({k: v["summary"] for k, v in result["conditions"].items()}, indent=2))
         else:
-            from .campaign import execute, validate_config
+            from .campaign import execute, smoke, validate_config
             from .baseten_backend import preflight
             config = read_json(args.config)
             validate_config(config)
@@ -52,7 +52,10 @@ def main():
             else:
                 if not args.execute_paid_run:
                     parser.error("run requires --execute-paid-run; use preflight for an account check")
-                print(json.dumps(execute(args.data, args.out, config, cloud_url=args.cloud_url), indent=2))
+                if args.command == "smoke":
+                    print(json.dumps(smoke(args.data, args.out, config), indent=2))
+                else:
+                    print(json.dumps(execute(args.data, args.out, config, cloud_url=args.cloud_url), indent=2))
     except (ValueError, RuntimeError, FileExistsError) as exc:
         parser.exit(2, f"{type(exc).__name__}: {exc}\n")
 

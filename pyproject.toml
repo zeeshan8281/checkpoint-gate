@@ -11,7 +11,7 @@ license = "MIT"
 dependencies = []
 
 [project.optional-dependencies]
-baseten = ["baseten-loops==0.36.0"]
+baseten = ["baseten-loops==0.36.0", "jinja2==3.1.6"]
 
 [project.scripts]
 checkpoint-gate = "checkpoint_gate.cli:main"

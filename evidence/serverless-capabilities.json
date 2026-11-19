@@ -1,0 +1,14 @@
+{
+  "supported_models": [
+    {
+      "model_name": "Qwen/Qwen3.6-35B-A3B",
+      "max_seq_len": 262144,
+      "max_enabled_seq_len": 262144,
+      "max_context_length": 262144,
+      "supports_vision_language": true,
+      "enabled": true,
+      "serverless": true,
+      "enablement_details": null
+    }
+  ]
+}

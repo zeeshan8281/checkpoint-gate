@@ -1,4 +1,6 @@
-# Pilot protocol, version 1
+# Pilot protocol, version 2
+
+Before training or held-out model evaluation, the initial eight-task dev smoke revealed that the base model wrapped valid JSON actions in Markdown fences. Version 2 normalizes one complete outer plain/JSON fence identically for every condition and records strict-format violations separately. The original dev traces are retained. This change prevents a formatting-only gain from dominating the primary task-completion result.
 
 ## Hypothesis and primary outcome
 
@@ -30,7 +32,7 @@ The generator and demo traces are public. Expected answers are hidden from model
 
 ## Scoring
 
-An assistant action must be exactly one JSON object with either `sql` or `answer`. A final answer is a two-dimensional row array. At least one tool query must have succeeded. Every final answer is checked against trusted expected rows.
+After optional removal of one complete outer Markdown fence, an assistant action must be exactly one JSON object with either `sql` or `answer`. No surrounding explanation, arbitrary JSON extraction, or SQL repair is allowed. A final answer is a two-dimensional row array. At least one tool query must have succeeded. Every final answer is checked against trusted expected rows. Raw strict-format violations are counted separately; the regression suite remains strict.
 
 Column order matters. Row order matters when requested; otherwise comparisons use multisets, preserving duplicate multiplicity. SQL integer and exactly equal floating-point values compare equal; strings and booleans remain distinct. NULL is JSON null. This integer-valued dataset requires no approximate floating-point tolerance.
 

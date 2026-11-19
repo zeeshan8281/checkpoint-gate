@@ -117,6 +117,10 @@ class LoopsBackend:
 class LoopsSession:
     def __init__(self, config: dict, ledger: Ledger, directory: Path, guard=lambda: None):
         import baseten.loops as loops
+        try:
+            import jinja2  # Required by Hugging Face chat templates, not Loops' own dependency list.
+        except ImportError as exc:
+            raise StopCampaign("Install checkpoint-gate[baseten] including Jinja2 before provisioning") from exc
         if loops.__version__ != "0.36.0":
             raise StopCampaign("Install the audited baseten-loops==0.36.0")
         self.config, self.ledger, self.directory, self.guard = config, ledger, directory, guard
