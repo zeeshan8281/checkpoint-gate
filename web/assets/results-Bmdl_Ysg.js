@@ -1,0 +1,1 @@
+import"./modulepreload-polyfill-B5Qt9EMX.js";/* empty css               */const a=new URLSearchParams(location.search);a.has("task")||a.has("condition")||location.hash==="#traces"?location.replace(`/explorer/${location.search}`):location.hash==="#method"&&location.replace("/method/");

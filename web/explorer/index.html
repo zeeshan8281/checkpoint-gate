@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Search 200 paired SQL tasks and inspect all 400 original base and SFT model traces, tool outputs, and failures.">
+  <title>Task explorer | CheckpointGate</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@400;500&family=Atkinson+Hyperlegible+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script type="module" crossorigin src="/assets/explorer-B0HNjaqr.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/modulepreload-polyfill-B5Qt9EMX.js">
+  <link rel="stylesheet" crossorigin href="/assets/styles-CwnixHDI.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="shell"><header class="topbar">
+    <a class="brand" href="/"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg>CheckpointGate</a>
+    <nav aria-label="Page navigation" class="flex items-center gap-6"><a href="/">Results</a><a href="/explorer/" aria-current="page">Task explorer</a><a href="/method/">Method</a></nav>
+    <a class="source" href="https://github.com/zeeshan8281/checkpoint-gate">GitHub</a>
+  </header><main id="main"><section class="heading-row"><div><h1>Every answer, open to inspection.</h1><p class="intro">Compare both checkpoints on the same 200 held-out tasks.</p></div><a class="secondary-action" href="/pilot.json" download>Download raw evidence</a></section>
+<div id="explorer-error" class="data-error" role="alert" hidden></div>
+<section class="workbench" aria-label="Held-out task explorer"><div class="workbench-toolbar"><div class="segmented" role="group" aria-label="Model condition"><button type="button" data-arm="base" aria-pressed="true" disabled>Base checkpoint</button><button type="button" data-arm="sft" aria-pressed="false" disabled>After SFT</button></div><span class="workbench-note">Original outputs / frozen evaluation</span></div>
+<div class="family-filters" role="group" aria-label="Query family"><button type="button" data-family="all" aria-pressed="true" disabled>All families</button><button type="button" data-family="latest_window" aria-pressed="false" disabled>Latest row</button><button type="button" data-family="anti_null" aria-pressed="false" disabled>NULL-safe anti-join</button><button type="button" data-family="distinct_pairs" aria-pressed="false" disabled>Distinct pairs</button><button type="button" data-family="relational_division" aria-pressed="false" disabled>Relational division</button></div>
+<div class="workbench-layout"><aside class="task-browser"><label class="search-label" for="task-search">Find a task</label><input id="task-search" type="search" placeholder="Search ID or question…" autocomplete="off" disabled><div class="outcome-filters" role="group" aria-label="Paired outcome"><button type="button" data-outcome="all" aria-pressed="true" disabled>All</button><button type="button" data-outcome="regressed" aria-pressed="false" disabled>Regressed</button><button type="button" data-outcome="improved" aria-pressed="false" disabled>Improved</button></div><p id="task-count-label" class="list-count" role="status">Loading 200 task pairs…</p><div id="task-list" class="task-list" aria-label="Matching tasks"></div><button class="clear-filters" id="clear-filters" type="button" hidden>Clear filters</button></aside>
+<div class="task-detail" id="task-detail"><div class="task-detail-heading"><div><h2 id="selected-task">Loading task…</h2><p id="paired-result" class="paired-result"></p></div><div class="stepper"><button id="previous-task" type="button" aria-label="Previous task" disabled>Previous</button><button id="next-task" type="button" aria-label="Next task" disabled>Next</button></div></div>
+<div id="trace-meta" role="status" aria-live="polite">Loading published evidence…</div><section class="question-section"><h3>Question</h3><p id="task-question">The selected task’s question will appear here.</p><details><summary>Database schema</summary><pre id="task-schema">Loading schema…</pre></details></section><div class="transcript-heading"><h3>Model &amp; tool transcript</h3><span id="transcript-arm">Base checkpoint</span></div><div id="trace-steps" aria-label="Original model and SQL tool transcript"></div></div>
+<div class="empty-detail" id="empty-detail" hidden><h2>No matching tasks</h2><p>Try another query or clear the filters to see all 200 task pairs.</p></div></div></section>
+<noscript><p class="noscript-note">Enable JavaScript to use the explorer. All 400 original traces are available in the <a href="/pilot.json">raw evidence file</a>.</p></noscript><p class="explorer-footnote">Selection is saved in the URL. Switch checkpoints to compare the same task; model responses remain verbatim.</p></main><footer class="site-footer"><span>CheckpointGate <span class="footer-sub">/ SQL agent pilot</span></span><div class="flex flex-wrap gap-6"><a href="/pilot.json" download>Raw evidence</a><a href="https://github.com/zeeshan8281/checkpoint-gate">GitHub repository</a><a href="/self-test.html">Infrastructure self-test</a></div></footer></div></body></html>

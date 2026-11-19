@@ -1,5 +1,17 @@
 [
   {
+    "date": "2026-11-20",
+    "mode": "extension",
+    "scope": "app",
+    "theme": "console",
+    "shape": "three-page results / workbench / protocol",
+    "nav": "three independent routes",
+    "signature": "family-specific regressions linked to original task evidence",
+    "prompt": "Separate nav pages, more graphs, and a nicer TypeScript + Tailwind UI",
+    "review": "fresh-context finish reviewer: ship, 0 findings",
+    "waived": []
+  },
+  {
     "mode": "redesign",
     "depth": "full",
     "scope": "app",

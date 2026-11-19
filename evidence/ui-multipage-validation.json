@@ -1,0 +1,226 @@
+{
+  "date": "2026-11-20",
+  "interface": "CUA",
+  "pages": [
+    "/",
+    "/explorer/",
+    "/method/"
+  ],
+  "viewportChecks": [
+    {
+      "active": "Results",
+      "overflow": [],
+      "route": "/",
+      "scroll": 360,
+      "width": 375
+    },
+    {
+      "active": "Results",
+      "overflow": [],
+      "route": "/",
+      "scroll": 360,
+      "width": 375
+    },
+    {
+      "active": "Results",
+      "overflow": [],
+      "route": "/",
+      "scroll": 465,
+      "width": 480
+    },
+    {
+      "active": "Results",
+      "overflow": [],
+      "route": "/",
+      "scroll": 753,
+      "width": 768
+    },
+    {
+      "active": "Results",
+      "overflow": [],
+      "route": "/",
+      "scroll": 1009,
+      "width": 1024
+    },
+    {
+      "active": "Results",
+      "overflow": [],
+      "route": "/",
+      "scroll": 1265,
+      "width": 1280
+    },
+    {
+      "active": "Results",
+      "overflow": [],
+      "route": "/",
+      "scroll": 1425,
+      "width": 1440
+    },
+    {
+      "active": "Results",
+      "overflow": [],
+      "route": "/",
+      "scroll": 1425,
+      "width": 1440
+    },
+    {
+      "active": "Task explorer",
+      "overflow": [],
+      "route": "/explorer/",
+      "scroll": 1905,
+      "width": 1920
+    },
+    {
+      "active": "Task explorer",
+      "overflow": [],
+      "route": "/explorer/",
+      "scroll": 305,
+      "width": 320
+    },
+    {
+      "active": "Task explorer",
+      "overflow": [],
+      "route": "/explorer/",
+      "scroll": 465,
+      "width": 480
+    },
+    {
+      "active": "Task explorer",
+      "overflow": [],
+      "route": "/explorer/",
+      "scroll": 753,
+      "width": 768
+    },
+    {
+      "active": "Task explorer",
+      "overflow": [],
+      "route": "/explorer/",
+      "scroll": 1009,
+      "width": 1024
+    },
+    {
+      "active": "Task explorer",
+      "overflow": [],
+      "route": "/explorer/",
+      "scroll": 1265,
+      "width": 1280
+    },
+    {
+      "active": "Task explorer",
+      "overflow": [],
+      "route": "/explorer/",
+      "scroll": 1425,
+      "width": 1440
+    },
+    {
+      "active": "Task explorer",
+      "overflow": [],
+      "route": "/explorer/",
+      "scroll": 1905,
+      "width": 1920
+    },
+    {
+      "active": "Method",
+      "overflow": [],
+      "route": "/method/",
+      "scroll": 305,
+      "width": 320
+    },
+    {
+      "active": "Method",
+      "overflow": [],
+      "route": "/method/",
+      "scroll": 360,
+      "width": 375
+    },
+    {
+      "active": "Method",
+      "overflow": [],
+      "route": "/method/",
+      "scroll": 465,
+      "width": 480
+    },
+    {
+      "active": "Method",
+      "overflow": [],
+      "route": "/method/",
+      "scroll": 753,
+      "width": 768
+    },
+    {
+      "active": "Method",
+      "overflow": [],
+      "route": "/method/",
+      "scroll": 1009,
+      "width": 1024
+    },
+    {
+      "active": "Method",
+      "overflow": [],
+      "route": "/method/",
+      "scroll": 1265,
+      "width": 1280
+    },
+    {
+      "active": "Method",
+      "overflow": [],
+      "route": "/method/",
+      "scroll": 1425,
+      "width": 1440
+    },
+    {
+      "active": "Method",
+      "overflow": [],
+      "route": "/method/",
+      "scroll": 1425,
+      "width": 1440
+    },
+    {
+      "overflow": [],
+      "route": "/",
+      "scroll": 320,
+      "width": 320
+    },
+    {
+      "overflow": [],
+      "route": "/",
+      "scroll": 1920,
+      "width": 1920
+    },
+    {
+      "overflow": [],
+      "route": "/explorer/",
+      "scroll": 375,
+      "width": 375
+    },
+    {
+      "overflow": [],
+      "route": "/method/",
+      "scroll": 1920,
+      "width": 1920
+    }
+  ],
+  "interactions": {
+    "allTaskPairs": 200,
+    "regressed": 78,
+    "improved": 2,
+    "antiNullRegressions": 37,
+    "idSearch": 1,
+    "emptySearch": 0,
+    "clearFilters": true,
+    "checkpointSwitchPreservesTask": true,
+    "previousNext": true,
+    "reloadPreservesFilters": true,
+    "oldSharedLinkRedirect": true,
+    "methodAnchor": true,
+    "focusRing": "2px solid",
+    "evidence503": "visible alert and disabled controls"
+  },
+  "staticLint": {
+    "fail": 0,
+    "reflex": 0,
+    "warn": 0
+  },
+  "finishReview": "fresh-context subagent: ship, 0 findings",
+  "newModelCalls": 0
+}

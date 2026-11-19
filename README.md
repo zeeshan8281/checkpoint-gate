@@ -110,7 +110,10 @@ The local ledger is the only spending authority. Do not run copies of the campai
 ## Results UI
 
 The public dashboard uses **TypeScript, Tailwind CSS 4, and Vite**, with Hallmark’s
-Console theme. Run `npm ci && npm run dev` inside `frontend/` to work on it.
+Console theme. Results (`/`), Task Explorer (`/explorer/`), and Method (`/method/`)
+are separate pages. The explorer supports search and paired-regression filters;
+results include downloadable query-family, tool-fault, and format graphs.
+Run `npm ci && npm run dev` inside `frontend/` to work on it.
 `npm run build` type-checks the source and writes the deployable `web/` assets.
 See [frontend instructions](frontend/README.md). Task and model selections are
 shareable through the URL; all 400 original held-out traces remain available.

@@ -1,38 +1,253 @@
 {
   "date": "2026-11-20",
   "url": "https://checkpoint-gate-results.zeeshan8281.workers.dev",
-  "static_version": "236180d0-6fc7-48d5-baa5-8355384406cc",
-  "backend_version": "c7ff9993-e576-4a3d-8805-c8207370f9f2",
+  "static_version": "222195ba-7e1e-4658-b824-046ad50a5060",
+  "backend_version": "828ad3a0-ebea-45ad-a32e-55e260aeb7c5",
   "https": true,
+  "pages": [
+    "/",
+    "/explorer/",
+    "/method/"
+  ],
   "assets": [
     {
+      "host": "https://checkpoint-gate-results.zeeshan8281.workers.dev",
       "path": "index.html",
-      "sha256": "2acc481ba998f45faad218dc29f612ed9f1103fb7f1db0674cc9b59e398bda35",
+      "sha256": "30ce0dafd4250857d8d978658c0bc35758f6d4d496c740334d86bcbb995bc818",
       "exact_match": true
     },
     {
-      "path": "pilot.json",
-      "sha256": "f043dc3ba4b369771d7684a7a8ab9cf451eb3dacbc5fa5c9c0569a9c168cfe6d",
-      "exact_match": true
-    },
-    {
-      "path": "heldout-results.png",
-      "sha256": "afcfd88a19d075f42740580fa14632d5c38a84ae6fb140cecc8bbb8e16bf743b",
-      "exact_match": true
-    },
-    {
+      "host": "https://checkpoint-gate-results.zeeshan8281.workers.dev",
       "path": "hallmark-license.txt",
       "sha256": "06088a8b94598626f27612dea42300154bf7be967c85d9d3eee4490cb056af7d",
       "exact_match": true
     },
     {
-      "path": "assets/index-DA3gKOCs.css",
-      "sha256": "b21639b5f2f8651a72a04f3cb25c6cbf5129b788cd1e9f561c5a75c2b91dc520",
+      "host": "https://checkpoint-gate-results.zeeshan8281.workers.dev",
+      "path": "demo.json",
+      "sha256": "f117b04cd260dd0be37763c2835a9a97fba2422befd3f5bda4d5468fe69332d3",
       "exact_match": true
     },
     {
-      "path": "assets/index-CMRy2oo6.js",
-      "sha256": "101ff69b207540b4770c6c52725647707fff00046b6e1dda87d2e94bc2f20265",
+      "host": "https://checkpoint-gate-results.zeeshan8281.workers.dev",
+      "path": "heldout-results.png",
+      "sha256": "afcfd88a19d075f42740580fa14632d5c38a84ae6fb140cecc8bbb8e16bf743b",
+      "exact_match": true
+    },
+    {
+      "host": "https://checkpoint-gate-results.zeeshan8281.workers.dev",
+      "path": "style.css",
+      "sha256": "ee3247536ba42349d0f1fb3781ab7f96ebeea036d8fc56bebe1fb9b089331268",
+      "exact_match": true
+    },
+    {
+      "host": "https://checkpoint-gate-results.zeeshan8281.workers.dev",
+      "path": "pilot.json",
+      "sha256": "f043dc3ba4b369771d7684a7a8ab9cf451eb3dacbc5fa5c9c0569a9c168cfe6d",
+      "exact_match": true
+    },
+    {
+      "host": "https://checkpoint-gate-results.zeeshan8281.workers.dev",
+      "path": "app.js",
+      "sha256": "2a45e8d89b5c86878539d39eecadd2a17ad71d1c89cd4e534e31a87a8c7d557e",
+      "exact_match": true
+    },
+    {
+      "host": "https://checkpoint-gate-results.zeeshan8281.workers.dev",
+      "path": "self-test.html",
+      "sha256": "627ed8544cac52f894c59d54124775fbf80b01485a83bc3a282008bebc60831f",
+      "exact_match": true
+    },
+    {
+      "host": "https://checkpoint-gate-results.zeeshan8281.workers.dev",
+      "path": "explorer/index.html",
+      "sha256": "ac930befd1615db1d5189c2a6a5476fe954ff7d6f843f8f569a564bc7bd84670",
+      "exact_match": true
+    },
+    {
+      "host": "https://checkpoint-gate-results.zeeshan8281.workers.dev",
+      "path": "graphs/query-families.svg",
+      "sha256": "9a2364297a365cd475ee48c43ae015e1d63041798c2d4f1f69f63d37711d18cf",
+      "exact_match": true
+    },
+    {
+      "host": "https://checkpoint-gate-results.zeeshan8281.workers.dev",
+      "path": "graphs/tool-faults.png",
+      "sha256": "62fb0fd4b9b394c8ac33816449676400319134a7a9f77438314bf416f2baa31b",
+      "exact_match": true
+    },
+    {
+      "host": "https://checkpoint-gate-results.zeeshan8281.workers.dev",
+      "path": "graphs/tool-faults.svg",
+      "sha256": "5bc71d6dc083d4f144d3d9c6d6128c50300864cc829dbb3db9617d85d002fa0b",
+      "exact_match": true
+    },
+    {
+      "host": "https://checkpoint-gate-results.zeeshan8281.workers.dev",
+      "path": "graphs/query-families.png",
+      "sha256": "c8092df34bcdb9b7e8c5c666531496476bd3065a84b73a9543db158ce8e1afb6",
+      "exact_match": true
+    },
+    {
+      "host": "https://checkpoint-gate-results.zeeshan8281.workers.dev",
+      "path": "graphs/format-reliability.png",
+      "sha256": "7b562073098c831024e55603ced451de9fffc4d4021ffd834f0b6a8d2b0c0c6f",
+      "exact_match": true
+    },
+    {
+      "host": "https://checkpoint-gate-results.zeeshan8281.workers.dev",
+      "path": "graphs/format-reliability.svg",
+      "sha256": "cd3d3d02c974d11c1be8f06b08ef804cf3c038f88c98e1a2492b041ca245c450",
+      "exact_match": true
+    },
+    {
+      "host": "https://checkpoint-gate-results.zeeshan8281.workers.dev",
+      "path": "assets/results-Bmdl_Ysg.js",
+      "sha256": "3dc0bfe0f209a793fb9137a181337cebc2b9c68fe3ccd9b4e745c1a851a80ce1",
+      "exact_match": true
+    },
+    {
+      "host": "https://checkpoint-gate-results.zeeshan8281.workers.dev",
+      "path": "assets/styles-CwnixHDI.css",
+      "sha256": "48edb1510de810ba98a70b3e6fb5e910cfdf224da00a53f59e775c4cfe550032",
+      "exact_match": true
+    },
+    {
+      "host": "https://checkpoint-gate-results.zeeshan8281.workers.dev",
+      "path": "assets/modulepreload-polyfill-B5Qt9EMX.js",
+      "sha256": "d2a32840421496e872ade591618d2fa5c33797605d1aec04301717e5a90757d0",
+      "exact_match": true
+    },
+    {
+      "host": "https://checkpoint-gate-results.zeeshan8281.workers.dev",
+      "path": "assets/explorer-B0HNjaqr.js",
+      "sha256": "f24ee916d9860a74734ab17c137df7032844947a3f9f813fc3f28ede397bdf34",
+      "exact_match": true
+    },
+    {
+      "host": "https://checkpoint-gate-results.zeeshan8281.workers.dev",
+      "path": "method/index.html",
+      "sha256": "e0ccf5fbc530fd37fe93ac055073b9648d1c11231afd036ebb1dda0019e7078d",
+      "exact_match": true
+    },
+    {
+      "host": "https://checkpoint-gate.zeeshan8281.workers.dev",
+      "path": "index.html",
+      "sha256": "30ce0dafd4250857d8d978658c0bc35758f6d4d496c740334d86bcbb995bc818",
+      "exact_match": true
+    },
+    {
+      "host": "https://checkpoint-gate.zeeshan8281.workers.dev",
+      "path": "hallmark-license.txt",
+      "sha256": "06088a8b94598626f27612dea42300154bf7be967c85d9d3eee4490cb056af7d",
+      "exact_match": true
+    },
+    {
+      "host": "https://checkpoint-gate.zeeshan8281.workers.dev",
+      "path": "demo.json",
+      "sha256": "f117b04cd260dd0be37763c2835a9a97fba2422befd3f5bda4d5468fe69332d3",
+      "exact_match": true
+    },
+    {
+      "host": "https://checkpoint-gate.zeeshan8281.workers.dev",
+      "path": "heldout-results.png",
+      "sha256": "afcfd88a19d075f42740580fa14632d5c38a84ae6fb140cecc8bbb8e16bf743b",
+      "exact_match": true
+    },
+    {
+      "host": "https://checkpoint-gate.zeeshan8281.workers.dev",
+      "path": "style.css",
+      "sha256": "ee3247536ba42349d0f1fb3781ab7f96ebeea036d8fc56bebe1fb9b089331268",
+      "exact_match": true
+    },
+    {
+      "host": "https://checkpoint-gate.zeeshan8281.workers.dev",
+      "path": "pilot.json",
+      "sha256": "f043dc3ba4b369771d7684a7a8ab9cf451eb3dacbc5fa5c9c0569a9c168cfe6d",
+      "exact_match": true
+    },
+    {
+      "host": "https://checkpoint-gate.zeeshan8281.workers.dev",
+      "path": "app.js",
+      "sha256": "2a45e8d89b5c86878539d39eecadd2a17ad71d1c89cd4e534e31a87a8c7d557e",
+      "exact_match": true
+    },
+    {
+      "host": "https://checkpoint-gate.zeeshan8281.workers.dev",
+      "path": "self-test.html",
+      "sha256": "627ed8544cac52f894c59d54124775fbf80b01485a83bc3a282008bebc60831f",
+      "exact_match": true
+    },
+    {
+      "host": "https://checkpoint-gate.zeeshan8281.workers.dev",
+      "path": "explorer/index.html",
+      "sha256": "ac930befd1615db1d5189c2a6a5476fe954ff7d6f843f8f569a564bc7bd84670",
+      "exact_match": true
+    },
+    {
+      "host": "https://checkpoint-gate.zeeshan8281.workers.dev",
+      "path": "graphs/query-families.svg",
+      "sha256": "9a2364297a365cd475ee48c43ae015e1d63041798c2d4f1f69f63d37711d18cf",
+      "exact_match": true
+    },
+    {
+      "host": "https://checkpoint-gate.zeeshan8281.workers.dev",
+      "path": "graphs/tool-faults.png",
+      "sha256": "62fb0fd4b9b394c8ac33816449676400319134a7a9f77438314bf416f2baa31b",
+      "exact_match": true
+    },
+    {
+      "host": "https://checkpoint-gate.zeeshan8281.workers.dev",
+      "path": "graphs/tool-faults.svg",
+      "sha256": "5bc71d6dc083d4f144d3d9c6d6128c50300864cc829dbb3db9617d85d002fa0b",
+      "exact_match": true
+    },
+    {
+      "host": "https://checkpoint-gate.zeeshan8281.workers.dev",
+      "path": "graphs/query-families.png",
+      "sha256": "c8092df34bcdb9b7e8c5c666531496476bd3065a84b73a9543db158ce8e1afb6",
+      "exact_match": true
+    },
+    {
+      "host": "https://checkpoint-gate.zeeshan8281.workers.dev",
+      "path": "graphs/format-reliability.png",
+      "sha256": "7b562073098c831024e55603ced451de9fffc4d4021ffd834f0b6a8d2b0c0c6f",
+      "exact_match": true
+    },
+    {
+      "host": "https://checkpoint-gate.zeeshan8281.workers.dev",
+      "path": "graphs/format-reliability.svg",
+      "sha256": "cd3d3d02c974d11c1be8f06b08ef804cf3c038f88c98e1a2492b041ca245c450",
+      "exact_match": true
+    },
+    {
+      "host": "https://checkpoint-gate.zeeshan8281.workers.dev",
+      "path": "assets/results-Bmdl_Ysg.js",
+      "sha256": "3dc0bfe0f209a793fb9137a181337cebc2b9c68fe3ccd9b4e745c1a851a80ce1",
+      "exact_match": true
+    },
+    {
+      "host": "https://checkpoint-gate.zeeshan8281.workers.dev",
+      "path": "assets/styles-CwnixHDI.css",
+      "sha256": "48edb1510de810ba98a70b3e6fb5e910cfdf224da00a53f59e775c4cfe550032",
+      "exact_match": true
+    },
+    {
+      "host": "https://checkpoint-gate.zeeshan8281.workers.dev",
+      "path": "assets/modulepreload-polyfill-B5Qt9EMX.js",
+      "sha256": "d2a32840421496e872ade591618d2fa5c33797605d1aec04301717e5a90757d0",
+      "exact_match": true
+    },
+    {
+      "host": "https://checkpoint-gate.zeeshan8281.workers.dev",
+      "path": "assets/explorer-B0HNjaqr.js",
+      "sha256": "f24ee916d9860a74734ab17c137df7032844947a3f9f813fc3f28ede397bdf34",
+      "exact_match": true
+    },
+    {
+      "host": "https://checkpoint-gate.zeeshan8281.workers.dev",
+      "path": "method/index.html",
+      "sha256": "e0ccf5fbc530fd37fe93ac055073b9648d1c11231afd036ebb1dda0019e7078d",
       "exact_match": true
     }
   ],
