@@ -1,0 +1,178 @@
+[
+  {
+    "task_id": "train-missing_child-0031",
+    "family": "missing_child",
+    "fault": "transient_first_call",
+    "rollout_id": "rl-g1-s0",
+    "correct": true,
+    "status": "correct",
+    "tool_calls": 2,
+    "output_tokens": 102,
+    "elapsed_seconds": 8.005187875009142,
+    "reward": 0.95,
+    "trace": [
+      {
+        "assistant": "{\"sql\":\"SELECT p.id,p.name FROM customers_154 p LEFT JOIN orders_154 c ON c.parent_id=p.id WHERE c.id IS NULL ORDER BY p.id\"}",
+        "tool": {
+          "error": "transient_busy",
+          "retryable": true
+        }
+      },
+      {
+        "assistant": "{\"sql\":\"SELECT p.id,p.name FROM customers_154 p LEFT JOIN orders_154 c ON c.parent_id=p.id WHERE c.id IS NULL ORDER BY p.id\"}",
+        "tool": {
+          "columns": [
+            "id",
+            "name"
+          ],
+          "rows": [
+            [
+              2,
+              "item-02"
+            ],
+            [
+              12,
+              "item-12"
+            ]
+          ]
+        }
+      },
+      {
+        "assistant": "{\"answer\":[[2,\"item-02\"],[12,\"item-12\"]]}"
+      }
+    ],
+    "format_violations": 0
+  },
+  {
+    "task_id": "train-missing_child-0031",
+    "family": "missing_child",
+    "fault": "transient_first_call",
+    "rollout_id": "rl-g1-s1",
+    "correct": true,
+    "status": "correct",
+    "tool_calls": 2,
+    "output_tokens": 102,
+    "elapsed_seconds": 6.483938707999187,
+    "reward": 0.95,
+    "trace": [
+      {
+        "assistant": "{\"sql\":\"SELECT p.id,p.name FROM customers_154 p LEFT JOIN orders_154 c ON c.parent_id=p.id WHERE c.id IS NULL ORDER BY p.id\"}",
+        "tool": {
+          "error": "transient_busy",
+          "retryable": true
+        }
+      },
+      {
+        "assistant": "{\"sql\":\"SELECT p.id,p.name FROM customers_154 p LEFT JOIN orders_154 c ON c.parent_id=p.id WHERE c.id IS NULL ORDER BY p.id\"}",
+        "tool": {
+          "columns": [
+            "id",
+            "name"
+          ],
+          "rows": [
+            [
+              2,
+              "item-02"
+            ],
+            [
+              12,
+              "item-12"
+            ]
+          ]
+        }
+      },
+      {
+        "assistant": "{\"answer\":[[2,\"item-02\"],[12,\"item-12\"]]}"
+      }
+    ],
+    "format_violations": 0
+  },
+  {
+    "task_id": "train-missing_child-0031",
+    "family": "missing_child",
+    "fault": "transient_first_call",
+    "rollout_id": "rl-g1-s2",
+    "correct": true,
+    "status": "correct",
+    "tool_calls": 2,
+    "output_tokens": 102,
+    "elapsed_seconds": 7.727637584001059,
+    "reward": 0.95,
+    "trace": [
+      {
+        "assistant": "{\"sql\":\"SELECT p.id,p.name FROM customers_154 p LEFT JOIN orders_154 c ON c.parent_id=p.id WHERE c.id IS NULL ORDER BY p.id\"}",
+        "tool": {
+          "error": "transient_busy",
+          "retryable": true
+        }
+      },
+      {
+        "assistant": "{\"sql\":\"SELECT p.id,p.name FROM customers_154 p LEFT JOIN orders_154 c ON c.parent_id=p.id WHERE c.id IS NULL ORDER BY p.id\"}",
+        "tool": {
+          "columns": [
+            "id",
+            "name"
+          ],
+          "rows": [
+            [
+              2,
+              "item-02"
+            ],
+            [
+              12,
+              "item-12"
+            ]
+          ]
+        }
+      },
+      {
+        "assistant": "{\"answer\":[[2,\"item-02\"],[12,\"item-12\"]]}"
+      }
+    ],
+    "format_violations": 0
+  },
+  {
+    "task_id": "train-missing_child-0031",
+    "family": "missing_child",
+    "fault": "transient_first_call",
+    "rollout_id": "rl-g1-s3",
+    "correct": true,
+    "status": "correct",
+    "tool_calls": 2,
+    "output_tokens": 102,
+    "elapsed_seconds": 6.301941415993497,
+    "reward": 0.95,
+    "trace": [
+      {
+        "assistant": "{\"sql\":\"SELECT p.id,p.name FROM customers_154 p LEFT JOIN orders_154 c ON c.parent_id=p.id WHERE c.id IS NULL ORDER BY p.id\"}",
+        "tool": {
+          "error": "transient_busy",
+          "retryable": true
+        }
+      },
+      {
+        "assistant": "{\"sql\":\"SELECT p.id,p.name FROM customers_154 p LEFT JOIN orders_154 c ON c.parent_id=p.id WHERE c.id IS NULL ORDER BY p.id\"}",
+        "tool": {
+          "columns": [
+            "id",
+            "name"
+          ],
+          "rows": [
+            [
+              2,
+              "item-02"
+            ],
+            [
+              12,
+              "item-12"
+            ]
+          ]
+        }
+      },
+      {
+        "assistant": "{\"answer\":[[2,\"item-02\"],[12,\"item-12\"]]}"
+      }
+    ],
+    "format_violations": 0
+  }
+]

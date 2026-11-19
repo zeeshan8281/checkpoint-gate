@@ -1,0 +1,12 @@
+{
+  "pilot_conservative_reservation_usd": 0.871654328,
+  "smoke_conservative_reservation_usd": 0.0178521,
+  "total_conservative_reservation_usd": 0.889506428,
+  "actual_invoice_usd": null,
+  "pilot_sampling_requests": 1387,
+  "smoke_sampling_requests": 28,
+  "first_dispatch_utc": "2026-11-19T16:23:23.560606+00:00",
+  "last_dispatch_utc": "2026-11-19T17:27:38.051817+00:00",
+  "dispatch_span_minutes": 64.24,
+  "note": "Reservations at configured rates, not an invoice; timestamps bound dispatch span, not GPU execution time."
+}

@@ -1,0 +1,134 @@
+[
+  {
+    "task_id": "train-missing_child-0008",
+    "family": "missing_child",
+    "fault": "none",
+    "rollout_id": "rl-g11-s0",
+    "correct": true,
+    "status": "correct",
+    "tool_calls": 1,
+    "output_tokens": 54,
+    "elapsed_seconds": 4.32839745900128,
+    "reward": 1.0,
+    "trace": [
+      {
+        "assistant": "{\"sql\":\"SELECT p.id,p.name FROM customers_484 p LEFT JOIN orders_484 c ON c.parent_id=p.id WHERE c.id IS NULL ORDER BY p.id\"}",
+        "tool": {
+          "columns": [
+            "id",
+            "name"
+          ],
+          "rows": [
+            [
+              12,
+              "item-12"
+            ]
+          ]
+        }
+      },
+      {
+        "assistant": "{\"answer\":[[12,\"item-12\"]]}"
+      }
+    ],
+    "format_violations": 0
+  },
+  {
+    "task_id": "train-missing_child-0008",
+    "family": "missing_child",
+    "fault": "none",
+    "rollout_id": "rl-g11-s1",
+    "correct": true,
+    "status": "correct",
+    "tool_calls": 1,
+    "output_tokens": 54,
+    "elapsed_seconds": 4.454868708999129,
+    "reward": 1.0,
+    "trace": [
+      {
+        "assistant": "{\"sql\":\"SELECT p.id,p.name FROM customers_484 p LEFT JOIN orders_484 c ON p.id=c.parent_id WHERE c.id IS NULL ORDER BY p.id\"}",
+        "tool": {
+          "columns": [
+            "id",
+            "name"
+          ],
+          "rows": [
+            [
+              12,
+              "item-12"
+            ]
+          ]
+        }
+      },
+      {
+        "assistant": "{\"answer\":[[12,\"item-12\"]]}"
+      }
+    ],
+    "format_violations": 0
+  },
+  {
+    "task_id": "train-missing_child-0008",
+    "family": "missing_child",
+    "fault": "none",
+    "rollout_id": "rl-g11-s2",
+    "correct": true,
+    "status": "correct",
+    "tool_calls": 1,
+    "output_tokens": 54,
+    "elapsed_seconds": 4.387179292010842,
+    "reward": 1.0,
+    "trace": [
+      {
+        "assistant": "{\"sql\":\"SELECT p.id,p.name FROM customers_484 p LEFT JOIN orders_484 c ON p.id=c.parent_id WHERE c.id IS NULL ORDER BY p.id\"}",
+        "tool": {
+          "columns": [
+            "id",
+            "name"
+          ],
+          "rows": [
+            [
+              12,
+              "item-12"
+            ]
+          ]
+        }
+      },
+      {
+        "assistant": "{\"answer\":[[12,\"item-12\"]]}"
+      }
+    ],
+    "format_violations": 0
+  },
+  {
+    "task_id": "train-missing_child-0008",
+    "family": "missing_child",
+    "fault": "none",
+    "rollout_id": "rl-g11-s3",
+    "correct": true,
+    "status": "correct",
+    "tool_calls": 1,
+    "output_tokens": 54,
+    "elapsed_seconds": 3.6416197500075214,
+    "reward": 1.0,
+    "trace": [
+      {
+        "assistant": "{\"sql\":\"SELECT p.id,p.name FROM customers_484 p LEFT JOIN orders_484 c ON p.id=c.parent_id WHERE c.id IS NULL ORDER BY p.id\"}",
+        "tool": {
+          "columns": [
+            "id",
+            "name"
+          ],
+          "rows": [
+            [
+              12,
+              "item-12"
+            ]
+          ]
+        }
+      },
+      {
+        "assistant": "{\"answer\":[[12,\"item-12\"]]}"
+      }
+    ],
+    "format_violations": 0
+  }
+]

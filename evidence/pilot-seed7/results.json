@@ -1,0 +1,95 @@
+{
+  "kind": "baseten_experiment",
+  "complete": true,
+  "conditions": {
+    "sft": {
+      "offered_tasks": 200,
+      "correct": 112,
+      "accuracy": 0.56,
+      "wilson_95": [
+        0.49071675334658865,
+        0.6270218074881397
+      ],
+      "mean_tool_calls_all_tasks": 1.515,
+      "output_tokens": 35004,
+      "strict_format_violations": 0,
+      "statuses": {
+        "wrong_answer": 88,
+        "correct": 112
+      },
+      "by_fault": {
+        "none": {
+          "n": 100,
+          "correct": 55
+        },
+        "transient_first_call": {
+          "n": 100,
+          "correct": 57
+        }
+      }
+    },
+    "base": {
+      "offered_tasks": 200,
+      "correct": 188,
+      "accuracy": 0.94,
+      "wilson_95": [
+        0.8980683070423386,
+        0.9653478057456676
+      ],
+      "mean_tool_calls_all_tasks": 1.5,
+      "output_tokens": 40067,
+      "strict_format_violations": 296,
+      "statuses": {
+        "correct": 188,
+        "wrong_answer": 12
+      },
+      "by_fault": {
+        "none": {
+          "n": 100,
+          "correct": 95
+        },
+        "transient_first_call": {
+          "n": 100,
+          "correct": 93
+        }
+      }
+    }
+  },
+  "paired_vs_base": {
+    "sft": {
+      "paired_tasks": 200,
+      "delta_accuracy": -0.38,
+      "paired_bootstrap_95": [
+        -0.45,
+        -0.31
+      ],
+      "wins": 2,
+      "losses": 78,
+      "ties": 120,
+      "uncertainty_unit": "Generated task instance. Does not estimate variation across new schema families or training seeds."
+    }
+  },
+  "regression": {
+    "sft": {
+      "n": 100,
+      "correct": 54
+    },
+    "base": {
+      "n": 100,
+      "correct": 68
+    }
+  },
+  "rl_updates": 0,
+  "single_seed": true,
+  "budget": {
+    "states": {
+      "committed": {
+        "operations": 1417,
+        "reserved_usd": 0.871654328
+      }
+    },
+    "conservative_reserved_usd": 0.871654328,
+    "compute_cap_usd": 10,
+    "billing_note": "Upper reservations at configured rates, NOT an invoice. Successful reservations are not released."
+  }
+}

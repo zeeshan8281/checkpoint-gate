@@ -1,0 +1,178 @@
+[
+  {
+    "task_id": "train-join_filter-0029",
+    "family": "join_filter",
+    "fault": "transient_first_call",
+    "rollout_id": "rl-g4-s0",
+    "correct": true,
+    "status": "correct",
+    "tool_calls": 2,
+    "output_tokens": 130,
+    "elapsed_seconds": 8.71318979098578,
+    "reward": 0.95,
+    "trace": [
+      {
+        "assistant": "{\"sql\":\"SELECT p.name,c.amount_239 FROM customers_239 p JOIN orders_239 c ON p.id=c.parent_id WHERE p.region_239='north' AND c.status_239='open'\"}",
+        "tool": {
+          "error": "transient_busy",
+          "retryable": true
+        }
+      },
+      {
+        "assistant": "{\"sql\":\"SELECT p.name,c.amount_239 FROM customers_239 p JOIN orders_239 c ON p.id=c.parent_id WHERE p.region_239='north' AND c.status_239='open'\"}",
+        "tool": {
+          "columns": [
+            "name",
+            "amount_239"
+          ],
+          "rows": [
+            [
+              "item-07",
+              35
+            ],
+            [
+              "item-07",
+              null
+            ]
+          ]
+        }
+      },
+      {
+        "assistant": "{\"answer\":[[\"item-07\",35],[\"item-07\",null]]}"
+      }
+    ],
+    "format_violations": 0
+  },
+  {
+    "task_id": "train-join_filter-0029",
+    "family": "join_filter",
+    "fault": "transient_first_call",
+    "rollout_id": "rl-g4-s1",
+    "correct": true,
+    "status": "correct",
+    "tool_calls": 2,
+    "output_tokens": 130,
+    "elapsed_seconds": 6.831521957996301,
+    "reward": 0.95,
+    "trace": [
+      {
+        "assistant": "{\"sql\":\"SELECT p.name,c.amount_239 FROM customers_239 p JOIN orders_239 c ON p.id=c.parent_id WHERE p.region_239='north' AND c.status_239='open'\"}",
+        "tool": {
+          "error": "transient_busy",
+          "retryable": true
+        }
+      },
+      {
+        "assistant": "{\"sql\":\"SELECT p.name,c.amount_239 FROM customers_239 p JOIN orders_239 c ON p.id=c.parent_id WHERE p.region_239='north' AND c.status_239='open'\"}",
+        "tool": {
+          "columns": [
+            "name",
+            "amount_239"
+          ],
+          "rows": [
+            [
+              "item-07",
+              35
+            ],
+            [
+              "item-07",
+              null
+            ]
+          ]
+        }
+      },
+      {
+        "assistant": "{\"answer\":[[\"item-07\",35],[\"item-07\",null]]}"
+      }
+    ],
+    "format_violations": 0
+  },
+  {
+    "task_id": "train-join_filter-0029",
+    "family": "join_filter",
+    "fault": "transient_first_call",
+    "rollout_id": "rl-g4-s2",
+    "correct": true,
+    "status": "correct",
+    "tool_calls": 2,
+    "output_tokens": 130,
+    "elapsed_seconds": 5.995104000001447,
+    "reward": 0.95,
+    "trace": [
+      {
+        "assistant": "{\"sql\":\"SELECT p.name,c.amount_239 FROM customers_239 p JOIN orders_239 c ON p.id=c.parent_id WHERE p.region_239='north' AND c.status_239='open'\"}",
+        "tool": {
+          "error": "transient_busy",
+          "retryable": true
+        }
+      },
+      {
+        "assistant": "{\"sql\":\"SELECT p.name,c.amount_239 FROM customers_239 p JOIN orders_239 c ON p.id=c.parent_id WHERE p.region_239='north' AND c.status_239='open'\"}",
+        "tool": {
+          "columns": [
+            "name",
+            "amount_239"
+          ],
+          "rows": [
+            [
+              "item-07",
+              35
+            ],
+            [
+              "item-07",
+              null
+            ]
+          ]
+        }
+      },
+      {
+        "assistant": "{\"answer\":[[\"item-07\",35],[\"item-07\",null]]}"
+      }
+    ],
+    "format_violations": 0
+  },
+  {
+    "task_id": "train-join_filter-0029",
+    "family": "join_filter",
+    "fault": "transient_first_call",
+    "rollout_id": "rl-g4-s3",
+    "correct": true,
+    "status": "correct",
+    "tool_calls": 2,
+    "output_tokens": 130,
+    "elapsed_seconds": 7.318597208999563,
+    "reward": 0.95,
+    "trace": [
+      {
+        "assistant": "{\"sql\":\"SELECT p.name,c.amount_239 FROM customers_239 p JOIN orders_239 c ON p.id=c.parent_id WHERE p.region_239='north' AND c.status_239='open'\"}",
+        "tool": {
+          "error": "transient_busy",
+          "retryable": true
+        }
+      },
+      {
+        "assistant": "{\"sql\":\"SELECT p.name,c.amount_239 FROM customers_239 p JOIN orders_239 c ON p.id=c.parent_id WHERE p.region_239='north' AND c.status_239='open'\"}",
+        "tool": {
+          "columns": [
+            "name",
+            "amount_239"
+          ],
+          "rows": [
+            [
+              "item-07",
+              35
+            ],
+            [
+              "item-07",
+              null
+            ]
+          ]
+        }
+      },
+      {
+        "assistant": "{\"answer\":[[\"item-07\",35],[\"item-07\",null]]}"
+      }
+    ],
+    "format_violations": 0
+  }
+]

@@ -1,0 +1,162 @@
+[
+  {
+    "task_id": "train-missing_child-0037",
+    "family": "missing_child",
+    "fault": "transient_first_call",
+    "rollout_id": "rl-g0-s0",
+    "correct": true,
+    "status": "correct",
+    "tool_calls": 2,
+    "output_tokens": 94,
+    "elapsed_seconds": 11.367769208009122,
+    "reward": 0.95,
+    "trace": [
+      {
+        "assistant": "{\"sql\":\"SELECT p.id,p.name FROM customers_110 p LEFT JOIN orders_110 c ON c.parent_id=p.id WHERE c.id IS NULL ORDER BY p.id\"}",
+        "tool": {
+          "error": "transient_busy",
+          "retryable": true
+        }
+      },
+      {
+        "assistant": "{\"sql\":\"SELECT p.id,p.name FROM customers_110 p LEFT JOIN orders_110 c ON c.parent_id=p.id WHERE c.id IS NULL ORDER BY p.id\"}",
+        "tool": {
+          "columns": [
+            "id",
+            "name"
+          ],
+          "rows": [
+            [
+              12,
+              "item-12"
+            ]
+          ]
+        }
+      },
+      {
+        "assistant": "{\"answer\":[[12,\"item-12\"]]}"
+      }
+    ],
+    "format_violations": 0
+  },
+  {
+    "task_id": "train-missing_child-0037",
+    "family": "missing_child",
+    "fault": "transient_first_call",
+    "rollout_id": "rl-g0-s1",
+    "correct": true,
+    "status": "correct",
+    "tool_calls": 2,
+    "output_tokens": 94,
+    "elapsed_seconds": 7.399186833004933,
+    "reward": 0.95,
+    "trace": [
+      {
+        "assistant": "{\"sql\":\"SELECT p.id,p.name FROM customers_110 p LEFT JOIN orders_110 c ON c.parent_id=p.id WHERE c.id IS NULL ORDER BY p.id\"}",
+        "tool": {
+          "error": "transient_busy",
+          "retryable": true
+        }
+      },
+      {
+        "assistant": "{\"sql\":\"SELECT p.id,p.name FROM customers_110 p LEFT JOIN orders_110 c ON c.parent_id=p.id WHERE c.id IS NULL ORDER BY p.id\"}",
+        "tool": {
+          "columns": [
+            "id",
+            "name"
+          ],
+          "rows": [
+            [
+              12,
+              "item-12"
+            ]
+          ]
+        }
+      },
+      {
+        "assistant": "{\"answer\":[[12,\"item-12\"]]}"
+      }
+    ],
+    "format_violations": 0
+  },
+  {
+    "task_id": "train-missing_child-0037",
+    "family": "missing_child",
+    "fault": "transient_first_call",
+    "rollout_id": "rl-g0-s2",
+    "correct": true,
+    "status": "correct",
+    "tool_calls": 2,
+    "output_tokens": 94,
+    "elapsed_seconds": 6.836070083023515,
+    "reward": 0.95,
+    "trace": [
+      {
+        "assistant": "{\"sql\":\"SELECT p.id,p.name FROM customers_110 p LEFT JOIN orders_110 c ON c.parent_id=p.id WHERE c.id IS NULL ORDER BY p.id\"}",
+        "tool": {
+          "error": "transient_busy",
+          "retryable": true
+        }
+      },
+      {
+        "assistant": "{\"sql\":\"SELECT p.id,p.name FROM customers_110 p LEFT JOIN orders_110 c ON c.parent_id=p.id WHERE c.id IS NULL ORDER BY p.id\"}",
+        "tool": {
+          "columns": [
+            "id",
+            "name"
+          ],
+          "rows": [
+            [
+              12,
+              "item-12"
+            ]
+          ]
+        }
+      },
+      {
+        "assistant": "{\"answer\":[[12,\"item-12\"]]}"
+      }
+    ],
+    "format_violations": 0
+  },
+  {
+    "task_id": "train-missing_child-0037",
+    "family": "missing_child",
+    "fault": "transient_first_call",
+    "rollout_id": "rl-g0-s3",
+    "correct": true,
+    "status": "correct",
+    "tool_calls": 2,
+    "output_tokens": 94,
+    "elapsed_seconds": 5.907783417002065,
+    "reward": 0.95,
+    "trace": [
+      {
+        "assistant": "{\"sql\":\"SELECT p.id,p.name FROM customers_110 p LEFT JOIN orders_110 c ON c.parent_id=p.id WHERE c.id IS NULL ORDER BY p.id\"}",
+        "tool": {
+          "error": "transient_busy",
+          "retryable": true
+        }
+      },
+      {
+        "assistant": "{\"sql\":\"SELECT p.id,p.name FROM customers_110 p LEFT JOIN orders_110 c ON c.parent_id=p.id WHERE c.id IS NULL ORDER BY p.id\"}",
+        "tool": {
+          "columns": [
+            "id",
+            "name"
+          ],
+          "rows": [
+            [
+              12,
+              "item-12"
+            ]
+          ]
+        }
+      },
+      {
+        "assistant": "{\"answer\":[[12,\"item-12\"]]}"
+      }
+    ],
+    "format_violations": 0
+  }
+]

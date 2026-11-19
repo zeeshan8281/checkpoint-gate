@@ -1,0 +1,16 @@
+{
+  "state": "complete",
+  "paid_run": true,
+  "rl_note": "No informative reward group; no RL improvement can be claimed.",
+  "budget": {
+    "states": {
+      "committed": {
+        "operations": 1417,
+        "reserved_usd": 0.871654328
+      }
+    },
+    "conservative_reserved_usd": 0.871654328,
+    "compute_cap_usd": 10,
+    "billing_note": "Upper reservations at configured rates, NOT an invoice. Successful reservations are not released."
+  }
+}

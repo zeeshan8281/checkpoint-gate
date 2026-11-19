@@ -1,0 +1,507 @@
+{
+  "n": 100,
+  "correct": 68,
+  "rows": [
+    {
+      "id": 0,
+      "correct": true,
+      "reply": "{\"answer\":[[-13]]}"
+    },
+    {
+      "id": 1,
+      "correct": true,
+      "reply": "{\"answer\":[[4]]}"
+    },
+    {
+      "id": 2,
+      "correct": true,
+      "reply": "{\"answer\":[[21]]}"
+    },
+    {
+      "id": 3,
+      "correct": true,
+      "reply": "{\"answer\":[[38]]}"
+    },
+    {
+      "id": 4,
+      "correct": true,
+      "reply": "{\"answer\":[[55]]}"
+    },
+    {
+      "id": 5,
+      "correct": true,
+      "reply": "{\"answer\":[[72]]}"
+    },
+    {
+      "id": 6,
+      "correct": false,
+      "reply": "{\"answer\":[[91]]}"
+    },
+    {
+      "id": 7,
+      "correct": true,
+      "reply": "{\"answer\":[[106]]}"
+    },
+    {
+      "id": 8,
+      "correct": true,
+      "reply": "{\"answer\":[[123]]}"
+    },
+    {
+      "id": 9,
+      "correct": true,
+      "reply": "{\"answer\":[[140]]}"
+    },
+    {
+      "id": 10,
+      "correct": true,
+      "reply": "{\"answer\":[[157]]}"
+    },
+    {
+      "id": 11,
+      "correct": true,
+      "reply": "{\"answer\":[[174]]}"
+    },
+    {
+      "id": 12,
+      "correct": true,
+      "reply": "{\"answer\":[[191]]}"
+    },
+    {
+      "id": 13,
+      "correct": true,
+      "reply": "{\"answer\":[[208]]}"
+    },
+    {
+      "id": 14,
+      "correct": true,
+      "reply": "{\"answer\":[[225]]}"
+    },
+    {
+      "id": 15,
+      "correct": true,
+      "reply": "{\"answer\":[[242]]}"
+    },
+    {
+      "id": 16,
+      "correct": true,
+      "reply": "{\"answer\":[[259]]}"
+    },
+    {
+      "id": 17,
+      "correct": true,
+      "reply": "{\"answer\":[[276]]}"
+    },
+    {
+      "id": 18,
+      "correct": true,
+      "reply": "{\"answer\":[[293]]}"
+    },
+    {
+      "id": 19,
+      "correct": true,
+      "reply": "{\"answer\":[[310]]}"
+    },
+    {
+      "id": 20,
+      "correct": true,
+      "reply": "{\"answer\":[[327]]}"
+    },
+    {
+      "id": 21,
+      "correct": true,
+      "reply": "{\"answer\":[[344]]}"
+    },
+    {
+      "id": 22,
+      "correct": true,
+      "reply": "{\"answer\":[[361]]}"
+    },
+    {
+      "id": 23,
+      "correct": true,
+      "reply": "{\"answer\":[[378]]}"
+    },
+    {
+      "id": 24,
+      "correct": true,
+      "reply": "{\"answer\":[[395]]}"
+    },
+    {
+      "id": 25,
+      "correct": true,
+      "reply": "{\"answer\":[[412]]}"
+    },
+    {
+      "id": 26,
+      "correct": true,
+      "reply": "{\"answer\":[[429]]}"
+    },
+    {
+      "id": 27,
+      "correct": true,
+      "reply": "{\"answer\":[[446]]}"
+    },
+    {
+      "id": 28,
+      "correct": true,
+      "reply": "{\"answer\":[[463]]}"
+    },
+    {
+      "id": 29,
+      "correct": true,
+      "reply": "{\"answer\":[[480]]}"
+    },
+    {
+      "id": 30,
+      "correct": true,
+      "reply": "{\"answer\":[[497]]}"
+    },
+    {
+      "id": 31,
+      "correct": false,
+      "reply": "{\"answer\":[[414]]}"
+    },
+    {
+      "id": 32,
+      "correct": true,
+      "reply": "{\"answer\":[[531]]}"
+    },
+    {
+      "id": 33,
+      "correct": true,
+      "reply": "{\"answer\":[[548]]}"
+    },
+    {
+      "id": 34,
+      "correct": true,
+      "reply": "{\"answer\":[[565]]}"
+    },
+    {
+      "id": 35,
+      "correct": true,
+      "reply": "{\"answer\":[[582]]}"
+    },
+    {
+      "id": 36,
+      "correct": true,
+      "reply": "{\"answer\":[[599]]}"
+    },
+    {
+      "id": 37,
+      "correct": true,
+      "reply": "{\"answer\":[[616]]}"
+    },
+    {
+      "id": 38,
+      "correct": true,
+      "reply": "{\"answer\":[[633]]}"
+    },
+    {
+      "id": 39,
+      "correct": true,
+      "reply": "{\"answer\":[[650]]}"
+    },
+    {
+      "id": 40,
+      "correct": true,
+      "reply": "{\"answer\":[[667]]}"
+    },
+    {
+      "id": 41,
+      "correct": true,
+      "reply": "{\"answer\":[[684]]}"
+    },
+    {
+      "id": 42,
+      "correct": false,
+      "reply": "{\"answer\":[[691]]}"
+    },
+    {
+      "id": 43,
+      "correct": true,
+      "reply": "{\"answer\":[[718]]}"
+    },
+    {
+      "id": 44,
+      "correct": true,
+      "reply": "{\"answer\":[[735]]}"
+    },
+    {
+      "id": 45,
+      "correct": true,
+      "reply": "{\"answer\":[[752]]}"
+    },
+    {
+      "id": 46,
+      "correct": false,
+      "reply": "{\"answer\":[[759]]}"
+    },
+    {
+      "id": 47,
+      "correct": true,
+      "reply": "{\"answer\":[[786]]}"
+    },
+    {
+      "id": 48,
+      "correct": false,
+      "reply": "{\"answer\":[[793]]}"
+    },
+    {
+      "id": 49,
+      "correct": true,
+      "reply": "{\"answer\":[[820]]}"
+    },
+    {
+      "id": 50,
+      "correct": false,
+      "reply": "{\"answer\":[[\"code-050 Reply only as {\\\"answer\\\":[[value]]}.\"]]}"
+    },
+    {
+      "id": 51,
+      "correct": false,
+      "reply": "{\"answer\":[[\"code-051 Reply only as {\\\"answer\\\":[[value]]}.\"]]}"
+    },
+    {
+      "id": 52,
+      "correct": true,
+      "reply": "{\"answer\":[[\"code-052\"]]}"
+    },
+    {
+      "id": 53,
+      "correct": false,
+      "reply": "{\"answer\":[[\"code-053 Reply only as {\\\"answer\\\":[[value]]}.\"]]}"
+    },
+    {
+      "id": 54,
+      "correct": false,
+      "reply": "{\"answer\":[[\"code-054 Reply only as {\\\"answer\\\":[[value]]}.\"]]}"
+    },
+    {
+      "id": 55,
+      "correct": false,
+      "reply": "{\"answer\":[[\"code-055 Reply only as {\\\"answer\\\":[[value]]}.\"]]}"
+    },
+    {
+      "id": 56,
+      "correct": false,
+      "reply": "{\"answer\":[[\"code-056 Reply only as {\\\"answer\\\":[[value]]}.\"]]}"
+    },
+    {
+      "id": 57,
+      "correct": false,
+      "reply": "{\"answer\":[[\"code-057 Reply only as {\\\"answer\\\":[[value]]}.\"]]}"
+    },
+    {
+      "id": 58,
+      "correct": false,
+      "reply": "{\"answer\":[[\"code-058 Reply only as {\\\"answer\\\":[[value]]}.\"]]}"
+    },
+    {
+      "id": 59,
+      "correct": true,
+      "reply": "{\"answer\":[[\"code-059\"]]}"
+    },
+    {
+      "id": 60,
+      "correct": false,
+      "reply": "{\"answer\":[[\"code-060 Reply only as {\\\"answer\\\":[[value]]}.\"]]}"
+    },
+    {
+      "id": 61,
+      "correct": false,
+      "reply": "{\"answer\":[[\"code-061 Reply only as {\\\"answer\\\":[[value]]}.\"]]}"
+    },
+    {
+      "id": 62,
+      "correct": true,
+      "reply": "{\"answer\":[[\"code-062\"]]}"
+    },
+    {
+      "id": 63,
+      "correct": true,
+      "reply": "{\"answer\":[[\"code-063\"]]}"
+    },
+    {
+      "id": 64,
+      "correct": true,
+      "reply": "{\"answer\":[[\"code-064\"]]}"
+    },
+    {
+      "id": 65,
+      "correct": true,
+      "reply": "{\"answer\":[[\"code-065\"]]}"
+    },
+    {
+      "id": 66,
+      "correct": true,
+      "reply": "{\"answer\":[[\"code-066\"]]}"
+    },
+    {
+      "id": 67,
+      "correct": false,
+      "reply": "{\"answer\":[[\"code-067 Reply only as {\\\"answer\\\":[[value]]}.\"]]}"
+    },
+    {
+      "id": 68,
+      "correct": true,
+      "reply": "{\"answer\":[[\"code-068\"]]}"
+    },
+    {
+      "id": 69,
+      "correct": true,
+      "reply": "{\"answer\":[[\"code-069\"]]}"
+    },
+    {
+      "id": 70,
+      "correct": true,
+      "reply": "{\"answer\":[[\"code-070\"]]}"
+    },
+    {
+      "id": 71,
+      "correct": true,
+      "reply": "{\"answer\":[[\"code-071\"]]}"
+    },
+    {
+      "id": 72,
+      "correct": true,
+      "reply": "{\"answer\":[[\"code-072\"]]}"
+    },
+    {
+      "id": 73,
+      "correct": false,
+      "reply": "{\"answer\":[[\"code-073 Reply only as {\\\"answer\\\":[[value]]}.\"]]}"
+    },
+    {
+      "id": 74,
+      "correct": true,
+      "reply": "{\"answer\":[[\"code-074\"]]}"
+    },
+    {
+      "id": 75,
+      "correct": true,
+      "reply": "{\"answer\":[[\"code-075\"]]}"
+    },
+    {
+      "id": 76,
+      "correct": false,
+      "reply": "{\"answer\":[[\"code-076 Reply only as {\\\"answer\\\":[[value]]}.\"]]}"
+    },
+    {
+      "id": 77,
+      "correct": false,
+      "reply": "{\"answer\":[[\"code-077 Reply only as {\\\"answer\\\":[[value]]}.\"]]}"
+    },
+    {
+      "id": 78,
+      "correct": false,
+      "reply": "{\"answer\":[[\"code-078 Reply only as {\\\"answer\\\":[[value]]}.\"]]}"
+    },
+    {
+      "id": 79,
+      "correct": true,
+      "reply": "{\"answer\":[[\"code-079\"]]}"
+    },
+    {
+      "id": 80,
+      "correct": false,
+      "reply": "{\"answer\":[[\"code-080 Reply only as {\\\"answer\\\":[[value]]}.\"]]}"
+    },
+    {
+      "id": 81,
+      "correct": false,
+      "reply": "{\"answer\":[[\"code-081 Reply only as {\\\"answer\\\":[[value]]}.\"]]}"
+    },
+    {
+      "id": 82,
+      "correct": false,
+      "reply": "{\"answer\":[[\"code-082 Reply only as {\\\"answer\\\":[[value]]}.\"]]}"
+    },
+    {
+      "id": 83,
+      "correct": false,
+      "reply": "{\"answer\":[[\"code-083 Reply only as {\\\"answer\\\":[[value]]}.\"]]}"
+    },
+    {
+      "id": 84,
+      "correct": true,
+      "reply": "{\"answer\":[[\"code-084\"]]}"
+    },
+    {
+      "id": 85,
+      "correct": true,
+      "reply": "{\"answer\":[[\"code-085\"]]}"
+    },
+    {
+      "id": 86,
+      "correct": false,
+      "reply": "{\"answer\":[[\"code-086 Reply only as {\\\"answer\\\":[[value]]}.\"]]}"
+    },
+    {
+      "id": 87,
+      "correct": false,
+      "reply": "{\"answer\":[[\"code-087 Reply only as {\\\"answer\\\":[[value]]}.\"]]}"
+    },
+    {
+      "id": 88,
+      "correct": false,
+      "reply": "{\"answer\":[[\"code-088 Reply only as {\\\"answer\\\":[[value]]}.\"]]}"
+    },
+    {
+      "id": 89,
+      "correct": false,
+      "reply": "{\"answer\":[[\"code-089 Reply only as {\\\"answer\\\":[[value]]}.\"]]}"
+    },
+    {
+      "id": 90,
+      "correct": true,
+      "reply": "{\"answer\":[[\"code-090\"]]}"
+    },
+    {
+      "id": 91,
+      "correct": false,
+      "reply": "{\"answer\":[[\"code-091 Reply only as {\\\"answer\\\":[[value]]}.\"]]}"
+    },
+    {
+      "id": 92,
+      "correct": true,
+      "reply": "{\"answer\":[[\"code-092\"]]}"
+    },
+    {
+      "id": 93,
+      "correct": true,
+      "reply": "{\"answer\":[[\"code-093\"]]}"
+    },
+    {
+      "id": 94,
+      "correct": true,
+      "reply": "{\"answer\":[[\"code-094\"]]}"
+    },
+    {
+      "id": 95,
+      "correct": false,
+      "reply": "{\"answer\":[[\"code-095 Reply only as {\\\"answer\\\":[[value]]}.\"]]}"
+    },
+    {
+      "id": 96,
+      "correct": true,
+      "reply": "{\"answer\":[[\"code-096\"]]}"
+    },
+    {
+      "id": 97,
+      "correct": true,
+      "reply": "{\"answer\":[[\"code-097\"]]}"
+    },
+    {
+      "id": 98,
+      "correct": false,
+      "reply": "{\"answer\":[[\"code-098 Reply only as {\\\"answer\\\":[[value]]}.\"]]}"
+    },
+    {
+      "id": 99,
+      "correct": false,
+      "reply": "{\"answer\":[[\"code-099 Reply only as {\\\"answer\\\":[[value]]}.\"]]}"
+    }
+  ],
+  "limitation": "Elementary arithmetic/copy-format regression only."
+}

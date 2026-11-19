@@ -2,54 +2,65 @@
 <html lang="en">
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>CheckpointGate · experiment console</title>
+  <title>CheckpointGate · held-out results</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    .result-graph{display:block;width:100%;height:auto;border-radius:9px}
+    .result-link{color:var(--green);text-decoration:none}
+    .trace-controls{display:flex;gap:10px;flex-wrap:wrap}
+    .finding{color:var(--green);font:500 24px/1.45 "Space Grotesk",sans-serif;margin:20px 0}
+    .result-table{width:100%;border-collapse:collapse;font-size:12px;margin-top:20px}
+    .result-table th,.result-table td{text-align:left;padding:12px 6px;border-bottom:1px solid var(--line)}
+    .result-table th{color:var(--muted);font-weight:400}
+  </style>
 </head>
 <body>
 <div class="shell">
   <header><a class="brand" href="./"><span class="mark">⌘</span> CheckpointGate</a>
-    <span class="tag">RESEARCH BUILD / 0.1</span>
-    <a class="source" href="https://github.com/zeeshan8281/checkpoint-gate">Source ↗</a></header>
+    <span class="tag">REAL TRAINING / FIRST PILOT</span>
+    <a class="source" href="https://github.com/zeeshan8281/checkpoint-gate">Source &amp; evidence ↗</a></header>
   <main>
-    <div class="eyebrow"><i></i> VERIFIABLE AGENT TRAINING</div>
-    <h1>Train it. Test it.<br><span>Account for every step.</span></h1>
-    <p class="intro">A SQL tool agent experiment with held-out query families, bounded cloud spending, and durable checkpoint evidence.</p>
-    <div class="notice"><strong>LOCAL INFRASTRUCTURE DEMO</strong><span>This view uses scripted reference-SQL agents. Baseten sampling is verified; these charts are software checks, not model results.</span></div>
-    <section class="metrics" aria-label="Actual local run statistics">
-      <div><label>HELD-OUT TEST CASES</label><strong id="task-count">—</strong><small>4 unseen query families</small></div>
-      <div><label>TOOL CALL LIMIT</label><strong>2 <em>/ task</em></strong><small>768 output tokens for model runs</small></div>
-      <div><label>CLOUD SPEND</label><strong>$0<em>.00</em></strong><small>Local scripted checks only</small></div>
-      <div><label>PLANNED COMPUTE CAP</label><strong>$10<em>.00</em></strong><small>$23 total planning allocation</small></div>
+    <div class="eyebrow"><i></i> HELD-OUT SQL TOOL TASKS</div>
+    <h1>Trained in the cloud.<br><span>Verified on this Mac.</span></h1>
+    <p class="intro">A 35B MoE model, rank-8 LoRA, and a deterministic SQL verifier. Compare frozen checkpoints on the same unfamiliar query families.</p>
+    <div class="notice"><strong>SINGLE-SEED PILOT</strong><span>These are real model results on synthetic tasks. Intervals describe these task instances; broader capability and repeatability require further experiments.</span></div>
+    <section class="metrics" aria-label="Completed experiment statistics">
+      <div><label>TASKS PER CONDITION</label><strong id="task-count">—</strong><small>4 held-out query families</small></div>
+      <div><label>SUPERVISED UPDATES</label><strong id="sft-count">—</strong><small>Assistant tokens supervised</small></div>
+      <div><label>REWARD UPDATES</label><strong id="rl-count">—</strong><small>Only informative groups update</small></div>
+      <div><label>COMPUTE RESERVATION</label><strong id="reservation">—</strong><small>Conservative estimate; not invoice</small></div>
     </section>
     <div class="grid">
-      <section class="panel chart-panel">
-        <div class="panel-head"><div><div class="eyebrow">FAULT-RECOVERY SELF-TEST</div><h2>Does the pipeline score recovery correctly?</h2></div><span class="badge">SCRIPTED</span></div>
-        <p class="caption">Two reference-SQL scripts face the same clean and transient-error tasks. This checks the evaluator; it does not measure model quality.</p>
-        <svg id="chart" viewBox="0 0 620 255" role="img" aria-label="Scripted self-test verified task counts"></svg>
-        <div class="legend"><span><b class="green"></b>Verified correct</span><span><b class="muted"></b>Incorrect / stopped</span></div>
-        <p class="footnote">Every offered task stays in the denominator. Exact row multiplicity, NULLs, column order, and requested row order are checked.</p>
+      <section class="panel">
+        <div class="panel-head"><div><div class="eyebrow">SAME TASKS · SAME BUDGET</div><h2>Verified completion</h2></div><span class="badge">REAL MODEL</span></div>
+        <a href="heldout-results.png"><img class="result-graph" src="heldout-results.png" alt="Base and trained model accuracy with task-level confidence intervals"></a>
+        <a class="result-link" href="heldout-results.png" download>Download the graph ↗</a>
       </section>
       <section class="panel">
-        <div class="eyebrow">COMPUTE BOUNDARY</div><h2>Three layers. One experiment.</h2>
-        <div class="layer"><span class="num">01</span><div><h3>This Mac</h3><p>Data generation · SQL verifier · rollout collector · authoritative spend ledger</p></div><span class="pill">LOCAL</span></div>
-        <div class="connector">↓ bounded training & sampling</div>
-        <div class="layer"><span class="num">02</span><div><h3>Baseten Loops</h3><p>Qwen3.6 · 35B total / 3B active<br>Rank-8 LoRA · SFT + reward updates planned</p></div><span class="pill">CONNECTED</span></div>
-        <div class="connector">↓ checkpoint references & evidence</div>
-        <div class="layer"><span class="num">03</span><div><h3>Cloudflare</h3><p>Durable leases · fencing tokens<br>Content-addressed evidence in R2</p></div><span class="pill">LOCAL TEST</span></div>
+        <div class="eyebrow">PAIRED COMPARISON</div><h2>What changed after training?</h2>
+        <p class="finding" id="finding">Loading completed results…</p>
+        <p class="caption" id="paired-note"></p>
+        <table class="result-table"><thead><tr><th>Condition</th><th>Clean</th><th>Tool fault</th></tr></thead><tbody id="fault-table"></tbody></table>
+        <p class="footnote">Each task allows two SQL calls and 768 generated tokens. One whole outer Markdown fence is normalized equally in every condition. No SQL repair or test-based checkpoint selection.</p>
+        <p class="caption" id="rl-note"></p>
       </section>
     </div>
     <section class="panel replay">
-      <div class="panel-head"><div><div class="eyebrow">TRACE REPLAY</div><h2>Inspect the actual tool exchange.</h2></div>
-        <select id="trace-select" aria-label="Choose self-test trace"></select></div>
+      <div class="panel-head"><div><div class="eyebrow">ALL HELD-OUT TRACES</div><h2>Read the question. Inspect the answer.</h2></div>
+        <div class="trace-controls">
+          <select id="condition-select" aria-label="Choose model condition"></select>
+          <select id="trace-select" aria-label="Choose held-out task"></select>
+        </div>
+      </div>
       <div id="trace-meta"></div><div id="trace-steps"></div>
     </section>
     <section class="protocol">
-      <div><span>01 / COMPARE</span><h3>Base → SFT → SFT + reward</h3><p>Same model, frozen test set, same tool and token budgets. Final checkpoints fixed before evaluation.</p></div>
-      <div><span>02 / PRESERVE</span><h3>Unknown spend stays reserved</h3><p>An ambiguous remote operation stops the run. Optimizer steps are never replayed by the application.</p></div>
-      <div><span>03 / REPORT</span><h3>Evidence before claims</h3><p>Paired differences, task-level intervals, failed attempts, checkpoint identity, and billing reconciliation.</p></div>
+      <div><span>01 / GPU WORK</span><h3>Baseten Loops</h3><p>Real serverless training and sampling. Saved optimizer state and checkpoint-pinned evaluations. See the repository for shutdown verification.</p></div>
+      <div><span>02 / CONTROL LAYER</span><h3>Cloudflare tested locally</h3><p>Durable leases, fencing tokens, and R2 evidence storage passed local integration checks. This pilot used the local Python ledger without a cloud mirror.</p></div>
+      <div><span>03 / LIMITS</span><h3>A first measurement</h3><p>One seed, four related synthetic test families, and an elementary regression suite. The public generator does not provide contamination resistance.</p></div>
     </section>
   </main>
-  <footer><span>CheckpointGate · synthetic SQL pilot · single training seed planned</span><span id="checksum">Loading frozen dataset…</span></footer>
+  <footer><a class="result-link" href="self-test.html">Scripted infrastructure self-test ↗</a><span id="checksum">Loading frozen dataset…</span></footer>
 </div>
-<script src="app.js" type="module"></script>
+<script src="results.js" type="module"></script>
 </body></html>

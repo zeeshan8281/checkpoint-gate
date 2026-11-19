@@ -1,0 +1,134 @@
+[
+  {
+    "task_id": "train-missing_child-0026",
+    "family": "missing_child",
+    "fault": "none",
+    "rollout_id": "rl-g3-s0",
+    "correct": true,
+    "status": "correct",
+    "tool_calls": 1,
+    "output_tokens": 54,
+    "elapsed_seconds": 3.9699553750106134,
+    "reward": 1.0,
+    "trace": [
+      {
+        "assistant": "{\"sql\":\"SELECT p.id,p.name FROM customers_693 p LEFT JOIN orders_693 c ON c.parent_id=p.id WHERE c.id IS NULL ORDER BY p.id\"}",
+        "tool": {
+          "columns": [
+            "id",
+            "name"
+          ],
+          "rows": [
+            [
+              12,
+              "item-12"
+            ]
+          ]
+        }
+      },
+      {
+        "assistant": "{\"answer\":[[12,\"item-12\"]]}"
+      }
+    ],
+    "format_violations": 0
+  },
+  {
+    "task_id": "train-missing_child-0026",
+    "family": "missing_child",
+    "fault": "none",
+    "rollout_id": "rl-g3-s1",
+    "correct": true,
+    "status": "correct",
+    "tool_calls": 1,
+    "output_tokens": 54,
+    "elapsed_seconds": 4.004343666980276,
+    "reward": 1.0,
+    "trace": [
+      {
+        "assistant": "{\"sql\":\"SELECT p.id,p.name FROM customers_693 p LEFT JOIN orders_693 c ON c.parent_id=p.id WHERE c.id IS NULL ORDER BY p.id\"}",
+        "tool": {
+          "columns": [
+            "id",
+            "name"
+          ],
+          "rows": [
+            [
+              12,
+              "item-12"
+            ]
+          ]
+        }
+      },
+      {
+        "assistant": "{\"answer\":[[12,\"item-12\"]]}"
+      }
+    ],
+    "format_violations": 0
+  },
+  {
+    "task_id": "train-missing_child-0026",
+    "family": "missing_child",
+    "fault": "none",
+    "rollout_id": "rl-g3-s2",
+    "correct": true,
+    "status": "correct",
+    "tool_calls": 1,
+    "output_tokens": 54,
+    "elapsed_seconds": 3.7577785839966964,
+    "reward": 1.0,
+    "trace": [
+      {
+        "assistant": "{\"sql\":\"SELECT p.id,p.name FROM customers_693 p LEFT JOIN orders_693 c ON c.parent_id=p.id WHERE c.id IS NULL ORDER BY p.id\"}",
+        "tool": {
+          "columns": [
+            "id",
+            "name"
+          ],
+          "rows": [
+            [
+              12,
+              "item-12"
+            ]
+          ]
+        }
+      },
+      {
+        "assistant": "{\"answer\":[[12,\"item-12\"]]}"
+      }
+    ],
+    "format_violations": 0
+  },
+  {
+    "task_id": "train-missing_child-0026",
+    "family": "missing_child",
+    "fault": "none",
+    "rollout_id": "rl-g3-s3",
+    "correct": true,
+    "status": "correct",
+    "tool_calls": 1,
+    "output_tokens": 54,
+    "elapsed_seconds": 4.323145250004018,
+    "reward": 1.0,
+    "trace": [
+      {
+        "assistant": "{\"sql\":\"SELECT p.id,p.name FROM customers_693 p LEFT JOIN orders_693 c ON c.parent_id=p.id WHERE c.id IS NULL ORDER BY p.id\"}",
+        "tool": {
+          "columns": [
+            "id",
+            "name"
+          ],
+          "rows": [
+            [
+              12,
+              "item-12"
+            ]
+          ]
+        }
+      },
+      {
+        "assistant": "{\"answer\":[[12,\"item-12\"]]}"
+      }
+    ],
+    "format_violations": 0
+  }
+]

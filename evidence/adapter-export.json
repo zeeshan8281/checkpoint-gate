@@ -1,0 +1,35 @@
+{
+  "files": [
+    {
+      "file": "adapter_config.json",
+      "bytes": 801,
+      "sha256": "4843c839e11dd24879d4d153b4649ae1287e8bf24406de66716985452ee72628"
+    },
+    {
+      "file": "adapter_model.safetensors",
+      "bytes": 280881720,
+      "sha256": "5e3d0cbc6df0bb57609be25e019139acabebb36168f10e98f957b4030ed9a6a0"
+    }
+  ],
+  "base_model": "Qwen/Qwen3.6-35B-A3B",
+  "training_seed": 7,
+  "rank": 8,
+  "sft_updates": 12,
+  "assistant_demonstrations": 96,
+  "unique_train_task_instances": 83,
+  "portability_verified": false,
+  "tensor_count": 862,
+  "trainable_parameter_count": 140381184,
+  "storage_dtype": "BF16",
+  "nonfinite_values": 0,
+  "sampler_checkpoint": "bt://loops:w67255q/sampler_weights/sft-final",
+  "base_model_metadata": {
+    "source_url": "https://huggingface.co/api/models/Qwen/Qwen3.6-35B-A3B",
+    "model_id": "Qwen/Qwen3.6-35B-A3B",
+    "public_repository_revision": "345d467b117d1fd5eda9b879a5988de9ae5f47a7",
+    "license": "apache-2.0",
+    "gated": false,
+    "note": "Public repository metadata only; Baseten does not expose a matching immutable base-weight digest in this experiment."
+  },
+  "weights_in_git_repository": false
+}

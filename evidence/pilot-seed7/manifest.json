@@ -1,0 +1,44 @@
+{
+  "config": {
+    "model": "Qwen/Qwen3.6-35B-A3B",
+    "scope": "serverless",
+    "action_normalization": "single_outer_markdown_fence",
+    "rank": 8,
+    "seed": 7,
+    "max_seq_len": 4096,
+    "max_output_tokens": 768,
+    "max_tool_calls": 2,
+    "eval_temperature": 0,
+    "rl_temperature": 0.8,
+    "sft_steps": 12,
+    "sft_batch_size": 8,
+    "sft_learning_rate": 4e-05,
+    "rl_steps": 6,
+    "rl_group_size": 4,
+    "rl_max_groups": 18,
+    "rl_learning_rate": 2e-05,
+    "compute_cap_usd": 10,
+    "max_seconds": 14400,
+    "rates_per_million": {
+      "train": "2.1375",
+      "prefill": "0.45",
+      "sample": "1.3375"
+    },
+    "token_caps": {
+      "train": 4000000,
+      "prefill": 1000000,
+      "sample": 1000000
+    },
+    "rate_note": "19 Nov 2026 promotional public rates multiplied by 1.25 for planning. Recheck before running; not a future tariff quote.",
+    "other_budget_usd": {
+      "optional_cloudflare": 5,
+      "contingency": 4,
+      "unallocated_tax_fx_buffer": 4
+    }
+  },
+  "dataset_sha256": "55c90270d116da1c0f593ac494c5fd7d1e32c2340df145d20a34920df755765c",
+  "version": "0.1.0",
+  "python": "3.12.14",
+  "platform": "macOS-27.2.1-arm64-arm-64bit",
+  "design": "Single training seed; final checkpoints prespecified. No test-based selection."
+}

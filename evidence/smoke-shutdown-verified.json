@@ -1,0 +1,23 @@
+[
+  {
+    "attempt": "real-smoke",
+    "sampler_states": [
+      "INACTIVE"
+    ],
+    "all_inactive": true
+  },
+  {
+    "attempt": "real-smoke-v2",
+    "sampler_states": [
+      "INACTIVE"
+    ],
+    "all_inactive": true
+  },
+  {
+    "attempt": "real-smoke-v3",
+    "sampler_states": [
+      "INACTIVE"
+    ],
+    "all_inactive": true
+  }
+]

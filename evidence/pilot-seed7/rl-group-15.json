@@ -1,0 +1,182 @@
+[
+  {
+    "task_id": "train-join_filter-0012",
+    "family": "join_filter",
+    "fault": "none",
+    "rollout_id": "rl-g15-s0",
+    "correct": true,
+    "status": "correct",
+    "tool_calls": 1,
+    "output_tokens": 94,
+    "elapsed_seconds": 6.472547458019108,
+    "reward": 1.0,
+    "trace": [
+      {
+        "assistant": "{\"sql\":\"SELECT p.name,c.amount_433 FROM customers_433 p JOIN orders_433 c ON p.id=c.parent_id WHERE p.region_433='north' AND c.status_433='open'\"}",
+        "tool": {
+          "columns": [
+            "name",
+            "amount_433"
+          ],
+          "rows": [
+            [
+              "item-07",
+              35
+            ],
+            [
+              "item-07",
+              20
+            ],
+            [
+              "item-10",
+              35
+            ],
+            [
+              "item-04",
+              null
+            ]
+          ]
+        }
+      },
+      {
+        "assistant": "{\"answer\":[[\"item-07\",35],[\"item-07\",20],[\"item-10\",35],[\"item-04\",null]]}"
+      }
+    ],
+    "format_violations": 0
+  },
+  {
+    "task_id": "train-join_filter-0012",
+    "family": "join_filter",
+    "fault": "none",
+    "rollout_id": "rl-g15-s1",
+    "correct": true,
+    "status": "correct",
+    "tool_calls": 1,
+    "output_tokens": 94,
+    "elapsed_seconds": 6.139537084003678,
+    "reward": 1.0,
+    "trace": [
+      {
+        "assistant": "{\"sql\":\"SELECT p.name,c.amount_433 FROM customers_433 p JOIN orders_433 c ON p.id=c.parent_id WHERE p.region_433='north' AND c.status_433='open'\"}",
+        "tool": {
+          "columns": [
+            "name",
+            "amount_433"
+          ],
+          "rows": [
+            [
+              "item-07",
+              35
+            ],
+            [
+              "item-07",
+              20
+            ],
+            [
+              "item-10",
+              35
+            ],
+            [
+              "item-04",
+              null
+            ]
+          ]
+        }
+      },
+      {
+        "assistant": "{\"answer\":[[\"item-07\",35],[\"item-07\",20],[\"item-10\",35],[\"item-04\",null]]}"
+      }
+    ],
+    "format_violations": 0
+  },
+  {
+    "task_id": "train-join_filter-0012",
+    "family": "join_filter",
+    "fault": "none",
+    "rollout_id": "rl-g15-s2",
+    "correct": true,
+    "status": "correct",
+    "tool_calls": 1,
+    "output_tokens": 94,
+    "elapsed_seconds": 6.269930292008212,
+    "reward": 1.0,
+    "trace": [
+      {
+        "assistant": "{\"sql\":\"SELECT p.name,c.amount_433 FROM customers_433 p JOIN orders_433 c ON p.id=c.parent_id WHERE p.region_433='north' AND c.status_433='open'\"}",
+        "tool": {
+          "columns": [
+            "name",
+            "amount_433"
+          ],
+          "rows": [
+            [
+              "item-07",
+              35
+            ],
+            [
+              "item-07",
+              20
+            ],
+            [
+              "item-10",
+              35
+            ],
+            [
+              "item-04",
+              null
+            ]
+          ]
+        }
+      },
+      {
+        "assistant": "{\"answer\":[[\"item-07\",35],[\"item-07\",20],[\"item-10\",35],[\"item-04\",null]]}"
+      }
+    ],
+    "format_violations": 0
+  },
+  {
+    "task_id": "train-join_filter-0012",
+    "family": "join_filter",
+    "fault": "none",
+    "rollout_id": "rl-g15-s3",
+    "correct": true,
+    "status": "correct",
+    "tool_calls": 1,
+    "output_tokens": 94,
+    "elapsed_seconds": 3.8009832499956246,
+    "reward": 1.0,
+    "trace": [
+      {
+        "assistant": "{\"sql\":\"SELECT p.name,c.amount_433 FROM customers_433 p JOIN orders_433 c ON p.id=c.parent_id WHERE p.region_433='north' AND c.status_433='open'\"}",
+        "tool": {
+          "columns": [
+            "name",
+            "amount_433"
+          ],
+          "rows": [
+            [
+              "item-07",
+              35
+            ],
+            [
+              "item-07",
+              20
+            ],
+            [
+              "item-10",
+              35
+            ],
+            [
+              "item-04",
+              null
+            ]
+          ]
+        }
+      },
+      {
+        "assistant": "{\"answer\":[[\"item-07\",35],[\"item-07\",20],[\"item-10\",35],[\"item-04\",null]]}"
+      }
+    ],
+    "format_violations": 0
+  }
+]

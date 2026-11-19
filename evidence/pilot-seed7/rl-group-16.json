@@ -1,0 +1,230 @@
+[
+  {
+    "task_id": "train-filter-0022",
+    "family": "filter",
+    "fault": "none",
+    "rollout_id": "rl-g16-s0",
+    "correct": true,
+    "status": "correct",
+    "tool_calls": 1,
+    "output_tokens": 79,
+    "elapsed_seconds": 4.991711374983424,
+    "reward": 1.0,
+    "trace": [
+      {
+        "assistant": "{\"sql\":\"SELECT id,amount_383 FROM orders_383 WHERE amount_383>20 ORDER BY id\"}",
+        "tool": {
+          "columns": [
+            "id",
+            "amount_383"
+          ],
+          "rows": [
+            [
+              11,
+              35
+            ],
+            [
+              14,
+              35
+            ],
+            [
+              17,
+              35
+            ],
+            [
+              20,
+              35
+            ],
+            [
+              31,
+              35
+            ],
+            [
+              40,
+              35
+            ],
+            [
+              52,
+              35
+            ]
+          ]
+        }
+      },
+      {
+        "assistant": "{\"answer\":[[11,35],[14,35],[17,35],[20,35],[31,35],[40,35],[52,35]]}"
+      }
+    ],
+    "format_violations": 0
+  },
+  {
+    "task_id": "train-filter-0022",
+    "family": "filter",
+    "fault": "none",
+    "rollout_id": "rl-g16-s1",
+    "correct": true,
+    "status": "correct",
+    "tool_calls": 1,
+    "output_tokens": 79,
+    "elapsed_seconds": 3.9252697920019273,
+    "reward": 1.0,
+    "trace": [
+      {
+        "assistant": "{\"sql\":\"SELECT id,amount_383 FROM orders_383 WHERE amount_383>20 ORDER BY id\"}",
+        "tool": {
+          "columns": [
+            "id",
+            "amount_383"
+          ],
+          "rows": [
+            [
+              11,
+              35
+            ],
+            [
+              14,
+              35
+            ],
+            [
+              17,
+              35
+            ],
+            [
+              20,
+              35
+            ],
+            [
+              31,
+              35
+            ],
+            [
+              40,
+              35
+            ],
+            [
+              52,
+              35
+            ]
+          ]
+        }
+      },
+      {
+        "assistant": "{\"answer\":[[11,35],[14,35],[17,35],[20,35],[31,35],[40,35],[52,35]]}"
+      }
+    ],
+    "format_violations": 0
+  },
+  {
+    "task_id": "train-filter-0022",
+    "family": "filter",
+    "fault": "none",
+    "rollout_id": "rl-g16-s2",
+    "correct": true,
+    "status": "correct",
+    "tool_calls": 1,
+    "output_tokens": 79,
+    "elapsed_seconds": 5.226043375005247,
+    "reward": 1.0,
+    "trace": [
+      {
+        "assistant": "{\"sql\":\"SELECT id,amount_383 FROM orders_383 WHERE amount_383>20 ORDER BY id\"}",
+        "tool": {
+          "columns": [
+            "id",
+            "amount_383"
+          ],
+          "rows": [
+            [
+              11,
+              35
+            ],
+            [
+              14,
+              35
+            ],
+            [
+              17,
+              35
+            ],
+            [
+              20,
+              35
+            ],
+            [
+              31,
+              35
+            ],
+            [
+              40,
+              35
+            ],
+            [
+              52,
+              35
+            ]
+          ]
+        }
+      },
+      {
+        "assistant": "{\"answer\":[[11,35],[14,35],[17,35],[20,35],[31,35],[40,35],[52,35]]}"
+      }
+    ],
+    "format_violations": 0
+  },
+  {
+    "task_id": "train-filter-0022",
+    "family": "filter",
+    "fault": "none",
+    "rollout_id": "rl-g16-s3",
+    "correct": true,
+    "status": "correct",
+    "tool_calls": 1,
+    "output_tokens": 79,
+    "elapsed_seconds": 4.647954207990551,
+    "reward": 1.0,
+    "trace": [
+      {
+        "assistant": "{\"sql\":\"SELECT id,amount_383 FROM orders_383 WHERE amount_383>20 ORDER BY id\"}",
+        "tool": {
+          "columns": [
+            "id",
+            "amount_383"
+          ],
+          "rows": [
+            [
+              11,
+              35
+            ],
+            [
+              14,
+              35
+            ],
+            [
+              17,
+              35
+            ],
+            [
+              20,
+              35
+            ],
+            [
+              31,
+              35
+            ],
+            [
+              40,
+              35
+            ],
+            [
+              52,
+              35
+            ]
+          ]
+        }
+      },
+      {
+        "assistant": "{\"answer\":[[11,35],[14,35],[17,35],[20,35],[31,35],[40,35],[52,35]]}"
+      }
+    ],
+    "format_violations": 0
+  }
+]

@@ -1,0 +1,270 @@
+{
+  "by_family": {
+    "anti_null": {
+      "base": {
+        "n": 50,
+        "correct": 49
+      },
+      "sft": {
+        "n": 50,
+        "correct": 13
+      }
+    },
+    "distinct_pairs": {
+      "base": {
+        "n": 50,
+        "correct": 48
+      },
+      "sft": {
+        "n": 50,
+        "correct": 49
+      }
+    },
+    "latest_window": {
+      "base": {
+        "n": 50,
+        "correct": 41
+      },
+      "sft": {
+        "n": 50,
+        "correct": 0
+      }
+    },
+    "relational_division": {
+      "base": {
+        "n": 50,
+        "correct": 50
+      },
+      "sft": {
+        "n": 50,
+        "correct": 50
+      }
+    }
+  },
+  "regression_by_task_type": {
+    "base": {
+      "arithmetic": {
+        "n": 50,
+        "correct": 45
+      },
+      "copy": {
+        "n": 50,
+        "correct": 23
+      }
+    },
+    "sft": {
+      "arithmetic": {
+        "n": 50,
+        "correct": 44
+      },
+      "copy": {
+        "n": 50,
+        "correct": 10
+      }
+    }
+  },
+  "rl_groups": [
+    {
+      "file": "rl-group-0.json",
+      "rewards": [
+        0.95,
+        0.95,
+        0.95,
+        0.95
+      ],
+      "correct": 4,
+      "n": 4
+    },
+    {
+      "file": "rl-group-1.json",
+      "rewards": [
+        0.95,
+        0.95,
+        0.95,
+        0.95
+      ],
+      "correct": 4,
+      "n": 4
+    },
+    {
+      "file": "rl-group-2.json",
+      "rewards": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "correct": 4,
+      "n": 4
+    },
+    {
+      "file": "rl-group-3.json",
+      "rewards": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "correct": 4,
+      "n": 4
+    },
+    {
+      "file": "rl-group-4.json",
+      "rewards": [
+        0.95,
+        0.95,
+        0.95,
+        0.95
+      ],
+      "correct": 4,
+      "n": 4
+    },
+    {
+      "file": "rl-group-5.json",
+      "rewards": [
+        0.95,
+        0.95,
+        0.95,
+        0.95
+      ],
+      "correct": 4,
+      "n": 4
+    },
+    {
+      "file": "rl-group-6.json",
+      "rewards": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "correct": 4,
+      "n": 4
+    },
+    {
+      "file": "rl-group-7.json",
+      "rewards": [
+        0.95,
+        0.95,
+        0.95,
+        0.95
+      ],
+      "correct": 4,
+      "n": 4
+    },
+    {
+      "file": "rl-group-8.json",
+      "rewards": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "correct": 4,
+      "n": 4
+    },
+    {
+      "file": "rl-group-9.json",
+      "rewards": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "correct": 4,
+      "n": 4
+    },
+    {
+      "file": "rl-group-10.json",
+      "rewards": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "correct": 4,
+      "n": 4
+    },
+    {
+      "file": "rl-group-11.json",
+      "rewards": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "correct": 4,
+      "n": 4
+    },
+    {
+      "file": "rl-group-12.json",
+      "rewards": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "correct": 4,
+      "n": 4
+    },
+    {
+      "file": "rl-group-13.json",
+      "rewards": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "correct": 4,
+      "n": 4
+    },
+    {
+      "file": "rl-group-14.json",
+      "rewards": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "correct": 4,
+      "n": 4
+    },
+    {
+      "file": "rl-group-15.json",
+      "rewards": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "correct": 4,
+      "n": 4
+    },
+    {
+      "file": "rl-group-16.json",
+      "rewards": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "correct": 4,
+      "n": 4
+    },
+    {
+      "file": "rl-group-17.json",
+      "rewards": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "correct": 4,
+      "n": 4
+    }
+  ],
+  "rl_skipped_groups": {
+    "equal_rewards": 18
+  },
+  "source_of_statistics": "Completed results and all offered task traces; no model calls."
+}

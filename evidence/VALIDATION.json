@@ -1,6 +1,6 @@
 {
   "date": "2026-11-19",
-  "status": "local_and_live_serverless_smoke_verified",
+  "status": "real_serverless_pilot_complete",
   "python_tests": 31,
   "node_state_tests": 3,
   "local_cloudflare_integration_assertions": 10,
@@ -10,7 +10,7 @@
   "development": 200,
   "test": 200,
   "scripted_rollouts": 400,
-  "real_model_calls": 28,
+  "real_model_calls": 1415,
   "paid_compute_spend_usd": null,
   "sdk": "baseten-loops==0.36.0",
   "worker_tooling": "wrangler==4.50.0",
@@ -24,13 +24,21 @@
     "local workerd + Durable Object + R2",
     "dashboard browser layout",
     "authenticated serverless capability check",
-    "28 real base-model sampling requests across two dev smoke protocols"
+    "28 real base-model sampling requests across two dev smoke protocols",
+    "12 real SFT optimizer updates and checkpoint export",
+    "400 real held-out SQL task rollouts",
+    "200 real elementary regression cases",
+    "18 reward groups with zero informative updates",
+    "authenticated confirmation that pilot trainer and samplers are inactive"
   ],
   "not_verified": [
-    "real GPU training and quality",
-    "actual token billing",
+    "actual provider invoice",
     "Cloudflare production deployment",
-    "automatic checkpoint resume"
+    "automatic checkpoint resume",
+    "cross-engine adapter portability",
+    "repeatability across training seeds"
   ],
-  "conservative_smoke_reservation_usd": 0.0178521
+  "conservative_smoke_reservation_usd": 0.0178521,
+  "publication_date": "2026-11-20",
+  "conservative_total_reservation_usd": 0.889506428
 }

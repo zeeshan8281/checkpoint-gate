@@ -1,0 +1,214 @@
+[
+  {
+    "task_id": "train-join_filter-0026",
+    "family": "join_filter",
+    "fault": "none",
+    "rollout_id": "rl-g9-s0",
+    "correct": true,
+    "status": "correct",
+    "tool_calls": 1,
+    "output_tokens": 110,
+    "elapsed_seconds": 3.943188375007594,
+    "reward": 1.0,
+    "trace": [
+      {
+        "assistant": "{\"sql\":\"SELECT p.name,c.amount_637 FROM customers_637 p JOIN orders_637 c ON p.id=c.parent_id WHERE p.region_637='north' AND c.status_637='open'\"}",
+        "tool": {
+          "columns": [
+            "name",
+            "amount_637"
+          ],
+          "rows": [
+            [
+              "item-02",
+              5
+            ],
+            [
+              "item-02",
+              null
+            ],
+            [
+              "item-07",
+              null
+            ],
+            [
+              "item-01",
+              35
+            ],
+            [
+              "item-01",
+              10
+            ],
+            [
+              "item-01",
+              10
+            ]
+          ]
+        }
+      },
+      {
+        "assistant": "{\"answer\":[[\"item-02\",5],[\"item-02\",null],[\"item-07\",null],[\"item-01\",35],[\"item-01\",10],[\"item-01\",10]]}"
+      }
+    ],
+    "format_violations": 0
+  },
+  {
+    "task_id": "train-join_filter-0026",
+    "family": "join_filter",
+    "fault": "none",
+    "rollout_id": "rl-g9-s1",
+    "correct": true,
+    "status": "correct",
+    "tool_calls": 1,
+    "output_tokens": 110,
+    "elapsed_seconds": 5.0830373329808936,
+    "reward": 1.0,
+    "trace": [
+      {
+        "assistant": "{\"sql\":\"SELECT p.name,c.amount_637 FROM customers_637 p JOIN orders_637 c ON p.id=c.parent_id WHERE p.region_637='north' AND c.status_637='open'\"}",
+        "tool": {
+          "columns": [
+            "name",
+            "amount_637"
+          ],
+          "rows": [
+            [
+              "item-02",
+              5
+            ],
+            [
+              "item-02",
+              null
+            ],
+            [
+              "item-07",
+              null
+            ],
+            [
+              "item-01",
+              35
+            ],
+            [
+              "item-01",
+              10
+            ],
+            [
+              "item-01",
+              10
+            ]
+          ]
+        }
+      },
+      {
+        "assistant": "{\"answer\":[[\"item-02\",5],[\"item-02\",null],[\"item-07\",null],[\"item-01\",35],[\"item-01\",10],[\"item-01\",10]]}"
+      }
+    ],
+    "format_violations": 0
+  },
+  {
+    "task_id": "train-join_filter-0026",
+    "family": "join_filter",
+    "fault": "none",
+    "rollout_id": "rl-g9-s2",
+    "correct": true,
+    "status": "correct",
+    "tool_calls": 1,
+    "output_tokens": 110,
+    "elapsed_seconds": 5.120794082991779,
+    "reward": 1.0,
+    "trace": [
+      {
+        "assistant": "{\"sql\":\"SELECT p.name,c.amount_637 FROM customers_637 p JOIN orders_637 c ON p.id=c.parent_id WHERE p.region_637='north' AND c.status_637='open'\"}",
+        "tool": {
+          "columns": [
+            "name",
+            "amount_637"
+          ],
+          "rows": [
+            [
+              "item-02",
+              5
+            ],
+            [
+              "item-02",
+              null
+            ],
+            [
+              "item-07",
+              null
+            ],
+            [
+              "item-01",
+              35
+            ],
+            [
+              "item-01",
+              10
+            ],
+            [
+              "item-01",
+              10
+            ]
+          ]
+        }
+      },
+      {
+        "assistant": "{\"answer\":[[\"item-02\",5],[\"item-02\",null],[\"item-07\",null],[\"item-01\",35],[\"item-01\",10],[\"item-01\",10]]}"
+      }
+    ],
+    "format_violations": 0
+  },
+  {
+    "task_id": "train-join_filter-0026",
+    "family": "join_filter",
+    "fault": "none",
+    "rollout_id": "rl-g9-s3",
+    "correct": true,
+    "status": "correct",
+    "tool_calls": 1,
+    "output_tokens": 110,
+    "elapsed_seconds": 5.055602042004466,
+    "reward": 1.0,
+    "trace": [
+      {
+        "assistant": "{\"sql\":\"SELECT p.name,c.amount_637 FROM customers_637 p JOIN orders_637 c ON p.id=c.parent_id WHERE p.region_637='north' AND c.status_637='open'\"}",
+        "tool": {
+          "columns": [
+            "name",
+            "amount_637"
+          ],
+          "rows": [
+            [
+              "item-02",
+              5
+            ],
+            [
+              "item-02",
+              null
+            ],
+            [
+              "item-07",
+              null
+            ],
+            [
+              "item-01",
+              35
+            ],
+            [
+              "item-01",
+              10
+            ],
+            [
+              "item-01",
+              10
+            ]
+          ]
+        }
+      },
+      {
+        "assistant": "{\"answer\":[[\"item-02\",5],[\"item-02\",null],[\"item-07\",null],[\"item-01\",35],[\"item-01\",10],[\"item-01\",10]]}"
+      }
+    ],
+    "format_violations": 0
+  }
+]

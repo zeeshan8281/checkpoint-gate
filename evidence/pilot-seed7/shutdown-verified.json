@@ -1,0 +1,23 @@
+{
+  "checked_at": "2026-11-19T18:55:00.294306+00:00",
+  "resources": {
+    "runs": [
+      {
+        "id": "w67255q",
+        "status": "INACTIVE"
+      }
+    ],
+    "samplers": [
+      {
+        "id": "wl1v8vq",
+        "status": "INACTIVE"
+      },
+      {
+        "id": "wpj169w",
+        "status": "INACTIVE"
+      }
+    ]
+  },
+  "all_inactive": true,
+  "note": "Authenticated session-filtered GET after cleanup; no model calls."
+}

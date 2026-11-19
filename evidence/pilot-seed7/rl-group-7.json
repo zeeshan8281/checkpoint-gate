@@ -1,0 +1,210 @@
+[
+  {
+    "task_id": "train-group_sum-0021",
+    "family": "group_sum",
+    "fault": "transient_first_call",
+    "rollout_id": "rl-g7-s0",
+    "correct": true,
+    "status": "correct",
+    "tool_calls": 2,
+    "output_tokens": 96,
+    "elapsed_seconds": 7.413278583990177,
+    "reward": 0.95,
+    "trace": [
+      {
+        "assistant": "{\"sql\":\"SELECT status_220,SUM(amount_220) FROM orders_220 GROUP BY status_220\"}",
+        "tool": {
+          "error": "transient_busy",
+          "retryable": true
+        }
+      },
+      {
+        "assistant": "{\"sql\":\"SELECT status_220,SUM(amount_220) FROM orders_220 GROUP BY status_220\"}",
+        "tool": {
+          "columns": [
+            "status_220",
+            "SUM(amount_220)"
+          ],
+          "rows": [
+            [
+              null,
+              145
+            ],
+            [
+              "closed",
+              207
+            ],
+            [
+              "hold",
+              148
+            ],
+            [
+              "open",
+              96
+            ]
+          ]
+        }
+      },
+      {
+        "assistant": "{\"answer\":[[null,145],[\"closed\",207],[\"hold\",148],[\"open\",96]]}"
+      }
+    ],
+    "format_violations": 0
+  },
+  {
+    "task_id": "train-group_sum-0021",
+    "family": "group_sum",
+    "fault": "transient_first_call",
+    "rollout_id": "rl-g7-s1",
+    "correct": true,
+    "status": "correct",
+    "tool_calls": 2,
+    "output_tokens": 96,
+    "elapsed_seconds": 6.518959832988912,
+    "reward": 0.95,
+    "trace": [
+      {
+        "assistant": "{\"sql\":\"SELECT status_220,SUM(amount_220) FROM orders_220 GROUP BY status_220\"}",
+        "tool": {
+          "error": "transient_busy",
+          "retryable": true
+        }
+      },
+      {
+        "assistant": "{\"sql\":\"SELECT status_220,SUM(amount_220) FROM orders_220 GROUP BY status_220\"}",
+        "tool": {
+          "columns": [
+            "status_220",
+            "SUM(amount_220)"
+          ],
+          "rows": [
+            [
+              null,
+              145
+            ],
+            [
+              "closed",
+              207
+            ],
+            [
+              "hold",
+              148
+            ],
+            [
+              "open",
+              96
+            ]
+          ]
+        }
+      },
+      {
+        "assistant": "{\"answer\":[[null,145],[\"closed\",207],[\"hold\",148],[\"open\",96]]}"
+      }
+    ],
+    "format_violations": 0
+  },
+  {
+    "task_id": "train-group_sum-0021",
+    "family": "group_sum",
+    "fault": "transient_first_call",
+    "rollout_id": "rl-g7-s2",
+    "correct": true,
+    "status": "correct",
+    "tool_calls": 2,
+    "output_tokens": 96,
+    "elapsed_seconds": 7.188003040995682,
+    "reward": 0.95,
+    "trace": [
+      {
+        "assistant": "{\"sql\":\"SELECT status_220,SUM(amount_220) FROM orders_220 GROUP BY status_220\"}",
+        "tool": {
+          "error": "transient_busy",
+          "retryable": true
+        }
+      },
+      {
+        "assistant": "{\"sql\":\"SELECT status_220,SUM(amount_220) FROM orders_220 GROUP BY status_220\"}",
+        "tool": {
+          "columns": [
+            "status_220",
+            "SUM(amount_220)"
+          ],
+          "rows": [
+            [
+              null,
+              145
+            ],
+            [
+              "closed",
+              207
+            ],
+            [
+              "hold",
+              148
+            ],
+            [
+              "open",
+              96
+            ]
+          ]
+        }
+      },
+      {
+        "assistant": "{\"answer\":[[null,145],[\"closed\",207],[\"hold\",148],[\"open\",96]]}"
+      }
+    ],
+    "format_violations": 0
+  },
+  {
+    "task_id": "train-group_sum-0021",
+    "family": "group_sum",
+    "fault": "transient_first_call",
+    "rollout_id": "rl-g7-s3",
+    "correct": true,
+    "status": "correct",
+    "tool_calls": 2,
+    "output_tokens": 96,
+    "elapsed_seconds": 7.1008280829992145,
+    "reward": 0.95,
+    "trace": [
+      {
+        "assistant": "{\"sql\":\"SELECT status_220,SUM(amount_220) FROM orders_220 GROUP BY status_220\"}",
+        "tool": {
+          "error": "transient_busy",
+          "retryable": true
+        }
+      },
+      {
+        "assistant": "{\"sql\":\"SELECT status_220,SUM(amount_220) FROM orders_220 GROUP BY status_220\"}",
+        "tool": {
+          "columns": [
+            "status_220",
+            "SUM(amount_220)"
+          ],
+          "rows": [
+            [
+              null,
+              145
+            ],
+            [
+              "closed",
+              207
+            ],
+            [
+              "hold",
+              148
+            ],
+            [
+              "open",
+              96
+            ]
+          ]
+        }
+      },
+      {
+        "assistant": "{\"answer\":[[null,145],[\"closed\",207],[\"hold\",148],[\"open\",96]]}"
+      }
+    ],
+    "format_violations": 0
+  }
+]

@@ -1,0 +1,4 @@
+{
+  "deactivation_errors": [],
+  "note": "Serverless only. Idle token billing stops without deploying dedicated inference."
+}

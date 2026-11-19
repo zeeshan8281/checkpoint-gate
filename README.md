@@ -2,7 +2,15 @@
 
 A verifier-driven SQL agent experiment with Baseten Loops and a Cloudflare evidence layer.
 
-**Status: working research build; real serverless access and sampling verified. No trained-model results yet.** The bundled dashboard replays scripted infrastructure checks that deliberately use reference SQL. Development smoke traces are in `evidence/`; cloud deployment, training quality, and invoice reconciliation remain unverified.
+**First real pilot complete: SFT reduced held-out SQL accuracy from 94% to 56%.** The trained checkpoint eliminated strict-format violations but regressed on latest-row and NULL-safe anti-join tasks. All 18 sampled reward groups had equal rewards, so no RL update occurred. Cloudflare is tested locally; production storage activation and invoice reconciliation are pending.
+
+![Held-out results](web/heldout-results.png)
+
+The comparison uses 200 identical held-out tasks per condition, one training seed, rank-8 LoRA, 12 supervised updates, and 96 assistant-turn demonstrations. SFT versus base: **−38 percentage points**, paired task-level 95% interval **−45 to −31 points**. The elementary format/arithmetic/copy suite scored 54/100 after SFT versus 68/100 for base; it is not a broad forgetting benchmark.
+
+[Full results](evidence/pilot-seed7/RESULTS.md) · [SQL error analysis](evidence/pilot-seed7/ERROR_ANALYSIS.md) · [Raw task traces](evidence/pilot-seed7/) · [Adapter export metadata](evidence/adapter-export.json)
+
+The complete pilot made 1,387 sampling requests and reserved $0.871654 at the configured conservative rates. Two earlier dev smokes add $0.017852, for **$0.889506 in total reservations, not an invoice**. The training run and samplers were confirmed inactive after cleanup. This is a negative result on a small synthetic distribution; no general improvement or novel algorithm is claimed.
 
 The research question: **does supervised fine-tuning followed by deterministic reward training improve completion on unfamiliar SQL query families, within the same tool and token budget?**
 
@@ -35,7 +43,7 @@ cp runs/local-demo/demo.json web/demo.json
 python -m http.server 8080 --bind 127.0.0.1 --directory web
 ```
 
-Open [the local dashboard](http://localhost:8080). The committed demo was generated with these commands. A dataset directory cannot be overwritten; its manifest hashes every database and the task/gold files.
+Open [the real-results dashboard](http://localhost:8080) or [the separate scripted self-test](http://localhost:8080/self-test.html). The committed demo was generated with these commands. A dataset directory cannot be overwritten; its manifest hashes every database and the task/gold files.
 
 The scripted no-retry agent passes the 100 clean test cases and fails the 100 injected-error cases. The scripted retry agent passes all 200. These expected results validate fault plumbing and scoring. **They are not model performance.** The initial real dev smoke separately exposed a Markdown-fence confound; protocol version 2 normalizes one outer fence equally for all conditions and records strict-format violations separately.
 
@@ -126,7 +134,7 @@ This tests the real local workerd runtime, SQLite Durable Objects, and R2 emulat
 
 For a cloud deployment, authenticate Wrangler, create the R2 bucket named in `wrangler.toml`, set `CONTROL_TOKEN` with `wrangler secret put CONTROL_TOKEN`, and deploy. These are explicit setup steps; the Python runner never provisions Cloudflare resources.
 
-The public site is the static scripted demo. All `/api/` routes require the secret. Private campaign results are not automatically published into the public site.
+The public site displays the exported real pilot and all held-out traces. `self-test.html` separately shows scripted infrastructure checks. All `/api/` routes require the secret. Publishing completed results is an explicit export step; private campaigns are not automatically added to the public site.
 
 To mirror a paid run:
 
@@ -148,6 +156,20 @@ API routes:
 | `GET /api/campaigns/:id/status` | Return manifest, lease, and evidence references |
 
 Evidence can be retrieved with the authenticated R2 tooling using the returned object key. There is no public results download endpoint.
+
+## Inspect and reproduce the published analysis
+
+The training code was frozen at commit `768b0171ca9e7eee815652ae1b532f17542709e5`.
+Its file hashes, checkpoint references, operation reservations, raw reward samples,
+and all offered test traces are retained in `evidence/pilot-seed7/`.
+See [analysis instructions](analysis/README.md) to export a completed run, render the
+graph, and inspect a live run through read-only SQLite.
+
+The downloaded sampler adapter contains 140,381,184 parameters in 862 BF16 tensors.
+Its hashes and configuration metadata are published; the 281 MB weight file is
+kept separately from Git. Compatibility with MLX or another inference engine has
+not been tested. The provider did not expose an immutable digest of its loaded
+base weights.
 
 ## Source map
 

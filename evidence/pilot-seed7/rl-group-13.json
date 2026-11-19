@@ -1,0 +1,182 @@
+[
+  {
+    "task_id": "train-group_sum-0018",
+    "family": "group_sum",
+    "fault": "none",
+    "rollout_id": "rl-g13-s0",
+    "correct": true,
+    "status": "correct",
+    "tool_calls": 1,
+    "output_tokens": 64,
+    "elapsed_seconds": 3.9665505419834517,
+    "reward": 1.0,
+    "trace": [
+      {
+        "assistant": "{\"sql\":\"SELECT status_893,SUM(amount_893) FROM orders_893 GROUP BY status_893\"}",
+        "tool": {
+          "columns": [
+            "status_893",
+            "SUM(amount_893)"
+          ],
+          "rows": [
+            [
+              null,
+              180
+            ],
+            [
+              "closed",
+              84
+            ],
+            [
+              "hold",
+              129
+            ],
+            [
+              "open",
+              164
+            ]
+          ]
+        }
+      },
+      {
+        "assistant": "{\"answer\":[[null,180],[\"closed\",84],[\"hold\",129],[\"open\",164]]}"
+      }
+    ],
+    "format_violations": 0
+  },
+  {
+    "task_id": "train-group_sum-0018",
+    "family": "group_sum",
+    "fault": "none",
+    "rollout_id": "rl-g13-s1",
+    "correct": true,
+    "status": "correct",
+    "tool_calls": 1,
+    "output_tokens": 64,
+    "elapsed_seconds": 4.523168708983576,
+    "reward": 1.0,
+    "trace": [
+      {
+        "assistant": "{\"sql\":\"SELECT status_893,SUM(amount_893) FROM orders_893 GROUP BY status_893\"}",
+        "tool": {
+          "columns": [
+            "status_893",
+            "SUM(amount_893)"
+          ],
+          "rows": [
+            [
+              null,
+              180
+            ],
+            [
+              "closed",
+              84
+            ],
+            [
+              "hold",
+              129
+            ],
+            [
+              "open",
+              164
+            ]
+          ]
+        }
+      },
+      {
+        "assistant": "{\"answer\":[[null,180],[\"closed\",84],[\"hold\",129],[\"open\",164]]}"
+      }
+    ],
+    "format_violations": 0
+  },
+  {
+    "task_id": "train-group_sum-0018",
+    "family": "group_sum",
+    "fault": "none",
+    "rollout_id": "rl-g13-s2",
+    "correct": true,
+    "status": "correct",
+    "tool_calls": 1,
+    "output_tokens": 64,
+    "elapsed_seconds": 4.908416124992073,
+    "reward": 1.0,
+    "trace": [
+      {
+        "assistant": "{\"sql\":\"SELECT status_893,SUM(amount_893) FROM orders_893 GROUP BY status_893\"}",
+        "tool": {
+          "columns": [
+            "status_893",
+            "SUM(amount_893)"
+          ],
+          "rows": [
+            [
+              null,
+              180
+            ],
+            [
+              "closed",
+              84
+            ],
+            [
+              "hold",
+              129
+            ],
+            [
+              "open",
+              164
+            ]
+          ]
+        }
+      },
+      {
+        "assistant": "{\"answer\":[[null,180],[\"closed\",84],[\"hold\",129],[\"open\",164]]}"
+      }
+    ],
+    "format_violations": 0
+  },
+  {
+    "task_id": "train-group_sum-0018",
+    "family": "group_sum",
+    "fault": "none",
+    "rollout_id": "rl-g13-s3",
+    "correct": true,
+    "status": "correct",
+    "tool_calls": 1,
+    "output_tokens": 64,
+    "elapsed_seconds": 4.562835666001774,
+    "reward": 1.0,
+    "trace": [
+      {
+        "assistant": "{\"sql\":\"SELECT status_893,SUM(amount_893) FROM orders_893 GROUP BY status_893\"}",
+        "tool": {
+          "columns": [
+            "status_893",
+            "SUM(amount_893)"
+          ],
+          "rows": [
+            [
+              null,
+              180
+            ],
+            [
+              "closed",
+              84
+            ],
+            [
+              "hold",
+              129
+            ],
+            [
+              "open",
+              164
+            ]
+          ]
+        }
+      },
+      {
+        "assistant": "{\"answer\":[[null,180],[\"closed\",84],[\"hold\",129],[\"open\",164]]}"
+      }
+    ],
+    "format_violations": 0
+  }
+]

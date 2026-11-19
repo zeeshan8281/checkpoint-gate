@@ -1,0 +1,8 @@
+{
+  "name": "sft-final",
+  "parent": null,
+  "run_id": "w67255q",
+  "training_state": "bt://loops:w67255q/weights/sft-final",
+  "sampler_weights": "bt://loops:w67255q/sampler_weights/sft-final",
+  "version": 12
+}
