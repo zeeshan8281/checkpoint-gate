@@ -1,0 +1,23 @@
+{
+  "scanned": "2026-11-20",
+  "findings": {
+    "framework": "Vanilla HTML/JS at web/index.html; user requested TypeScript and Tailwind during redesign",
+    "fonts": "DM Sans and Space Grotesk in former web/style.css:1",
+    "palette": "Dark green in former web/style.css:2",
+    "data": "Frozen completed pilot in frontend/public/pilot.json"
+  },
+  "preserve": [
+    "all model traces",
+    "dataset identity",
+    "original graph download",
+    "scripted self-test",
+    "authenticated Cloudflare evidence backend"
+  ],
+  "introduce": [
+    "TypeScript strict types",
+    "Tailwind CSS 4 and Vite",
+    "Console theme",
+    "URL selection state",
+    "compact lossless tool JSON"
+  ]
+}

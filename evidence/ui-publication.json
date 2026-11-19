@@ -1,0 +1,42 @@
+{
+  "date": "2026-11-20",
+  "url": "https://checkpoint-gate-results.zeeshan8281.workers.dev",
+  "static_version": "236180d0-6fc7-48d5-baa5-8355384406cc",
+  "backend_version": "c7ff9993-e576-4a3d-8805-c8207370f9f2",
+  "https": true,
+  "assets": [
+    {
+      "path": "index.html",
+      "sha256": "2acc481ba998f45faad218dc29f612ed9f1103fb7f1db0674cc9b59e398bda35",
+      "exact_match": true
+    },
+    {
+      "path": "pilot.json",
+      "sha256": "f043dc3ba4b369771d7684a7a8ab9cf451eb3dacbc5fa5c9c0569a9c168cfe6d",
+      "exact_match": true
+    },
+    {
+      "path": "heldout-results.png",
+      "sha256": "afcfd88a19d075f42740580fa14632d5c38a84ae6fb140cecc8bbb8e16bf743b",
+      "exact_match": true
+    },
+    {
+      "path": "hallmark-license.txt",
+      "sha256": "06088a8b94598626f27612dea42300154bf7be967c85d9d3eee4490cb056af7d",
+      "exact_match": true
+    },
+    {
+      "path": "assets/index-DA3gKOCs.css",
+      "sha256": "b21639b5f2f8651a72a04f3cb25c6cbf5129b788cd1e9f561c5a75c2b91dc520",
+      "exact_match": true
+    },
+    {
+      "path": "assets/index-CMRy2oo6.js",
+      "sha256": "101ff69b207540b4770c6c52725647707fff00046b6e1dda87d2e94bc2f20265",
+      "exact_match": true
+    }
+  ],
+  "protected_api_unauthenticated_status": 401,
+  "existing_evidence_receipts": 57,
+  "training_calls": 0
+}

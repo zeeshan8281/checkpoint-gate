@@ -1,0 +1,17 @@
+[
+  {
+    "mode": "redesign",
+    "depth": "full",
+    "scope": "app",
+    "date": "2026-11-20",
+    "shape": "app screen",
+    "theme": "console",
+    "axes": "dark/grotesk-sans/chromatic-amber",
+    "nav": "existing top bar with section links",
+    "signature": "paired checkpoint readings and original SQL traces",
+    "imagery": "existing scientific graph, no stock images",
+    "waived": [],
+    "prompt": "Use Hallmark for the UI, with TypeScript and Tailwind CSS",
+    "review": "fresh-context subagent; 2 findings, both resolved"
+  }
+]

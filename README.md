@@ -107,6 +107,14 @@ Rates are the inspected 19 November 2026 promotional rates multiplied by 1.25 as
 
 The local ledger is the only spending authority. Do not run copies of the campaign from multiple machines or delete its ledger. Cloudflare leases coordinate evidence ownership; they do not create globally exactly-once model execution or a global billing cap.
 
+## Results UI
+
+The public dashboard uses **TypeScript, Tailwind CSS 4, and Vite**, with Hallmark’s
+Console theme. Run `npm ci && npm run dev` inside `frontend/` to work on it.
+`npm run build` type-checks the source and writes the deployable `web/` assets.
+See [frontend instructions](frontend/README.md). Task and model selections are
+shareable through the URL; all 400 original held-out traces remain available.
+
 ## Cloudflare control layer
 
 The deployed evidence service is

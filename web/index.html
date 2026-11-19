@@ -1,66 +1,81 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>CheckpointGate · held-out results</title>
-  <link rel="stylesheet" href="style.css">
-  <style>
-    .result-graph{display:block;width:100%;height:auto;border-radius:9px}
-    .result-link{color:var(--green);text-decoration:none}
-    .trace-controls{display:flex;gap:10px;flex-wrap:wrap}
-    .finding{color:var(--green);font:500 24px/1.45 "Space Grotesk",sans-serif;margin:20px 0}
-    .result-table{width:100%;border-collapse:collapse;font-size:12px;margin-top:20px}
-    .result-table th,.result-table td{text-align:left;padding:12px 6px;border-bottom:1px solid var(--line)}
-    .result-table th{color:var(--muted);font-weight:400}
-  </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Inspect a real SQL-agent training experiment: 94% base accuracy, 56% after supervised fine-tuning, and all 400 held-out traces.">
+  <title>CheckpointGate | SQL agent experiment</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@400;500&family=Atkinson+Hyperlegible+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script type="module" crossorigin src="./assets/index-CMRy2oo6.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-DA3gKOCs.css">
 </head>
 <body>
+<a class="skip" href="#main">Skip to results</a>
 <div class="shell">
-  <header><a class="brand" href="./"><span class="mark">⌘</span> CheckpointGate</a>
-    <span class="tag">REAL TRAINING / FIRST PILOT</span>
-    <a class="source" href="https://github.com/zeeshan8281/checkpoint-gate">Source &amp; evidence ↗</a></header>
-  <main>
-    <div class="eyebrow"><i></i> HELD-OUT SQL TOOL TASKS</div>
-    <h1>Trained in the cloud.<br><span>Verified on this Mac.</span></h1>
-    <p class="intro">A 35B MoE model, rank-8 LoRA, and a deterministic SQL verifier. Compare frozen checkpoints on the same unfamiliar query families.</p>
-    <div class="notice"><strong>SINGLE-SEED PILOT</strong><span>These are real model results on synthetic tasks. Intervals describe these task instances; broader capability and repeatability require further experiments.</span></div>
-    <section class="metrics" aria-label="Completed experiment statistics">
-      <div><label>TASKS PER CONDITION</label><strong id="task-count">—</strong><small>4 held-out query families</small></div>
-      <div><label>SUPERVISED UPDATES</label><strong id="sft-count">—</strong><small>Assistant tokens supervised</small></div>
-      <div><label>REWARD UPDATES</label><strong id="rl-count">—</strong><small>Only informative groups update</small></div>
-      <div><label>COMPUTE RESERVATION</label><strong id="reservation">—</strong><small>Conservative estimate; not invoice</small></div>
+  <header class="topbar">
+    <a class="brand" href="./"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg>CheckpointGate</a>
+    <nav aria-label="Page navigation" class="flex items-center gap-6"><a href="#overview" aria-current="page">Results</a><a href="#traces">Task explorer</a><a href="#method">Method</a></nav>
+    <a class="source" href="https://github.com/zeeshan8281/checkpoint-gate">Source &amp; evidence</a>
+  </header>
+  <main id="main">
+    <section class="heading-row flex items-center justify-between gap-6" id="overview" aria-labelledby="page-title">
+      <div><h1 id="page-title">Training reduced SQL accuracy.</h1><p class="intro">Qwen3.6-35B-A3B, rank-8 LoRA, evaluated on unfamiliar query families.</p></div>
+      <span class="run-state">Pilot complete</span>
     </section>
-    <div class="grid">
-      <section class="panel">
-        <div class="panel-head"><div><div class="eyebrow">SAME TASKS · SAME BUDGET</div><h2>Verified completion</h2></div><span class="badge">REAL MODEL</span></div>
-        <a href="heldout-results.png"><img class="result-graph" src="heldout-results.png" alt="Base and trained model accuracy with task-level confidence intervals"></a>
-        <a class="result-link" href="heldout-results.png" download>Download the graph ↗</a>
-      </section>
-      <section class="panel">
-        <div class="eyebrow">PAIRED COMPARISON</div><h2>What changed after training?</h2>
-        <p class="finding" id="finding">Loading completed results…</p>
-        <p class="caption" id="paired-note"></p>
-        <table class="result-table"><thead><tr><th>Condition</th><th>Clean</th><th>Tool fault</th></tr></thead><tbody id="fault-table"></tbody></table>
-        <p class="footnote">Each task allows two SQL calls and 768 generated tokens. One whole outer Markdown fence is normalized equally in every condition. No SQL repair or test-based checkpoint selection.</p>
-        <p class="caption" id="rl-note"></p>
-      </section>
-    </div>
-    <section class="panel replay">
-      <div class="panel-head"><div><div class="eyebrow">ALL HELD-OUT TRACES</div><h2>Read the question. Inspect the answer.</h2></div>
-        <div class="trace-controls">
-          <select id="condition-select" aria-label="Choose model condition"></select>
-          <select id="trace-select" aria-label="Choose held-out task"></select>
+    <section class="experiment" aria-label="Completed experiment results">
+      <div class="experiment-heading"><h2>Verified completion</h2><span>Base and supervised fine-tuning</span></div>
+      <div class="comparison-grid grid grid-cols-1 md:grid-cols-[1.45fr_1fr]">
+        <div class="chart-region">
+          <div class="reading-pair grid grid-cols-2 gap-6"><div><span>Base checkpoint</span><strong id="base-accuracy">94<span>%</span></strong><small id="base-score">188 of 200 correct</small></div><div><span>After training</span><strong id="sft-accuracy">56<span>%</span></strong><small id="sft-score">112 of 200 correct</small></div></div>
+          <svg class="accuracy-chart" id="accuracy-chart" viewBox="0 0 600 150" role="img" aria-labelledby="chart-title chart-desc">
+            <title id="chart-title">Held-out SQL accuracy</title><desc id="chart-desc">Base 94%, supervised fine-tuning 56%. Bars start at zero; whiskers show task-level 95% Wilson intervals.</desc>
+            <g class="chart-grid"><path d="M100 12V114M216 12V114M332 12V114M448 12V114M564 12V114"/></g>
+            <g class="chart-bars"><rect id="base-bar" class="base-bar" x="100" y="23" width="436.16" height="26" rx="2"/><rect id="sft-bar" class="sft-bar" x="100" y="73" width="259.84" height="26" rx="2"/></g>
+            <g class="whiskers"><path id="base-whisker" d="M516.7037 29V43M516.7037 36H547.9214M547.9214 29V43"/><path id="sft-whisker" d="M327.6926 79V93M327.6926 86H390.9381M390.9381 79V93"/></g>
+            <g class="chart-labels"><text x="88" y="41" text-anchor="end">Base</text><text x="88" y="91" text-anchor="end">SFT</text><text x="100" y="140" text-anchor="middle">0%</text><text x="216" y="140" text-anchor="middle">25%</text><text x="332" y="140" text-anchor="middle">50%</text><text x="448" y="140" text-anchor="middle">75%</text><text x="564" y="140" text-anchor="middle">100%</text></g>
+          </svg>
+          <a class="graph-action" href="heldout-results.png" download>Download the graph</a>
+          <p class="chart-caption">Same 200 tasks. Same token and tool-call budget.<br>Whiskers show task-level 95% Wilson intervals.</p>
+        </div>
+        <div class="finding-region">
+          <h3>What changed after training?</h3>
+          <p class="delta"><span id="delta-value">−38</span><span>percentage points</span></p>
+          <p id="finding" class="finding">SFT versus base: −38.0 percentage points.</p>
+          <p id="paired-note" class="caption">Paired 95% interval: −45.0 to −31.0 points. 2 improved, 78 regressed, 120 tied.</p>
+          <div class="finding-note"><strong>Format improved. Accuracy fell.</strong><p>Strict-format violations dropped from 296 to 0. Correct answers dropped from 188 to 112.</p></div>
         </div>
       </div>
-      <div id="trace-meta"></div><div id="trace-steps"></div>
+      <div class="metrics grid grid-cols-2 md:grid-cols-4" aria-label="Completed experiment statistics">
+        <div><span>Tasks per condition</span><strong id="task-count">200</strong><small>4 held-out query families</small></div>
+        <div><span>Supervised updates</span><strong id="sft-count">12</strong><small>Assistant tokens supervised</small></div>
+        <div><span>Reward updates</span><strong id="rl-count">0</strong><small>No informative reward groups</small></div>
+        <div><span>Compute reservation</span><strong id="reservation">$0.87</strong><small>Pilot estimate; not an invoice</small></div>
+      </div>
     </section>
-    <section class="protocol">
-      <div><span>01 / GPU WORK</span><h3>Baseten Loops</h3><p>Real serverless training and sampling. Saved optimizer state and checkpoint-pinned evaluations. See the repository for shutdown verification.</p></div>
-      <div><span>02 / CONTROL LAYER</span><h3>Cloudflare tested locally</h3><p>Durable leases, fencing tokens, and R2 evidence storage passed local integration checks. This pilot used the local Python ledger without a cloud mirror.</p></div>
-      <div><span>03 / LIMITS</span><h3>A first measurement</h3><p>One seed, four related synthetic test families, and an elementary regression suite. The public generator does not provide contamination resistance.</p></div>
+    <div class="fault-overview"><h2>Does a tool fault change the result?</h2><table class="result-table"><caption>Correct answers with and without a tool fault</caption><thead><tr><th scope="col">Condition</th><th scope="col">Clean</th><th scope="col">Tool fault</th></tr></thead><tbody id="fault-table"><tr><td>Base</td><td>95/100</td><td>93/100</td></tr><tr><td>SFT</td><td>55/100</td><td>57/100</td></tr></tbody></table></div>
+    <div class="notice"><strong>Single-seed pilot</strong><p>These are real model results on synthetic tasks. Intervals describe these task instances; broader capability and repeatability require further experiments.</p></div>
+    <section class="explorer" id="traces" aria-labelledby="explorer-title">
+      <div class="section-heading flex items-center justify-between gap-6"><div><h2 id="explorer-title">Read the question. Inspect the answer.</h2><p>All 400 held-out traces, including failures.</p></div><span class="record-label">Frozen evaluations</span></div>
+      <div class="explorer-controls flex flex-col items-stretch gap-4 sm:flex-row sm:items-center">
+        <label for="condition-select">Model condition<select id="condition-select" aria-label="Choose model condition" disabled><option>Loading…</option></select></label>
+        <label for="trace-select">Held-out task<select id="trace-select" aria-label="Choose held-out task" disabled><option>Loading…</option></select></label>
+      </div>
+      <div id="trace-meta" role="status" aria-live="polite">Loading published task traces…</div>
+      <div class="trace-layout grid grid-cols-1 md:grid-cols-[0.8fr_1.2fr]">
+        <aside class="task-context"><h3>Question</h3><p id="task-question">The selected task’s question will appear here.</p><details open><summary>Database schema</summary><pre id="task-schema">Loading schema…</pre></details><p class="context-note">Responses below are the model’s original output, including formatting errors.</p></aside>
+        <div id="trace-steps" aria-label="Model and SQL tool transcript"></div>
+      </div>
+      <noscript><p class="noscript-note">Enable JavaScript to inspect individual traces, or open Source &amp; evidence for all raw results. The chart and pilot summary remain available.</p></noscript>
     </section>
+    <section class="method-grid grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-16" id="method" aria-label="Evaluation method and limitations">
+      <div class="method-primary"><h2>Same tasks. Same budget.</h2><p class="caption">A deterministic SQL verifier ran locally on a Mac.</p><p class="footnote">Each task allows two SQL calls and 768 generated tokens. One whole outer Markdown fence is normalized equally in every condition. No SQL repair or test-based checkpoint selection.</p><p class="caption" id="rl-note">Every sampled reward group had equal rewards. No reward update occurred, so only base and supervised fine-tuning are compared.</p></div>
+      <div class="protocol"><h2>From training to evidence</h2><div><h3>Baseten Loops</h3><p>Real serverless training and sampling. Saved optimizer state and checkpoint-pinned evaluations. See the repository for shutdown verification.</p></div><div><h3>Cloudflare evidence archive</h3><p>Durable leases, fencing tokens, and private R2 storage are deployed and verified. All 57 evidence files matched on remote readback. This pilot used the local Python ledger; the archive was uploaded after the run.</p></div><div><h3>A first measurement</h3><p>One seed, four related synthetic test families, and an elementary regression suite. The public generator does not provide contamination resistance.</p></div></div>
+    </section>
+    <details class="publication"><summary>View the publication graph</summary><figure><a href="heldout-results.png"><img class="result-graph" src="heldout-results.png" width="2160" height="1440" loading="lazy" alt="Base and trained model accuracy with task-level confidence intervals"></a><figcaption>The original shareable figure, with task-level intervals and pilot limitations.</figcaption></figure><a class="download" href="heldout-results.png" download>Download the graph</a></details>
   </main>
-  <footer><a class="result-link" href="self-test.html">Scripted infrastructure self-test ↗</a><span id="checksum">Loading frozen dataset…</span></footer>
+  <footer><a href="self-test.html">Scripted infrastructure self-test</a><span id="checksum">Dataset SHA256 / 55c90270d116da1c</span></footer>
 </div>
-<script src="results.js" type="module"></script>
-</body></html>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>CheckpointGate · experiment console</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="shell">
+  <header><a class="brand" href="./"><span class="mark">⌘</span> CheckpointGate</a>
+    <span class="tag">RESEARCH BUILD / 0.1</span>
+    <a class="source" href="./">Real model results ↗</a></header>
+  <main>
+    <div class="eyebrow"><i></i> VERIFIABLE AGENT TRAINING</div>
+    <h1>Train it. Test it.<br><span>Account for every step.</span></h1>
+    <p class="intro">A SQL tool agent experiment with held-out query families, bounded cloud spending, and durable checkpoint evidence.</p>
+    <div class="notice"><strong>LOCAL INFRASTRUCTURE DEMO</strong><span>This view uses scripted reference-SQL agents. Baseten sampling is verified; these charts are software checks, not model results.</span></div>
+    <section class="metrics" aria-label="Actual local run statistics">
+      <div><label>HELD-OUT TEST CASES</label><strong id="task-count">—</strong><small>4 unseen query families</small></div>
+      <div><label>TOOL CALL LIMIT</label><strong>2 <em>/ task</em></strong><small>768 output tokens for model runs</small></div>
+      <div><label>CLOUD SPEND</label><strong>$0<em>.00</em></strong><small>Local scripted checks only</small></div>
+      <div><label>PLANNED COMPUTE CAP</label><strong>$10<em>.00</em></strong><small>$23 total planning allocation</small></div>
+    </section>
+    <div class="grid">
+      <section class="panel chart-panel">
+        <div class="panel-head"><div><div class="eyebrow">FAULT-RECOVERY SELF-TEST</div><h2>Does the pipeline score recovery correctly?</h2></div><span class="badge">SCRIPTED</span></div>
+        <p class="caption">Two reference-SQL scripts face the same clean and transient-error tasks. This checks the evaluator; it does not measure model quality.</p>
+        <svg id="chart" viewBox="0 0 620 255" role="img" aria-label="Scripted self-test verified task counts"></svg>
+        <div class="legend"><span><b class="green"></b>Verified correct</span><span><b class="muted"></b>Incorrect / stopped</span></div>
+        <p class="footnote">Every offered task stays in the denominator. Exact row multiplicity, NULLs, column order, and requested row order are checked.</p>
+      </section>
+      <section class="panel">
+        <div class="eyebrow">COMPUTE BOUNDARY</div><h2>Three layers. One experiment.</h2>
+        <div class="layer"><span class="num">01</span><div><h3>This Mac</h3><p>Data generation · SQL verifier · rollout collector · authoritative spend ledger</p></div><span class="pill">LOCAL</span></div>
+        <div class="connector">↓ bounded training & sampling</div>
+        <div class="layer"><span class="num">02</span><div><h3>Baseten Loops</h3><p>Qwen3.6 · 35B total / 3B active<br>Rank-8 LoRA · completed SFT pilot</p></div><span class="pill">TRAINED</span></div>
+        <div class="connector">↓ checkpoint references & evidence</div>
+        <div class="layer"><span class="num">03</span><div><h3>Cloudflare</h3><p>Durable leases · fencing tokens<br>Content-addressed evidence in R2</p></div><span class="pill">LOCAL TEST</span></div>
+      </section>
+    </div>
+    <section class="panel replay">
+      <div class="panel-head"><div><div class="eyebrow">TRACE REPLAY</div><h2>Inspect the actual tool exchange.</h2></div>
+        <select id="trace-select" aria-label="Choose self-test trace"></select></div>
+      <div id="trace-meta"></div><div id="trace-steps"></div>
+    </section>
+    <section class="protocol">
+      <div><span>01 / COMPARE</span><h3>Base → SFT → SFT + reward</h3><p>Same model, frozen test set, same tool and token budgets. Final checkpoints fixed before evaluation.</p></div>
+      <div><span>02 / PRESERVE</span><h3>Unknown spend stays reserved</h3><p>An ambiguous remote operation stops the run. Optimizer steps are never replayed by the application.</p></div>
+      <div><span>03 / REPORT</span><h3>Evidence before claims</h3><p>Paired differences, task-level intervals, failed attempts, checkpoint identity, and billing reconciliation.</p></div>
+    </section>
+  </main>
+  <footer><span>CheckpointGate · scripted software checks · see the separate real-model results</span><span id="checksum">Loading frozen dataset…</span></footer>
+</div>
+<script src="app.js" type="module"></script>
+</body></html>

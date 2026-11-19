@@ -1,0 +1,58 @@
+{
+  "date": "2026-11-20",
+  "stack": [
+    "TypeScript strict mode",
+    "Tailwind CSS 4",
+    "Vite 7"
+  ],
+  "hallmark_revision": "04977e15f3dfd6ee4b74c887dac3eb52665d6c92",
+  "theme": "Console",
+  "scope": "app",
+  "static_checks": {
+    "before": {
+      "fail": 41,
+      "reflex": 33
+    },
+    "after": {
+      "fail": 0,
+      "reflex": 0,
+      "warn": 0
+    }
+  },
+  "browser": "CUA browser control",
+  "puppeteer_render_tier": "not run; browser operations use the required CUA interface",
+  "viewport_widths_checked": [
+    320,
+    375,
+    480,
+    768,
+    1024,
+    1280,
+    1440,
+    1920
+  ],
+  "horizontal_overflow": false,
+  "review": {
+    "method": "fresh-context subagent",
+    "findings": 2,
+    "resolved": 2,
+    "fixes": [
+      "Render each SQL result tuple on one line, preserving all values",
+      "Move fault comparison before transcript and graph download beside chart"
+    ]
+  },
+  "verified": [
+    "200 tasks in each condition selector",
+    "condition switching preserves task identity",
+    "selected condition and task survive URL reload",
+    "base correct / SFT incorrect for test-anti_null-0000",
+    "keyboard focus ring is visible",
+    "original publication graph loads at 2160 by 1440",
+    "all original link destinations and DOM ids retained, script compiled from TypeScript",
+    "no training calls or privileged tokens in frontend"
+  ],
+  "limitations": [
+    "Hallmark static kept check cannot equate old results.js with the Vite-generated script; wiring was verified in the browser",
+    "no new model experiments"
+  ]
+}

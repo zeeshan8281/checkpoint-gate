@@ -14,14 +14,16 @@ pip install -r analysis/requirements.txt
 python analysis/export_results.py runs/pilot-seed7 \
   --data data/pilot \
   --evidence evidence/pilot-seed7 \
-  --web web
+  --web frontend/public
 
 python analysis/summarize_results.py runs/pilot-seed7 \
   --out evidence/pilot-seed7
 
 python analysis/plot_results.py runs/pilot-seed7/results.json \
-  --out web/heldout-results.png
+  --out frontend/public/heldout-results.png
 
+npm ci --prefix frontend
+npm run build --prefix frontend
 python -m http.server 8080 --bind 127.0.0.1 --directory web
 ```
 
