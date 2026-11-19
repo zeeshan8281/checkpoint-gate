@@ -1,0 +1,20 @@
+{
+  "status": "passed",
+  "new_model_calls": 0,
+  "cloud_operations_for_analysis": 0,
+  "study_unit_tests": 7,
+  "existing_python_tests": 31,
+  "research_tracks_validated": 3,
+  "research_fields_per_track": 8,
+  "distinct_primary_sources": 33,
+  "original_outcomes_reproduced": 400,
+  "original_tool_responses_replayed": 400,
+  "independent_oracle_checks": 1800,
+  "candidate_query_replays": 3200,
+  "fresh_original_dataset_manifest_matches": true,
+  "prospective_schedule_unique_cases": 1680,
+  "python": "3.12.14",
+  "sqlite": "3.53.1",
+  "prospective_training_executed": false,
+  "external_peer_review": false
+}

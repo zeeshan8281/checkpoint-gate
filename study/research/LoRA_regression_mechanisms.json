@@ -1,0 +1,483 @@
+{
+  "topic": {
+    "name": "LoRA regression mechanisms",
+    "decision": "Turn the pilot into a bounded empirical study of where a tiny SFT intervention changes SQL-agent behavior, while separating implementation errors, conditional-state learning, output format, query semantics, and broader retention.",
+    "research_date": "2026-11-20",
+    "status": "Literature and source-code research completed; proposed experiments have not been run in this research task."
+  },
+  "findings": [
+    {
+      "id": "F1",
+      "evidence_class": "Existing pilot evidence supplied by the parent task, not independently reanalyzed here",
+      "finding": "The provider base model scored 188/200 and the SFT checkpoint 112/200 on four fixed synthetic test templates, with 78 regressions and 2 improvements. One seed and 12 rank-8 SFT updates on 96 assistant-turn targets from 83 tasks establish a large conditional regression in this run, not broad catastrophic forgetting.",
+      "implication": "Separate template-specific SQL behavior and answer handling from general capability retention. Do not treat four templates times 50 instances as 200 independently sampled task families.",
+      "sources": [
+        "Local PROTOCOL.md",
+        "Parent task pilot summary"
+      ]
+    },
+    {
+      "id": "F2",
+      "evidence_class": "Published empirical result plus untested hypothesis",
+      "finding": "LoRA constrains the update but changes the forward function. Prior work measures forgetting under LoRA and strong sensitivity to learning rate, rank, target modules, scaling, and training duration.",
+      "hypothesis": "[uncertain] Excessive adaptation dose or a narrow target distribution may contribute to the pilot regression. Low rank alone does not identify the cause.",
+      "discriminating_test": "Keep the exact target manifest fixed and inspect checkpoints at 0, 1, 3, 6, and 12 updates on development probes; repeat one prespecified lower learning-rate condition only if dose sensitivity is the chosen hypothesis. Log alpha, target modules and parameter counts rather than assuming rank 8 specifies the whole intervention.",
+      "sources": [
+        "S1",
+        "S3"
+      ]
+    },
+    {
+      "id": "F3",
+      "evidence_class": "Published hypothesis and empirical observations; present mechanism untested",
+      "finding": "LIMA shows that small curated data can change formats and dialogue behavior. Tülu 3 documents format transfer and differences between development and unseen evaluations. Neither establishes that knowledge is always preserved during instruction tuning.",
+      "hypothesis": "[uncertain] A changed response policy, premature final answer, or row-copying behavior could explain part of the SQL-agent score drop even when a useful SQL query is available.",
+      "discriminating_test": "Factor measurements into raw format validity, SQL denotation, answer copying given common verified tool rows, and end-to-end completion. Retain the same deterministic outer-fence normalization in all arms.",
+      "sources": [
+        "S2",
+        "S10"
+      ]
+    },
+    {
+      "id": "F4",
+      "evidence_class": "New static code inspection, not a model measurement",
+      "finding": "campaign.py builds every demonstration pair, shuffles the flattened list, and selects consecutive minibatches. demonstrations() retains full preceding system/user/assistant/tool-result context in each pair. Therefore missing supervised turns do not mean missing context. At fixed parameters, an all-assistant full-trajectory loss equals the sum of identically tokenized conditional assistant-turn losses if token masks, end markers and normalization are matched.",
+      "implication": "Any difference from sampling complete trajectories must be attributed carefully to which targets are included, task/turn weighting, prefix serialization, stochastic minibatches, or optimizer steps. Merely repacking identical targets is not evidence of a new trajectory-learning mechanism.",
+      "hypothesis": "[uncertain] Sparse turn selection may underrepresent retry or final-answer states, or weight large result arrays more heavily. Role counts and supervised-token counts must be measured before making this claim.",
+      "sources": [
+        "Local campaign.py:180-193",
+        "Local rollout.py:115-130",
+        "S5",
+        "S9"
+      ]
+    },
+    {
+      "id": "F5",
+      "evidence_class": "New static code inspection informed by official implementation documentation",
+      "finding": "supervised_datum() uses input ids (p+a)[:-1] and targets [-100]*(len(p)-1)+a, where a includes EOS. This is the expected explicit next-token alignment: the last prompt token predicts the first answer token. prompt_ids() uses add_special_tokens=False, matching the official anti-duplication guidance.",
+      "hypothesis": "[uncertain] Exact provider tokenizer/template equivalence, end-of-turn versus EOS identity, thinking-control serialization, and provider loss normalization have not been validated. The inspection does not reveal an off-by-one error.",
+      "discriminating_test": "Decode token/mask boundary tables with the recorded tokenizer; compare prefix-plus-answer serialization against the canonical complete conversation; inspect both target count and first/last supervised tokens. Check provider target-shift semantics before claiming the implementation is correct end to end.",
+      "sources": [
+        "Local baseten_backend.py:47-65",
+        "S5",
+        "S6"
+      ]
+    },
+    {
+      "id": "F6",
+      "evidence_class": "Published sequential-learning mechanism; application to this run is a hypothesis",
+      "finding": "DAgger addresses mismatch between states produced by expert and learner policies. Here a learner may return differently ordered, extra, NULL-containing, or wrong SQL rows; demonstrations supply oracle-query results.",
+      "hypothesis": "[uncertain] The SFT model may fit expert tool-result contexts while becoming less reliable on its own tool-result distribution. The short interaction horizon limits direct transfer of long-horizon theoretical conclusions.",
+      "discriminating_test": "Evaluate both checkpoints on an identical bank of verified gold-result prefixes and, separately, common base-generated and SFT-generated prefixes. Differences across fixed context banks distinguish answer-stage sensitivity from query-production errors without claiming causal mediation.",
+      "sources": [
+        "S9",
+        "Local rollout.py"
+      ]
+    },
+    {
+      "id": "F7",
+      "evidence_class": "Published intervention evidence",
+      "finding": "General-instruction mixing has already been tested as a partial forgetting mitigation, and large post-training studies use data-mixture ablations.",
+      "implication": "A replay/mixed-data result here can be useful as a low-budget boundary case, but is not a novel forgetting-mitigation algorithm. A lower-dose SQL-only comparator is necessary if generic examples replace SQL examples.",
+      "sources": [
+        "S4",
+        "S10"
+      ]
+    },
+    {
+      "id": "F8",
+      "evidence_class": "Code-derived mathematical consequence plus existing pilot evidence",
+      "finding": "campaign.py skips groups with identical reward and otherwise uses reward minus group mean; policy_datum() assigns that advantage to every assistant token. Equal-reward groups therefore yield zero relative reward signal. The supplied pilot has 18 all-success groups and zero RL updates.",
+      "implication": "There is no trained SFT-plus-RL condition to compare. RL was uninformative under the sampled train prompts, group size, decoding and reward, not shown ineffective as a method. All-success alone is insufficient for equal rewards when tool-use penalties differ; the recorded equal-reward skip condition is the decisive check.",
+      "sources": [
+        "Local campaign.py:201-234",
+        "Local baseten_backend.py:68-85",
+        "S7",
+        "S8"
+      ]
+    },
+    {
+      "id": "F9",
+      "evidence_class": "Published method and proposed local measurement",
+      "finding": "Repeated execution on varied databases can reveal accidental denotation agreement. The parent is implementing original-database plus eight perturbed-database replay of the last successful SQL, checked by an independent Python oracle.",
+      "implication": "Label this standalone-query semantic robustness. An agent may intentionally retrieve extra rows and postprocess them, so SQL denotation mismatch does not automatically establish an agent failure. A finite passing suite does not prove equivalence, and the present perturbations are not claimed to implement the published coverage-distillation algorithm.",
+      "sources": [
+        "S11",
+        "Parent task implementation plan"
+      ]
+    }
+  ],
+  "recommended_design": {
+    "priority": "First release a reproducible failure-localization study from existing artifacts; then run a fresh, preregistered confirmation with one mechanism-focused intervention if the cloud budget permits. Do not spend the remaining budget on a wide hyperparameter grid.",
+    "phase_0_no_model_calls": [
+      "Archive code/config/tokenizer-template hashes, data manifests, training operation IDs and checkpoint receipts. Reconstruct the exact 96 selected targets and report target-role counts, source-task counts, family/fault counts, target lengths, and how many tasks have all their assistant turns selected.",
+      "Check serialization/masking and equal-reward skip behavior locally with explicit fixtures. Demonstrate algebraic loss-target equivalence of complete versus flattened teacher-forced histories at fixed parameters; only compare gradients later if an identical local runtime is available.",
+      "Use existing traces to classify the first observed failure. Include raw invalid JSON, normalized-valid JSON, invalid SQL, executable SQL with wrong denotation, correct-denotation tool result followed by wrong final answer, no final answer, retry failure, and token/tool limit. Permit multiple tags plus one prespecified earliest failure.",
+      "Report SQL replay results separately from end-to-end correctness. Audit edge cases: ties, NULL in NOT IN subqueries, duplicated join rows, multiple maxima, absent children, and ordering. Count query variants only after canonicalization that preserves semantics."
+    ],
+    "phase_1_local_mechanism_pilot": {
+      "status": "[uncertain] Proposed, unrun. Local feasibility and model availability require a memory/runtime smoke before any training. A smaller local model is a separate external-validity condition, not a reproduction of the provider model.",
+      "arms": [
+        "Unadapted model plus adapter-created but zero-update checkpoint: verify that initialization and sampler routing do not change behavior.",
+        "Legacy flat assistant-target sampling with the exact pilot-style manifest rule.",
+        "One chosen control: role-stratified sampling, lower learning rate, or a generic-data mix. Choose from development evidence before seeing fresh confirmation outcomes."
+      ],
+      "data_sampling_control": "For a turn-coverage experiment, build a common task pool and record every eligible target. Compare flat versus role-stratified selection under matched optimizer steps and supervised-token budget. Report the residual difference in unique tasks and roles. Separately compare all targets of the same selected tasks with explicit per-task normalization. It is generally impossible to hold unique tasks, complete-target coverage, and the exact 96-target budget all fixed; do not hide this tradeoff.",
+      "mixing_control": "If 25% of target tokens are replaced by diverse assistant tasks, compare the mix to (a) full-dose SQL-only and (b) SQL-only with the same number of SQL target tokens. Keep target-token budget and learning-rate schedule explicit. This separates reduced specialization dose from the content of generic replay.",
+      "dose_control": "Fix target IDs/order and optimizer settings; collect development checkpoints at 0, 1, 3, 6 and 12 updates. These are exploratory learning curves, not five separately confirmable selected checkpoints."
+    },
+    "phase_2_minimal_fresh_confirmation": {
+      "status": "[uncertain] Proposed sample sizes are practical design targets, not a power calculation or a guaranteed fit under the unverified remaining cloud budget.",
+      "training_replicates": "Three prespecified training seeds per trained condition; minimally legacy SFT and one selected control, for six 12-update training runs. Reuse a paired target manifest and minibatch order across conditions within a seed. Separate initialization seed from data-order seed; do not call their combined variation initialization variance. If only one seed fits, label the study a case study.",
+      "evaluation_set": "Freeze 12 genuinely new query-construction families with 20 database instances each (10 clean and 10 transient-fault), giving 240 fresh tasks. Write query semantics and independent expected-answer routines before evaluating models. Reserve a separate development bank. The original public four families remain exploratory and must not be reused as confirmation merely with new row seeds.",
+      "conditions": "Evaluate one provider base checkpoint and the final 12-update checkpoint for each of the six trained runs on the same 240 tasks. This is 1,680 offered end-to-end tasks. Randomize/interleave condition order where the API permits and record checkpoint identities. A no-update adapter sanity check uses development only.",
+      "primary_estimand": "Equal-family-weighted change in end-to-end correctness for the selected control versus legacy SFT, averaged across the prespecified training seeds, at the fixed interaction and token budget. Also report legacy SFT minus base as a prespecified secondary replication contrast.",
+      "mechanistic_secondary_estimands": "Family-weighted strict-format rate, correct standalone-query denotation, correctness given a common verified gold-result prefix, and rate of correct-tool-result to wrong-final-answer transitions. These localize behavior and are not latent-knowledge or causal-mediation estimates.",
+      "analysis": "Retain paired task identities, family/fault strata, and all per-seed estimates. Present raw family-by-seed results. Use paired task/bootstrap intervals only for fixed-family conditional claims; if reporting broader family uncertainty, resample families and seeds with the explicit caveat that 12 families and 3 seeds provide limited precision. Do not pool repeated outputs across seeds as independent tasks. With three seeds, show the range rather than trusting an asymptotic seed-level p value.",
+      "multiplicity_and_selection": "One primary intervention contrast and one final checkpoint. Treat failure-category and family interactions as descriptive unless hypotheses and corrections were preregistered. Hyperparameter or control choice based on old public outcomes is allowed as development, but disclose that provenance.",
+      "stopping": "Finish the fixed sample if operationally possible; no efficacy-based peeking stop. Stop for verified budget exhaustion, unknown ledger operation, failed checkpoint identity, invalid oracle or data contamination. An incomplete experiment stays incomplete; do not silently shrink the denominator or select the surviving seeds.",
+      "power_note": "The 240-task design targets a large effect and mechanism coverage; it is not powered here for small differences or broad family-level equivalence. A confirmatory claim should be scaled to the achieved interval and number of independently constructed families."
+    },
+    "separate_rl_feasibility_study": {
+      "priority": "Optional after SFT diagnosis; not required for a release of the present failure study.",
+      "calibration": "Use a fresh development-only task bank and group size 4; sample a fixed maximum of 24 groups, with success, reward variance, unique response counts and token cost recorded. Stratify fault conditions and difficulty; do not mine public test failures for training and then call them held out.",
+      "mathematical_planning": "For iid Bernoulli success with identical success rewards, P(informative group of four)=1-p^4-(1-p)^4. It is 0.875 at p=0.5 and 0.3438 at p=0.9. These are planning calculations; correlated samples and call-count rewards change the relationship.",
+      "stop_rule": "If calibration cannot provide a prespecified minimum of six nonzero-variance groups within 24 groups and its budget cap, stop and report feasibility failure. Do not run an unbounded DAPO-style refill loop on a token-billed service.",
+      "reward_design": "Keep task correctness dominant. A token penalty may manufacture variance among all-correct trajectories but tests efficiency preference, not recovery of missing SQL ability. Any dense correctness component must be validated against the independent oracle before training.",
+      "baseline_if_reopened": "Require a genuinely updated checkpoint and compare it to its exact SFT parent. Log sampled old log probabilities, reference/KL settings if any, cispo configuration, reduction denominator, accepted optimizer steps, and checkpoint lineage."
+    }
+  },
+  "implementation_checks": {
+    "inspected_files": [
+      "outputs/checkpoint-gate/PROTOCOL.md",
+      "outputs/checkpoint-gate/src/checkpoint_gate/rollout.py",
+      "outputs/checkpoint-gate/src/checkpoint_gate/baseten_backend.py",
+      "outputs/checkpoint-gate/src/checkpoint_gate/campaign.py"
+    ],
+    "proposed_checks": [
+      {
+        "check": "Training-token contract",
+        "status": "Untested runtime check; static alignment inspected",
+        "action": "For a tiny p=[11,12,13], a=[21,22,EOS] fixture, require input=[11,12,13,21,22] and targets=[-100,-100,21,22,EOS]. Count nonignored targets; decode the first/last target; confirm no prompt or SQL-tool feedback is supervised."
+      },
+      {
+        "check": "Canonical serialization",
+        "status": "[uncertain] Untested with the exact provider tokenizer",
+        "action": "For initial query, retry query and final answer, compare prompt_ids(messages)+encode(answer)+end marker against apply_chat_template(messages+[assistant answer], tokenize=True, add_generation_prompt=False, enable_thinking=False). Classify any difference as required control token, end marker, whitespace or unexpected text. Inspect actual Qwen3.6 token IDs; do not assume an EOS setting from Qwen2.5 documentation applies."
+      },
+      {
+        "check": "No-op and disabled-adapter identity",
+        "status": "[uncertain] Untested; provider support for adapter disabling/export may be absent",
+        "action": "Evaluate identical development prompts through the provider base sampler and fresh zero-update adapter sampler. If exported adapter disabling is available later, compare disabled and enabled outputs or log probabilities at matched settings. An observed difference requires routing/template investigation before interpreting training."
+      },
+      {
+        "check": "Loss and target weighting",
+        "status": "[uncertain] Provider loss reduction was not verified in this task",
+        "action": "Record per-datum prompt length, target length, token sum, sample weights, batch target-token denominator and provider-returned metrics. Compare long-row answer targets against short SQL targets. Do not infer equal turn weighting from a batch size of eight."
+      },
+      {
+        "check": "Context intervention schema",
+        "status": "Proposed; requires new inference if common-prefix outputs are unavailable",
+        "action": "Build rows keyed by task_id, checkpoint_id, context_source (gold/base/SFT), prior_assistant_sql_hash, tool_rows_hash, row_count, ordered, target_answer_hash, final_answer_correct, raw_format_valid and generated_tokens. All compared checkpoints receive byte-identical common prefixes."
+      },
+      {
+        "check": "SQL diagnostic schema",
+        "status": "Parent implementing offline replay; no result independently observed here",
+        "action": "Record original_task_id, query_hash, selected_query_turn, selection_rule, original_denotation_match, perturbation_id, perturbation_recipe, expected_rows_hash, actual_rows_hash, execution_status, comparison_semantics, potential_postprocessing and end_to_end_correct. Mark standalone query mismatches separately from agent failures."
+      },
+      {
+        "check": "RL zero-variance and scale",
+        "status": "Static skip behavior verified; runtime test proposed",
+        "action": "Feed [1,1,1,1], [0,0,0,0], [1,0,1,0] and [1,.95,1,.95] synthetic reward groups to a local pure function. Require zero optimizer dispatch for equal rewards; preserve raw rewards/centered advantages and all generation lengths for nonuniform groups. Verify that sparse datums retain sampled log probabilities in the provider-required positions."
+      },
+      {
+        "check": "Evaluation contracts",
+        "status": "Existing protocol inspected; new fixtures proposed",
+        "action": "Freeze two tool calls, 768 total generated tokens and the 384 per-turn generation ceiling. Retain raw text and strict-format counts before optional outer-fence removal. Test NULL, duplicates, ties, ordering and numeric equivalence against an independent oracle. Avoid introducing arbitrary JSON extraction or SQL repair during diagnosis."
+      }
+    ],
+    "minimum_manifest_fields": [
+      "model_id",
+      "immutable_model_revision_if_available",
+      "provider",
+      "sdk_version",
+      "tokenizer_revision",
+      "chat_template_hash",
+      "thinking_flag",
+      "eos_ids",
+      "rank",
+      "alpha",
+      "target_modules",
+      "adapter_initialization",
+      "trainable_parameter_count",
+      "optimizer_parameters",
+      "learning_rate_schedule",
+      "loss_reduction",
+      "seed_roles",
+      "target_manifest_hash",
+      "supervised_token_total",
+      "checkpoint_parent",
+      "sampling_temperature",
+      "sampling_seed",
+      "limits",
+      "verifier_revision",
+      "price_snapshot",
+      "ledger_state"
+    ],
+    "implementation_boundary": "No code changes to the project, training, paid calls, support contact or publication were performed by this research task."
+  },
+  "budget_and_feasibility": {
+    "known_inputs": "The task supplies a total initial cloud ceiling below $25, $0.889506 in conservative reservations, an unreconciled actual invoice, and an Apple M5 Pro with 48 GiB unified memory. These are task inputs, not independently verified billing/hardware observations by this agent.",
+    "arithmetic": "$25.000000 - $0.889506 = $24.110494 nominal headroom against the stated $25 ceiling. This is not a verified available balance because the actual invoice remains unreconciled and the intended ceiling is described as under $25.",
+    "no_cloud_cost_work": [
+      "Source/code audit",
+      "Manifest and assistant-target coverage reconstruction",
+      "Mask/token-boundary inspection with a cached tokenizer",
+      "SQLite query replay and independent Python expected-answer checks",
+      "Synthetic reward/masking fixtures",
+      "Protocol, data-split and analysis-schema preparation"
+    ],
+    "local_memory": "Arithmetic only: 35 billion dense-stored parameters at 16 bits require about 70 GB decimal (65.2 GiB) for weights alone, exceeding 48 GiB. At 4 bits the raw weight payload is about 17.5 GB (16.3 GiB), before scales, unquantized modules, KV cache, activations, adapters and runtime buffers. Mixture-of-experts active-parameter count is not the total resident-weight requirement.",
+    "local_feasibility": "[uncertain] Exact Qwen3.6 architecture support, available quantization, adapter format compatibility, training-memory peak and numerical equivalence to the provider are untested. A quantized smaller-model local experiment may be feasible but must be labeled a separate model/runtime condition. No throughput, efficiency or time-to-train estimate is verified.",
+    "cost_formula": "For a proposed hosted run, reserve C = (N_prefill*P_prefill + N_sample_max*P_sample + N_train*P_train)/1,000,000 + explicit operation/storage charges, using the current verified units and rates. Do not assume whether training billing counts prompt or supervised tokens; confirm the service contract. Include all failed and skipped RL sampling, checkpoint operations if priced, and a contingency margin.",
+    "evaluation_bound": "The minimal six-trained-checkpoint plus base confirmation has 1,680 offered tasks. With 768 maximum generated tokens per task, the completion-token reservation alone is at most 1,290,240 tokens before diagnostics; repeated-context prefill must be added. This is a token bound, not a dollar quote.",
+    "training_bound": "Six runs times 12 updates is 72 optimizer updates. Matching the pilot batch size eight gives 576 target presentations if every run uses 96; true cost depends on the full prompt/target token lengths and the service billing convention.",
+    "decision_gate": "[uncertain] The proposed hosted replication cannot be promised under the remaining budget until actual billing, current prices, token counts and no-charge/control-operation rules are reconciled. Reduce scope openly if needed; do not sacrifice complete evaluation or seed reporting to retain an oversized arm grid.",
+    "gpu_boundary": "Actual Baseten GPU type/count remain undisclosed, with support ticket #44313 pending per the task. No GPU utilization, GPU-hour, hardware efficiency or cross-provider efficiency claim is supported."
+  },
+  "claim_boundaries": {
+    "supportable_now": [
+      "An exploratory single-run SFT regression on the stated public synthetic SQL-agent evaluation, conditional on four fixed construction families, one training seed, provider sampler behavior, and strict interaction limits.",
+      "A static finding that conditional assistant turns retain complete preceding context while target selection occurs after flattening and shuffling.",
+      "A static next-token alignment inspection that finds the expected explicit input/target shift, without concluding exact provider-runtime equivalence.",
+      "No RL optimizer update occurred in the supplied pilot; equal-reward groups supplied no relative reward training signal."
+    ],
+    "only_after_new_measurements": [
+      "Failure localization between query semantics, response formatting and final-answer handling, based on a prespecified trace taxonomy and independent checks.",
+      "Standalone-query robustness under the specific tested database perturbations, with coverage and query-selection rules disclosed.",
+      "A control-specific effect on fresh families across prespecified seeds, with uncertainty tied to the actual sampling hierarchy."
+    ],
+    "prohibited_overclaims": [
+      "SFT or LoRA generally destroys reasoning",
+      "Rank 8 caused the regression",
+      "Knowledge was erased rather than its expression changed",
+      "Complete trajectories fix the problem independently of target coverage and weighting",
+      "Reward learning failed despite no updates",
+      "A new GRPO/DAPO algorithm",
+      "The public pilot test is fresh confirmation",
+      "Finite SQL replay proves semantic equivalence",
+      "SQL denotation mismatch proves agent failure when postprocessing is permitted",
+      "Sub-dollar GPU efficiency or training-speed advantage",
+      "Local quantized behavior is equivalent to the undisclosed hosted runtime"
+    ],
+    "novelty_assessment": "[uncertain] No exhaustive priority search was performed. General forgetting, small-data format alignment, replay, DAgger-style state-distribution mismatch, zero-variance group filtering and SQL test-suite evaluation are established. A potentially publishable contribution is the sharply bounded empirical interaction of sparse assistant-target supervision, family-selective SQL regression, correct-tool-result/incorrect-answer transitions and an uninformative RL gate, together with independently checked local diagnostics and a preregistered low-cost replication. Novelty depends on obtaining discriminating measurements, not merely restating the pilot accuracy drop.",
+    "candidate_questions": [
+      {
+        "question": "Does tiny task-specific SFT degrade answer handling even when a correct SQL result is supplied?",
+        "distinctive_test": "A checkpoint-by-common-context comparison with identical verified tool prefixes, plus original trace transitions.",
+        "status": "[uncertain] Untested empirical question."
+      },
+      {
+        "question": "Does sparse conditional-turn selection predict selective failures through role/token exposure rather than through omission of conversational context?",
+        "distinctive_test": "Manifest coverage audit, equivalent-target serialization check, then a matched-budget role-coverage control with the task-count tradeoff disclosed.",
+        "status": "[uncertain] Untested empirical question; conditional training itself is standard."
+      },
+      {
+        "question": "Do apparently successful post-SFT queries depend more heavily on accidental database properties?",
+        "distinctive_test": "Paired original/perturbed query execution with query-selection rules and independent gold calculations.",
+        "status": "[uncertain] Untested empirical result; method has direct prior work in test-suite accuracy."
+      },
+      {
+        "question": "Can a cheap train-only calibration gate predict that group-relative RL will spend its budget without an update?",
+        "distinctive_test": "Preregistered finite-group feasibility criterion with reward variance, sample diversity and token cost.",
+        "status": "[uncertain] Untested empirical calibration claim; equal-reward mathematics and dynamic sampling are existing methods."
+      }
+    ],
+    "limitations": "One synthetic relational skeleton, public demonstrations/test templates, narrow arithmetic/string-copy regression suite, limited tools, integer-valued answers, no broad natural-language knowledge battery, undisclosed provider infrastructure, nonimmutable model identifier, and any quantization/runtime changes constrain external validity. Three proposed seeds and twelve new families still support a modest study rather than a universal training claim."
+  },
+  "sources": [
+    {
+      "id": "S1",
+      "title": "LoRA: Low-Rank Adaptation of Large Language Models",
+      "url": "https://arxiv.org/html/2106.09685",
+      "canonical_id": "arXiv:2106.09685v2",
+      "version_date": "2021-10-16",
+      "access_date": "2026-11-20",
+      "inspection_method": "Retrieved complete primary-source HTML by HTTPS, extracted visible text with Python HTMLParser, then read the listed relevant sections. No search snippets used.",
+      "inspection_depth": "Abstract, Section 4.1-4.2; inspected low-rank update equation, initialization, scaling, and target-module discussion.",
+      "evidence_excerpt_or_observed_finding": "The pretrained matrix remains frozen while the forward function uses W0 + BA; A is initialized randomly and B at zero. The update is scaled by alpha/r.",
+      "relevance": "Frozen base weights do not imply an unchanged adapted function. Rank, alpha, target modules, initialization, and the adapter-disabled baseline belong in the manifest.",
+      "local_evidence_file": "/Users/zeeshan8281/Documents/Codex/2026-11-19/can-you-x20/work/checkpoint-gate-study-research/lora_regression_mechanisms/lora.txt",
+      "retrieved_html_sha256": "8e12fd6d07c6317e79989775644aa1d5fdc58091ef12b5918d47a9298cea319c"
+    },
+    {
+      "id": "S2",
+      "title": "LIMA: Less Is More for Alignment",
+      "url": "https://arxiv.org/html/2305.11206",
+      "canonical_id": "arXiv:2305.11206v1",
+      "version_date": "2023-05-18",
+      "access_date": "2026-11-20",
+      "inspection_method": "Retrieved complete primary-source HTML by HTTPS, extracted visible text with Python HTMLParser, then read the listed relevant sections. No search snippets used.",
+      "inspection_depth": "Abstract, Sections 2, 3, 5, and 6; inspected data construction, optimizer and checkpoint selection, diversity/quality/quantity ablations, and dialogue extension.",
+      "evidence_excerpt_or_observed_finding": "The paper defines the Superficial Alignment Hypothesis; trains a 65B LLaMA with 1,000 curated examples; and reports improved dialogue behavior after adding 30 dialogue chains. Its 7B diversity experiments acknowledge source confounds, and checkpoint choice used a 50-example development set.",
+      "relevance": "Small amounts of training can change output style and conditional behavior. This is evidence for testing format and state-distribution changes, not proof that the present regression is merely superficial.",
+      "local_evidence_file": "/Users/zeeshan8281/Documents/Codex/2026-11-19/can-you-x20/work/checkpoint-gate-study-research/lora_regression_mechanisms/lima.txt",
+      "retrieved_html_sha256": "056dd99e5ea0452189f627ebc90272bd4141cd082fba6ba57e516eeb810cef24"
+    },
+    {
+      "id": "S3",
+      "title": "LoRA Learns Less and Forgets Less",
+      "url": "https://arxiv.org/html/2405.09673",
+      "canonical_id": "arXiv:2405.09673v2",
+      "version_date": "2024-09-20",
+      "access_date": "2026-11-20",
+      "inspection_method": "Retrieved complete primary-source HTML by HTTPS, extracted visible text with Python HTMLParser, then read the listed relevant sections. No search snippets used.",
+      "inspection_depth": "Abstract, Sections 4.2-4.3 and 4.7, Appendix B.2 and C; inspected forgetting metrics, training-duration effects, learning/forgetting comparisons, and rank/alpha/learning-rate sweeps.",
+      "evidence_excerpt_or_observed_finding": "Across the studied code/math settings, LoRA generally retains more source-domain performance than full finetuning, while forgetting increases with training duration; the paper reports sensitivity to rank, target modules, alpha, and learning rate. Some high-rank math runs forget nearly as much as full finetuning.",
+      "relevance": "Forgetting is possible under LoRA, but this study does not establish a mechanism for rank-8 Qwen with 96 assistant turns. Its recommended hyperparameters must not be transplanted as validated for this model.",
+      "local_evidence_file": "/Users/zeeshan8281/Documents/Codex/2026-11-19/can-you-x20/work/checkpoint-gate-study-research/lora_regression_mechanisms/lora_forgetting.txt",
+      "retrieved_html_sha256": "942b68b2d2a608ae2048a65a4153ffc3fc983c0a982f8501b191837f7502ecc7"
+    },
+    {
+      "id": "S4",
+      "title": "An Empirical Study of Catastrophic Forgetting in Large Language Models During Continual Fine-tuning",
+      "url": "https://arxiv.org/html/2308.08747",
+      "canonical_id": "arXiv:2308.08747v5",
+      "version_date": "2025-01-05",
+      "access_date": "2026-11-20",
+      "inspection_method": "Retrieved complete primary-source HTML by HTTPS, extracted visible text with Python HTMLParser, then read the listed relevant sections. No search snippets used.",
+      "inspection_depth": "Abstract, experimental setting, Table 4 and Section 5.4/Figure 6 discussion; inspected model/benchmark scope and the general-instruction mixing intervention.",
+      "evidence_excerpt_or_observed_finding": "The work measures domain-knowledge, reasoning, and reading-comprehension retention during sequential instruction tuning. It mixes 10,000 ALPACA general-instruction examples with continual-task data and reports partial retention improvement; one LLAMA-7B MMLU-human example goes from 34.72% initially to 26.8% without mixing and 30% with mixing.",
+      "relevance": "Replay/mixing is existing prior work. A present mixing arm requires a matched training-dose control before attributing retention to diversity.",
+      "local_evidence_file": "/Users/zeeshan8281/Documents/Codex/2026-11-19/can-you-x20/work/checkpoint-gate-study-research/lora_regression_mechanisms/catastrophic.txt",
+      "retrieved_html_sha256": "f9d11773e3f41614268bc56c121f60ae7a3c150e7b47ae08dd423a63f744127d"
+    },
+    {
+      "id": "S5",
+      "title": "TRL documentation: SFT Trainer",
+      "url": "https://huggingface.co/docs/trl/sft_trainer",
+      "canonical_id": "https://huggingface.co/docs/trl/sft_trainer",
+      "version_date": "[uncertain] No publication or revision date verified for this living documentation page.",
+      "access_date": "2026-11-20",
+      "inspection_method": "Retrieved complete primary-source HTML by HTTPS, extracted visible text with Python HTMLParser, then read the listed relevant sections. No search snippets used.",
+      "inspection_depth": "Official documentation body: dataset formats, assistant-only loss, completion-only loss, PEFT, EOS/chat-template alignment, and tool calling.",
+      "evidence_excerpt_or_observed_finding": "assistant_only_loss requires generation/endgeneration markers in the chat template; completion-only loss masks prompts; the documentation warns to align EOS with the chat template and gives a Qwen2.5 im_end example.",
+      "relevance": "Use as implementation reference. The project implements its own masking through Baseten and is not using TRL, so TRL defaults or Qwen2.5 EOS settings do not establish the correct Qwen3.6 configuration.",
+      "local_evidence_file": "/Users/zeeshan8281/Documents/Codex/2026-11-19/can-you-x20/work/checkpoint-gate-study-research/lora_regression_mechanisms/sft_trainer.txt",
+      "retrieved_html_sha256": "9642a7d79241835055d20dd56ce60519352df29c05367c8fb3109ed318439685"
+    },
+    {
+      "id": "S6",
+      "title": "Transformers documentation: Chat templates",
+      "url": "https://huggingface.co/docs/transformers/chat_templating",
+      "canonical_id": "https://huggingface.co/docs/transformers/chat_templating",
+      "version_date": "[uncertain] No publication or revision date verified for this living documentation page.",
+      "access_date": "2026-11-20",
+      "inspection_method": "Retrieved complete primary-source HTML by HTTPS, extracted visible text with Python HTMLParser, then read the listed relevant sections. No search snippets used.",
+      "inspection_depth": "Official documentation body: apply_chat_template, special tokens, add_generation_prompt, continue_final_message, and training preprocessing.",
+      "evidence_excerpt_or_observed_finding": "When formatting with tokenize=False then tokenizing separately, the docs require add_special_tokens=False to avoid duplicate control tokens. Full training conversations are shown with add_generation_prompt=False.",
+      "relevance": "The project already avoids duplicate special tokens. A prefix-only prompt with an assistant generation marker followed by separately tokenized targets can be correct; the full-conversation training example does not by itself show a bug.",
+      "local_evidence_file": "/Users/zeeshan8281/Documents/Codex/2026-11-19/can-you-x20/work/checkpoint-gate-study-research/lora_regression_mechanisms/chat_templates.txt",
+      "retrieved_html_sha256": "7c0d0e8e038737c2412598c4cd3229ebeee42d15844e41ec3f2cc8ff71d514c0"
+    },
+    {
+      "id": "S7",
+      "title": "DeepSeekMath: Pushing the Limits of Mathematical Reasoning in Open Language Models",
+      "url": "https://arxiv.org/html/2402.03300",
+      "canonical_id": "arXiv:2402.03300v3",
+      "version_date": "2024-04-27",
+      "access_date": "2026-11-20",
+      "inspection_method": "Retrieved complete primary-source HTML by HTTPS, extracted visible text with Python HTMLParser, then read the listed relevant sections. No search snippets used.",
+      "inspection_depth": "Sections 4.1.1-4.1.2; inspected PPO/GRPO objective, group baseline, outcome reward normalization and per-token advantage assignment.",
+      "evidence_excerpt_or_observed_finding": "Outcome-supervised GRPO assigns each output token the group-normalized reward (reward minus group mean, divided by group standard deviation).",
+      "relevance": "Equal rewards contain no relative outcome learning signal. The project uses mean-centering without standard-deviation division and the provider cispo loss, so it should be described as a group-relative policy-gradient baseline rather than an exact reproduction of GRPO.",
+      "local_evidence_file": "/Users/zeeshan8281/Documents/Codex/2026-11-19/can-you-x20/work/checkpoint-gate-study-research/lora_regression_mechanisms/deepseekmath.txt",
+      "retrieved_html_sha256": "0c47a6ae39449617a80307dd18076c9fdbb7eb17adf4e771df29b6ca9d393e6a"
+    },
+    {
+      "id": "S8",
+      "title": "DAPO: An Open-Source LLM Reinforcement Learning System at Scale",
+      "url": "https://arxiv.org/html/2503.14476",
+      "canonical_id": "arXiv:2503.14476v2",
+      "version_date": "2025-05-20",
+      "access_date": "2026-11-20",
+      "inspection_method": "Retrieved complete primary-source HTML by HTTPS, extracted visible text with Python HTMLParser, then read the listed relevant sections. No search snippets used.",
+      "inspection_depth": "Sections 3.2-3.4, Algorithm 1, and experiment-setting paragraphs; inspected zero-advantage groups, dynamic sampling, token-level weighting, and generation-budget considerations.",
+      "evidence_excerpt_or_observed_finding": "Section 3.2 explicitly states that equal-reward groups have zero advantage and zero policy gradients; it oversamples and filters all-correct/all-wrong prompts. Section 3.3 contrasts sample-level and token-level loss reduction.",
+      "relevance": "Zero-variance skipping and dynamic sampling are published ideas. Their compute tradeoffs on large synchronized long-reasoning training do not imply that oversampling is free for token-billed short SQL rollouts.",
+      "local_evidence_file": "/Users/zeeshan8281/Documents/Codex/2026-11-19/can-you-x20/work/checkpoint-gate-study-research/lora_regression_mechanisms/dapo.txt",
+      "retrieved_html_sha256": "eecec377627988d871263e7c26e912fdc8458eebe215d25059e4084263651458"
+    },
+    {
+      "id": "S9",
+      "title": "A Reduction of Imitation Learning and Structured Prediction to No-Regret Online Learning",
+      "url": "https://arxiv.org/html/1011.0686",
+      "canonical_id": "arXiv:1011.0686v3",
+      "version_date": "2011-03-16",
+      "access_date": "2026-11-20",
+      "inspection_method": "Retrieved complete primary-source HTML by HTTPS, extracted visible text with Python HTMLParser, then read the listed relevant sections. No search snippets used.",
+      "inspection_depth": "Abstract, Section 1 and Section 3 algorithm; inspected learner-induced state distribution and dataset aggregation procedure.",
+      "evidence_excerpt_or_observed_finding": "A learner action can change future observations, invalidating the expert-state i.i.d. assumption. DAgger collects states under the learned policy and aggregates expert labels on those states.",
+      "relevance": "Expert SQL/tool-result prefixes may fail to cover learner-generated states. This motivates cross-context evaluation or labelled recovery states, but does not prove long-horizon compounding in a two-tool-call task.",
+      "local_evidence_file": "/Users/zeeshan8281/Documents/Codex/2026-11-19/can-you-x20/work/checkpoint-gate-study-research/lora_regression_mechanisms/dagger.txt",
+      "retrieved_html_sha256": "268ecf598ed6ba1ee212275c031fe0113679f6f59b68b9d7e4636deda3f5cd85"
+    },
+    {
+      "id": "S10",
+      "title": "Tülu 3: Pushing Frontiers in Open Language Model Post-Training",
+      "url": "https://arxiv.org/html/2411.15124",
+      "canonical_id": "arXiv:2411.15124v5",
+      "version_date": "2025-04-14",
+      "access_date": "2026-11-20",
+      "inspection_method": "Retrieved complete primary-source HTML by HTTPS, extracted visible text with Python HTMLParser, then read the listed relevant sections. No search snippets used.",
+      "inspection_depth": "Data-mixture development, Section 4 controlled SFT experiments/Table 10, Section 7.4.1 unseen evaluations, and long-context/multi-turn limitations.",
+      "evidence_excerpt_or_observed_finding": "The paper ablates diverse chat, safety, persona, and math data; evaluates decisions on a separately held-out unseen suite; and observes some development-overfitting and output-format transfer between math evaluations.",
+      "relevance": "Supports matched data-mix controls and a separate confirmation suite. It is a much larger post-training program and does not supply a micro-SFT regression mechanism.",
+      "local_evidence_file": "/Users/zeeshan8281/Documents/Codex/2026-11-19/can-you-x20/work/checkpoint-gate-study-research/lora_regression_mechanisms/tulu3.txt",
+      "retrieved_html_sha256": "a9c21a5fca84f48356f15ebc1f25b2c3223838732a2cceb7c0ac7257144b28e5"
+    },
+    {
+      "id": "S11",
+      "title": "Semantic Evaluation for Text-to-SQL with Distilled Test Suites",
+      "url": "https://arxiv.org/html/2010.02840",
+      "canonical_id": "arXiv:2010.02840v1",
+      "version_date": "2020-10-06",
+      "access_date": "2026-11-20",
+      "inspection_method": "Retrieved complete primary-source HTML by HTTPS, extracted visible text with Python HTMLParser, then read the listed relevant sections. No search snippets used.",
+      "inspection_depth": "Abstract, introduction examples, test-suite rationale, and Section 6.4; inspected single-database false positives and finite multi-database execution evaluation.",
+      "evidence_excerpt_or_observed_finding": "A semantically wrong query may match the gold denotation on a single database. The method distills databases from random candidates using gold-query coverage and compares denotations across the suite; it approximates semantic accuracy, rather than proving arbitrary SQL equivalence.",
+      "relevance": "The planned eight-perturbation replay is an application of established execution-testing ideas. It is not the published coverage-distillation procedure and not an end-to-end agent counterfactual evaluation.",
+      "local_evidence_file": "/Users/zeeshan8281/Documents/Codex/2026-11-19/can-you-x20/work/checkpoint-gate-study-research/lora_regression_mechanisms/test_suites.txt",
+      "retrieved_html_sha256": "024158a5a4de2f2b5ee5cc1b1f6d55434b20de9493da098352ba68832fd99b24"
+    }
+  ],
+  "source_audit": {
+    "distinct_external_primary_sources_inspected": 11,
+    "composition": "Nine primary research papers and two first-party implementation documentation pages; four additional local project files inspected separately and not counted as external sources.",
+    "retrieval": "All eleven external URLs returned substantive HTML and were saved locally. No source was admitted from a search-result snippet; no secondary blog was used as primary evidence.",
+    "access_failures": [],
+    "procedural_notes": "One scratch helper invocation failed because __file__ was absent; it made no source retrieval and was corrected immediately. This was not a source access failure. Terminal text excerpt output was narrowed after overly broad searches; final evidence claims use sections explicitly inspected.",
+    "deduplication": "Each arXiv work is counted once at its actually retrieved version. The two documentation pages are distinct API topics; they do not count as separate experimental studies. URLs using unversioned /html endpoints returned the version dates recorded above.",
+    "time_scope": "Research date is 2026-11-20. Paper dates are retrieved-version dates, not necessarily initial publication dates. Living documentation revision dates were not verified. This focused audit does not claim exhaustive coverage through the research date.",
+    "uncertain_facts": [
+      "Exact mechanism of this SFT regression",
+      "Exact provider loss normalization and EOS/turn-marker contract",
+      "Provider alpha/target modules and immutable base revision if not recorded elsewhere",
+      "Actual invoice and available remaining budget",
+      "Hosted GPU model/count",
+      "Local quantized model/runtime feasibility and adapter compatibility",
+      "Whether the proposed replication fits the remaining cap",
+      "Publication priority or novelty beyond the eleven inspected sources"
+    ],
+    "evidence_classes": "Existing pilot observations are explicitly attributed to the supplied task; static code observations are new inspections; all proposed training/inference tests are unrun. Arithmetic planning quantities are labeled calculations rather than empirical observations."
+  },
+  "uncertain": [
+    "findings",
+    "recommended_design",
+    "implementation_checks",
+    "budget_and_feasibility",
+    "claim_boundaries",
+    "sources",
+    "source_audit"
+  ]
+}

@@ -1,0 +1,198 @@
+{
+  "kind": "retrospective_static_sql_replay",
+  "version": 1,
+  "new_model_calls": 0,
+  "new_cloud_spend_usd": 0,
+  "complete": true,
+  "pilot_dataset_sha256": "55c90270d116da1c0f593ac494c5fd7d1e32c2340df145d20a34920df755765c",
+  "perturbations_per_task": 8,
+  "schema_question_unchanged": true,
+  "checks": {
+    "original_final_scores": 400,
+    "original_tool_rows": 400,
+    "gold_sql_vs_python_oracle": 1800,
+    "candidate_sql_replays": 3200
+  },
+  "arms": {
+    "base": {
+      "all": {
+        "n": 200,
+        "original_correct": 188,
+        "strict_valid_tasks": 0,
+        "last_query_exact_original": 190,
+        "static_suite_survival": 190,
+        "original_success_and_suite_survival": 188,
+        "failure_categories": {
+          "correct_final": 188,
+          "wrong_final_and_inexact_last_query": 10,
+          "wrong_final_despite_exact_last_query": 2
+        }
+      },
+      "anti_null": {
+        "n": 50,
+        "original_correct": 49,
+        "strict_valid_tasks": 0,
+        "last_query_exact_original": 49,
+        "static_suite_survival": 49,
+        "original_success_and_suite_survival": 49,
+        "failure_categories": {
+          "correct_final": 49,
+          "wrong_final_and_inexact_last_query": 1
+        }
+      },
+      "distinct_pairs": {
+        "n": 50,
+        "original_correct": 48,
+        "strict_valid_tasks": 0,
+        "last_query_exact_original": 50,
+        "static_suite_survival": 50,
+        "original_success_and_suite_survival": 48,
+        "failure_categories": {
+          "correct_final": 48,
+          "wrong_final_despite_exact_last_query": 2
+        }
+      },
+      "latest_window": {
+        "n": 50,
+        "original_correct": 41,
+        "strict_valid_tasks": 0,
+        "last_query_exact_original": 41,
+        "static_suite_survival": 41,
+        "original_success_and_suite_survival": 41,
+        "failure_categories": {
+          "correct_final": 41,
+          "wrong_final_and_inexact_last_query": 9
+        }
+      },
+      "relational_division": {
+        "n": 50,
+        "original_correct": 50,
+        "strict_valid_tasks": 0,
+        "last_query_exact_original": 50,
+        "static_suite_survival": 50,
+        "original_success_and_suite_survival": 50,
+        "failure_categories": {
+          "correct_final": 50
+        }
+      },
+      "both_originally_correct": {
+        "n": 110,
+        "static_suite_survival": 110
+      }
+    },
+    "sft": {
+      "all": {
+        "n": 200,
+        "original_correct": 112,
+        "strict_valid_tasks": 200,
+        "last_query_exact_original": 112,
+        "static_suite_survival": 112,
+        "original_success_and_suite_survival": 111,
+        "failure_categories": {
+          "wrong_final_and_inexact_last_query": 87,
+          "correct_final": 112,
+          "wrong_final_despite_exact_last_query": 1
+        }
+      },
+      "anti_null": {
+        "n": 50,
+        "original_correct": 13,
+        "strict_valid_tasks": 50,
+        "last_query_exact_original": 13,
+        "static_suite_survival": 13,
+        "original_success_and_suite_survival": 13,
+        "failure_categories": {
+          "wrong_final_and_inexact_last_query": 37,
+          "correct_final": 13
+        }
+      },
+      "distinct_pairs": {
+        "n": 50,
+        "original_correct": 49,
+        "strict_valid_tasks": 50,
+        "last_query_exact_original": 50,
+        "static_suite_survival": 50,
+        "original_success_and_suite_survival": 49,
+        "failure_categories": {
+          "correct_final": 49,
+          "wrong_final_despite_exact_last_query": 1
+        }
+      },
+      "latest_window": {
+        "n": 50,
+        "original_correct": 0,
+        "strict_valid_tasks": 50,
+        "last_query_exact_original": 0,
+        "static_suite_survival": 0,
+        "original_success_and_suite_survival": 0,
+        "failure_categories": {
+          "wrong_final_and_inexact_last_query": 50
+        }
+      },
+      "relational_division": {
+        "n": 50,
+        "original_correct": 50,
+        "strict_valid_tasks": 50,
+        "last_query_exact_original": 49,
+        "static_suite_survival": 49,
+        "original_success_and_suite_survival": 49,
+        "failure_categories": {
+          "correct_final": 50
+        }
+      },
+      "both_originally_correct": {
+        "n": 110,
+        "static_suite_survival": 109
+      }
+    }
+  },
+  "paired_original_accuracy": {
+    "n": 200,
+    "delta": -0.38,
+    "wins": 2,
+    "losses": 78,
+    "ties": 120,
+    "stratified_task_bootstrap_95": [
+      -0.425,
+      -0.335
+    ],
+    "exploratory_exact_mcnemar_p": 5.3617847305687254e-21,
+    "bootstrap_replicates": 10000,
+    "unit": "Original task, stratified by fixed query family and fault; not variants or seeds",
+    "limitation": "Conditional on one training run and four fixed templates. Exploratory, not preregistered."
+  },
+  "paired_static_suite": {
+    "n": 200,
+    "delta": -0.39,
+    "wins": 1,
+    "losses": 79,
+    "ties": 120,
+    "stratified_task_bootstrap_95": [
+      -0.43,
+      -0.345
+    ],
+    "exploratory_exact_mcnemar_p": 1.3400325923359048e-22,
+    "bootstrap_replicates": 10000,
+    "unit": "Original task, stratified by fixed query family and fault; not variants or seeds",
+    "limitation": "Conditional on one training run and four fixed templates. Exploratory, not preregistered."
+  },
+  "denominators": {
+    "all_tasks": 200,
+    "both_originally_correct": 110
+  },
+  "limitations": [
+    "Designed after viewing the public pilot, so this is exploratory retrospective analysis.",
+    "Standalone last-query equivalence is not end-to-end agent accuracy on changed databases.",
+    "An agent may intentionally retrieve extra rows and postprocess them correctly.",
+    "Variants share a source task and are not independent statistical observations.",
+    "Finite suites can expose counterexamples but cannot prove SQL equivalence.",
+    "Original elapsed time includes provider/network/queueing; GPU model and count remain undisclosed."
+  ],
+  "source_hashes": {
+    "base.json": "ecfc22267f4c86d44df214f7beb08582d2552bfde6c0eaf749201f0fbb2b2cb5",
+    "sft.json": "7569b146c9c176fde486a35a65c0827ca1421012554a4c4769ca5eef234a38cc",
+    "results.json": "e1b052fc8a21dcbd5ce122aecddd5915c72d99d6e66f74fcfdb06a7414799135",
+    "manifest.json": "1db9596e1a17580c91ad5416424ffb915c399e80560059af8ec4dbbf0f1d6640",
+    "audit.py": "5db5103471195796296d168af0a1bda05296f9aa44d7ce489af868a7d3b83d4c"
+  }
+}

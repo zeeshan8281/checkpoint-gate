@@ -1,0 +1,405 @@
+{
+  "topic": {
+    "track": "Study design and inference",
+    "decision": "Make the existing Checkpoint Gate experiment releasable as a transparent retrospective failure analysis, and define the smallest defensible prospective study of small-data LoRA under SQL query-family shift.",
+    "as_of": "2026-11-20",
+    "scope": "Research only. No training, model calls, support contact, publication, or paid cloud work was performed by this research track."
+  },
+  "findings": {
+    "existing_measurements": [
+      {
+        "status": "Existing measurements supplied in the task brief; this track did not independently rerun the model experiment.",
+        "result": "Qwen/Qwen3.6-35B-A3B on Baseten Loops serverless; rank-8 LoRA; one training seed; 12 SFT updates; 96 assistant-turn demonstrations from 83 tasks. Base 188/200 (94%); SFT 112/200 (56%); 78 regressions and 2 improvements."
+      },
+      {
+        "status": "Derived arithmetic from supplied counts, not new model measurements.",
+        "result": "SFT minus base accuracy is -38 percentage points. The paired table is 110 both correct, 78 base-only correct, 2 SFT-only correct, and 10 both incorrect."
+      },
+      {
+        "status": "Existing family marginals, with derived percentage-point changes.",
+        "result": "Latest-row 41/50 to 0/50 (-82 points); NULL-safe anti-join 49/50 to 13/50 (-72 points); distinct pairs 48/50 to 49/50 (+2 points); relational division 50/50 to 50/50 (0 points). Family marginals alone do not uniquely recover each family’s paired table; use task-level logs."
+      },
+      {
+        "status": "Existing RL diagnostic, not an RL efficacy result.",
+        "result": "All 18 groups of four rollouts succeeded and no RL updates occurred. Report 72 sampled rollouts nested in 18 groups; do not present an RL-trained model or an SFT-versus-RL learning comparison."
+      }
+    ],
+    "evidence_backed_implications": [
+      {
+        "finding": "Entity replacement or random task splitting does not establish query-family generalization. Define canonical SQL structures and split semantic families or query templates before training.",
+        "sources": [
+          "S1"
+        ]
+      },
+      {
+        "finding": "Pair correctness outcomes on the same tasks. Bootstrap rows must preserve all compared model/seed outcomes and all variants derived from a task.",
+        "sources": [
+          "S2",
+          "S3",
+          "S6"
+        ]
+      },
+      {
+        "finding": "A task bootstrap with four fixed families estimates task-instance uncertainty conditional on those families and trained checkpoints. It cannot establish representativeness across SQL families, training seeds, models, or corpora.",
+        "sources": [
+          "S3",
+          "S5",
+          "S6"
+        ]
+      },
+      {
+        "finding": "Treat the entire training-plus-checkpoint-selection procedure as the object evaluated on untouched data. Validation selection is established practice, so Checkpoint Gate needs either useful engineering transparency or demonstrable policy value beyond standard validation.",
+        "sources": [
+          "S4",
+          "S7"
+        ]
+      },
+      {
+        "finding": "A small nonsignificant regression is not evidence of noninferiority. A useful margin must be justified before outcomes are inspected.",
+        "sources": [
+          "S10"
+        ]
+      },
+      {
+        "finding": "Replaying SQL on multiple databases can reveal accidental success on the original database. Passing a finite suite does not prove semantic equivalence.",
+        "sources": [
+          "S12"
+        ]
+      }
+    ],
+    "hypotheses_not_established": [
+      "[uncertain] The large family-specific failure could reflect demonstration-family coverage, excessive adaptation, target masking or serialization errors, optimizer settings, or dependence on accidental database properties. Existing aggregate counts distinguish none of these mechanisms.",
+      "[uncertain] The proposed regression-aware Gate may preserve accuracy under future query-family shift. It has not yet been tested prospectively against always-base or ordinary validation selection.",
+      "[uncertain] Results on new families may differ from the four public templates because of difficulty or distribution changes; a fresh test should not be described as an exact replication unless its target distribution matches."
+    ],
+    "retrospective_static_replay": {
+      "status": "The parent track is implementing a new zero-model-call retrospective experiment. This research track has no completed replay result to report.",
+      "measurement": "Replay each recorded eligible SQL on the original database and eight deterministic perturbed databases with unchanged schema and question, using independently checked gold SQL/Python oracles.",
+      "interpretation": "New measurements of recorded SQL under a fixed diagnostic perturbation suite. They are not new model-generated trajectories, fresh confirmation of the training intervention, or counterfactual interactive agent accuracy.",
+      "denominators": [
+        "For every model, report total original tasks (200), SQL extraction eligibility, original task successes, missing/unparseable SQL, and original-replay mismatches before reporting suite rates.",
+        "Conditional suite survival: originally successful eligible SQLs that pass all eight variants divided by originally successful eligible SQLs. Denominators are 188 and 112 only if eligibility exactly matches historical task success.",
+        "Historical-success-and-suite-survival composite: count original successes whose extracted SQL passes the suite, divided by all 200 original tasks. Count original failures and missing outputs as failures for this composite, and label the composite explicitly.",
+        "Matched robustness comparison: restrict to the same task IDs with eligible SQL and historical success under both models. The supplied paired counts imply at most 110 such tasks; extraction problems may reduce this. This conditional subset changes the estimand and must not replace the full-denominator table.",
+        "Variant-level pass counts can be diagnostic, but eight variants per query are not eight independent tasks. Report both the all-variants pass endpoint and a per-query fraction, with the original task as the resampling unit."
+      ],
+      "selection_and_validity": "Publish whether perturbations were chosen before inspecting model SQL or targeted after observing failures. Targeted deterministic variants are valid counterexamples within their constraints, but do not estimate a random production failure frequency. Oracle disagreements invalidate that case until repaired; show exclusions and affected scores."
+    }
+  },
+  "recommended_design": {
+    "primary_question": "For a fixed small-data adaptation recipe (the audited 96-turn corpus, rank 8, and 12 optimizer updates), what is the change in execution-correct task probability versus the unadapted base on fresh SQL query families absent from training demonstrations?",
+    "primary_estimand": {
+      "definition": "Delta_cond = (1/R) sum_r (1/F) sum_f E_{task ~ P_f}[Y_SFT(r,12,task) - Y_base(task)], with R=3 prespecified training seeds and F=8 prespecified held-out query families, equal family weights, binary end-to-end correctness, and a frozen inference/scoring protocol.",
+      "interpretation": "This is explicitly conditional on the three seeded training runs, fixed corpus, recipe, model revision, family set, and generator. It estimates task-instance generalization for that finite study configuration.",
+      "population_extension": "[uncertain] An expectation over new training seeds and a population of SQL families is a different, more ambitious estimand. Three seeds and eight selected families are not sufficient by declaration to estimate it precisely.",
+      "direction": "Use a two-sided effect interval for the primary contrast. Predefine the sign convention as SFT minus base. Do not switch from superiority to noninferiority after seeing results."
+    },
+    "smallest_controlled_experiment": {
+      "minimum": "Three independent fresh SFT runs, each exactly 12 updates, versus the same frozen base. No rank, learning-rate, model, corpus-size, or RL sweep. Cache checkpoints 0 and 12. Fix the corpus and protocol before the three runs; vary LoRA initialization/data-order seeds and log exactly which sources of randomness are controlled.",
+      "controls": "Audit a zero-update adapter locally where technically possible: its weights and scaling should reproduce the base transformation. Compare base and checkpoint 0 through the same harness. This integrity check distinguishes an update effect from adapter-loading or serialization changes; functional equivalence on the endpoint remains untested until execution is authorized.",
+      "gate_ablation": "On the same two candidates {base, step12}, compare final-SFT, always-base, ordinary validation selection, and one frozen regression-aware Gate. Gate on/off changes only the selection rule; all training, candidates, prompts, and candidate evaluation budgets stay identical.",
+      "ordinary_selection": "Choose the candidate with higher macro execution accuracy on the independent dev set; break ties toward base.",
+      "example_gate_to_freeze": "[uncertain] A simple operational rule is: choose SFT only if dev macro accuracy exceeds base and no prespecified dev family loses more than 5 percentage points; otherwise choose base. The 5-point tolerance is a proposed policy choice requiring substantive justification before collection. This is a heuristic safety filter, not a statistical noninferiority guarantee.",
+      "why_this_is_decisive": "It directly tests whether updating causes a repeatable task-level regression under the defined shift and whether family-aware selection changes decisions relative to a standard selector. If Gate and ordinary selection always agree, the experiment does not show incremental Gate value. If both always select base, it demonstrates rejection behavior but no benefit from adaptation.",
+      "optional_extension": "Only if priced within the reconciled budget before starting, save checkpoints 4 and 8 and expand the common candidate set to {0,4,8,12}. This adds inference cost even if checkpoint saving is cheap. Selection remains entirely on dev; test only the predeclared policies and final12. Freeze this choice before collection.",
+      "deferred_mechanism_ablation": "If a later mechanism study is justified, change only demonstration-family coverage at matched 96 assistant turns and matched training-token/update budget, with matched seeds. Do not combine corpus expansion, more updates, rank changes, and optimizer changes and call the result an explanation of the original failure."
+    },
+    "data_isolation": [
+      "Keep the public 200-task set as a retrospective diagnostic/dev resource. It cannot become a fresh confirmatory test by renaming its files or selecting a new reported subset.",
+      "Audit all 83 training tasks, multi-turn histories, assistant targets, schemas, canonical SQL structures, and generator lineages. Group every turn, paraphrase, database instance, and perturbation derived from one underlying task before any split.",
+      "Define a semantic-family taxonomy before model outputs are inspected. Query skeletons must differ meaningfully, beyond entity/schema renaming or constant substitution. Record the mapping and near-duplicate checks.",
+      "Proposed fresh dev: four held-out families with 20 independent task draws each (80 tasks). Proposed sealed test: eight other held-out families with 25 independent task draws each (200 tasks). These counts are a bounded pilot design, not a promise of 2-point precision. Dev and test families should be disjoint if claiming transfer of selection across families.",
+      "[uncertain] The ability to construct 12 valid families absent from the existing corpus has not been verified. If only unseen templates within known families are feasible, explicitly redefine the claim as template shift before execution; do not call it family shift.",
+      "Freeze generators, invariants, gold SQL, independent oracles, random seeds, model revision, checkpoint candidates, error handling, primary endpoint, and analysis code before opening test outputs. Hash a timestamped manifest. Blind model-condition labels during manual error adjudication where practical.",
+      "Use matching task IDs and database snapshots for all models; freeze decoding parameters, tool interface, maximum turns/tokens, timeouts, and correctness rules. If the endpoint remains nondeterministic, preserve repeated inference draws as a separate level and do not treat them as additional training seeds.",
+      "Keep a separate in-family retention test only as a prespecified secondary endpoint if affordable. Query-family shift, schema shift, language variation, and database-value robustness are distinct dimensions; do not silently pool them."
+    ],
+    "paired_analysis": {
+      "point_estimates": "Publish the seed-by-family accuracy matrix; per-seed paired differences; macro and micro accuracy; both-correct/base-only/SFT-only/both-wrong counts; regression and improvement rates with their original-task denominators. Macro is primary; micro is secondary if family counts differ.",
+      "primary_interval": "Use a paired, family-stratified task bootstrap: within each fixed family resample original task IDs with replacement, carry the complete vector of outcomes for all three seeds and models/policies, then recompute the mean over seeds and equal-weight family macro difference. Use a fixed RNG and at least 10,000 resamples. Label this an approximate task-sampling interval conditional on the fitted checkpoints and selected families.",
+      "clusters": "If several test examples derive from a common latent problem or database, resample that root cluster rather than its children. Perturbed databases and paraphrases remain inside the task cluster. Record the number of root clusters.",
+      "seed_uncertainty": "Show all three seed effects, mean, SD, min/max, and family interactions. Do not turn 3 x 200 outcomes into 600 independent training replications. A seed-level t interval has only 2 degrees of freedom and strong assumptions; a bootstrap over three seeds is unstable and can miss unobserved modes. Report either only conditional inference or a clearly caveated seed sensitivity analysis.",
+      "family_uncertainty": "Do not bootstrap the four original templates and claim broad SQL inference. For the prospective eight families, a family-resampling analysis is only an exploratory sensitivity check unless those families were sampled from a defined frame; selecting families by convenience does not become population sampling via bootstrap.",
+      "crossed_structure": "Training seeds apply across every family, and the same task/base outcome is shared across trained models. If exploring joint uncertainty, resample seed IDs as whole runs and task IDs within family, preserving all paired vectors. Do not independently resample a different seed for every task/family cell.",
+      "mcnemar": "For a single fixed checkpoint and a suitably independent/exchangeable task sample, an exact McNemar/binomial discordance test can supplement the effect interval. It does not estimate variation across training seeds or families. The supplied 78-to-2 discordance gives a two-sided arithmetic value about 5.36e-21 under that simplified model, but this is retrospective and must not be marketed as confirmatory generalization evidence.",
+      "multiple_comparisons": "Keep one primary contrast at alpha 0.05. Treat family tables as descriptive. If testing secondary Gate-versus-final, Gate-versus-standard-selector, and retention/family hypotheses, prespecify the family of claims and apply Holm adjustment or a prespecified hierarchy. Report every attempted contrast and checkpoint; never select the best test checkpoint and then analyze it as if prespecified.",
+      "degenerate_results": "A bootstrap interval that collapses because all observed outcomes agree does not prove zero population risk. Use a suitable non-asymptotic bound for the specific iid binary quantity when its assumptions hold, and disclose unmeasured family/seed uncertainty."
+    },
+    "sample_size_and_noninferiority": {
+      "minimum_seeds": "Three seeds are a practical minimum to expose obvious training instability. They are not an adequate sample size automatically. If all three have similar large losses, report that fact; do not claim stable performance across arbitrary seeds.",
+      "margin": "If noninferiority is a desired claim, define m in absolute percentage points from the application’s tolerated degradation before testing. Require an appropriate one-sided lower confidence bound for Delta to exceed -m. The statement p>0.05 for a difference is insufficient.",
+      "illustrative_calculation": "For one fixed checkpoint with independent paired binary task differences D in {-1,0,1}, discordance q and true mean near zero, Var(D) is approximately q. A normal planning approximation for one-sided alpha=0.05 and 80% power is n approximately q*(1.645+0.842)^2/m^2. At q=0.10, m=0.02 needs about 1,546 pairs and m=0.05 about 248; at q=0.40 these rise to about 6,183 and 990. These are planning illustrations, not an exact paired test or a multilevel power analysis.",
+      "pitfall": "Do not use the observed -38-point catastrophic loss as the effect size to power a future claim of 2-point noninferiority. The latter is much harder and depends on near-zero discordance, seeds, and clusters.",
+      "zero_fail_example": "For n independent identically distributed Bernoulli trials with zero failures, the one-sided 95% upper failure bound is 1-0.05^(1/n): 5.82% at n=50 and 1.49% at n=200. Neither calculation supplies a bound across four fixed SQL families or on a paired accuracy difference.",
+      "pilot_target": "The 200-task, three-seed plan is intended to detect large practically important effects and estimate uncertainty transparently. It should end as a pilot if the desired margin remains unresolved. More task variants cannot substitute for more seed or family replication."
+    },
+    "sequential_decisions": [
+      "Stage 0, no cloud use: validate generators/oracles, audit splits and target serialization, freeze the study protocol, and reconcile budget. Any unresolved oracle or split fault is a reason to repair the protocol before a prospective test exists.",
+      "Stage 1, only after a separate authorization and verified feasibility: use a development-only pilot for token lengths, reliability, and cost. It can inform a new frozen confirmatory sample size. Keep these pilot observations out of the sealed test.",
+      "Stage 2: choose one fixed sample size and run the three seeded recipes, then open the sealed test once. Stop for budget/technical faults under rules written in advance and report incompleteness, rather than claiming a successful result from a favorable prefix.",
+      "Do not repeatedly check fixed-95% intervals and stop when favorable. If early statistical decisions are essential, preregister valid alpha spending or a confidence sequence at the actual independent sampling unit. A task-level confidence sequence will not repair dependence from common checkpoints or infer a new-seed population.",
+      "A new corpus, checkpoint grid, Gate threshold, or family taxonomy after test inspection creates a new development cycle and requires a new untouched test for confirmation."
+    ]
+  },
+  "implementation_checks": {
+    "status": "Recommendations and schema only; repository behavior was not executed or modified by this track. [uncertain] All functional checks below remain unverified unless separately reported by the parent experiment.",
+    "minimum_row_schema": [
+      "study_id",
+      "protocol_hash",
+      "split",
+      "root_task_id",
+      "task_id",
+      "semantic_family_id",
+      "canonical_template_id",
+      "schema_hash",
+      "database_hash",
+      "generator_version",
+      "generator_seed",
+      "oracle_version",
+      "gold_sql_hash",
+      "model_revision",
+      "adapter_hash",
+      "training_seed",
+      "checkpoint_step",
+      "decoding_seed_if_supported",
+      "decoding_config_hash",
+      "prompt_hash",
+      "tool_harness_version",
+      "original_success",
+      "sql_extraction_status",
+      "candidate_sql_hash",
+      "execution_status",
+      "oracle_match",
+      "tokens_input",
+      "tokens_output",
+      "latency_seconds",
+      "request_id",
+      "cost_estimate_usd",
+      "billed_cost_usd_when_known"
+    ],
+    "training_audit": [
+      "Count 83 unique tasks separately from 96 assistant turns; report effective examples/tokens per update and number of passes through tasks.",
+      "Check trainable parameters, LoRA target modules, rank, alpha/scaling, dropout, precision, optimizer, learning rate, clipping, and checkpoint serialization.",
+      "Confirm only intended assistant target tokens contribute to SFT loss; ensure validation/test content is absent from teacher histories and packed batches.",
+      "Keep raw errors, aborted runs, rejected adapters, and every candidate checkpoint; no silent removal of inconvenient seeds."
+    ],
+    "replay_schema": [
+      "original_task_id",
+      "model_condition",
+      "original_success",
+      "extracted_query_id",
+      "extraction_rule_version",
+      "variant_id",
+      "variant_generator_hash",
+      "variant_seed",
+      "constraint_validation_status",
+      "gold_sql_result_hash",
+      "python_oracle_result_hash",
+      "candidate_execution_status",
+      "candidate_result_hash",
+      "denotation_match",
+      "original_replay_match",
+      "all_variants_pass"
+    ],
+    "replay_validity_checks": [
+      "Preserve schema constraints and the natural-language question’s semantics; changes in data may correctly change the answer.",
+      "Check ties, duplicate multiplicities, NULL behavior, empty relations, relational-division vacuity, and ordering only when the question requires it.",
+      "Use explicit bag/set/order semantics in result comparison; arbitrary sorting must not conceal an ordering requirement or multiplicity error.",
+      "Validate gold SQL independently against Python for every generated database, not merely one example per family.",
+      "Store a concrete counterexample database for each disagreement. Keep original-database agreement separate from perturbation survival.",
+      "Do not treat raw model SQL as unrestricted code: read-only SQL execution and resource limits preserve the evaluator and give explicit timeout/error outcomes."
+    ],
+    "analysis_checks": [
+      "Require unique root_task_id/model/seed/checkpoint keys and a complete paired grid or explicit missingness.",
+      "Verify that aggregate paired counts reconstruct both model accuracies.",
+      "Make bootstrap seeds, resampling unit, family weights, and confidence level machine-readable.",
+      "Provide an analysis-only command that regenerates tables from recorded rows without model calls.",
+      "Gate selection should output its candidate set, dev scores, rejection reasons, and selected checkpoint before any test scores are readable."
+    ]
+  },
+  "budget_and_feasibility": {
+    "current_bound": "Task brief states initial total cloud budget below $25 and conservative reservations so far of $0.889506. Arithmetic headroom to $25 is $24.110494; it is not verified spendable balance because actual invoice/reservation reconciliation is unresolved.",
+    "known_local_hardware": "Apple M5 Pro with 48 GiB unified memory, as supplied in the task brief. No local model-throughput or training-capability benchmark was performed.",
+    "unknown_cloud_hardware": "[uncertain] Actual Baseten GPU model and count are undisclosed; support ticket #44313 is pending. This track did not contact support. Do not translate serverless wall time into GPU-hours or efficiency.",
+    "local_work": "Corpus/split audits, SQL generator and oracle validation, the deterministic replay of recorded SQL, sample-size calculations, bootstrap analysis, and release packaging can proceed locally without paid model calls. Local runtime and energy were not measured.",
+    "minimum_call_count": "Under a reproducible single-response decoding protocol, base plus three final adapters evaluated on 80 dev and 200 fresh test tasks require 4*(80+200)=1,120 complete task trajectories, before retries, pilot calls, or extra checkpoints. A trajectory may involve multiple requests and large variable token counts. Caching repeated always-base or policy-selected outputs avoids duplicate evaluation calls.",
+    "extension_cost": "With 0/4/8/12 for three seeds, the distinct candidate count is at most 10 including shared base. Full candidate dev evaluation alone is 800 trajectories; testing all candidates would raise total evaluation to 2,800. Test only prespecified final/policy-selected candidates if checkpoint-level test curves are not a research objective.",
+    "pricing_plan": "[uncertain] A dollar cost cannot be verified from the information supplied here. Before training, price training-token/update charges, dev/test trajectory tokens, retries, idle/reservation charges, and taxes/credits as applicable; use reconciled incurred charges plus worst-case commitments to enforce the cap. If the minimum design does not fit, release the retrospective study and an explicitly unexecuted protocol.",
+    "no_efficiency_claim": "Comparing a Mac to unknown serverless accelerators would not identify GPU efficiency, memory efficiency, or training speed. Published LoRA resource results do not substitute for measurements of this stack."
+  },
+  "claim_boundaries": {
+    "release_now": [
+      "A reproducible one-seed case study: under the recorded configuration, SFT decreased task accuracy from 94% to 56% on the four fixed synthetic families.",
+      "A paired descriptive failure breakdown, with explicit original task counts, training data size, limited updates, and no executed RL updates.",
+      "After the parent replay completes and passes oracle checks, a retrospective semantic stress test of recorded SQL on a disclosed finite perturbation suite. Its results must retain the conditional/composite denominators above."
+    ],
+    "not_supported": [
+      "LoRA generally harms SQL agents, or rank 8 is intrinsically unsuitable.",
+      "The demonstration corpus, overtraining, catastrophic forgetting, or a particular tool-call mechanism caused the regression without an isolating ablation.",
+      "Checkpoint Gate is a new statistical validation method merely because it selects the better dev checkpoint or falls back to base.",
+      "A safe, noninferior, or robust deployed agent follows from a nonsignificant test, three seeds, 50/50 on one template, or all variants passing.",
+      "The 72 successful RL rollouts demonstrate RL learning efficacy; there were zero RL updates.",
+      "The public 200-task set or post-hoc perturbations are untouched prospective confirmation.",
+      "A cloud GPU-efficiency, GPU-hour, or local-versus-cloud speed claim from unidentified hardware."
+    ],
+    "novelty_assessment": "Validation selection, held-out evaluation, query-based splitting, paired testing, and SQL test suites all have direct primary precedents. [uncertain] A broader literature search would be required to establish uniqueness of any specific Gate policy. A credible contribution could instead be an unusually transparent inexpensive failure study, a well-tested replay/evaluation artifact, or a prespecified selection-policy comparison with demonstrated benefit beyond ordinary validation and always-base.",
+    "gate_success_criteria": "To claim empirical value beyond ordinary selection, show out-of-test design of the rule, identical candidate/search budgets, prospective performance against ordinary selector and always-base, acceptance frequency, retained adaptation benefits, and uncertainty on rejected/accepted cases. Avoid per-task oracle routing based on test labels; select one checkpoint using dev and evaluate that selected policy as deployed.",
+    "honest_release_checklist": [
+      "Separate sections/tables for historical measurements, newly executed static replay, literature-backed methods, hypotheses, and future protocol.",
+      "Release anonymized/raw task-level outcomes and traces where permissions allow, generators, oracle checks, manifests, code revision, dependency lock information, adapter artifacts or reproducible identifiers, and analysis scripts.",
+      "Disclose that the original test set is public, all test-informed design choices, corpus lineage, excluded cases, failed runs, and every explored checkpoint.",
+      "Report exact model/API revision, LoRA configuration, seed controls, inference parameters, and provider nondeterminism limits.",
+      "Include paired contingency tables and seed/family matrices; label what each confidence interval does and does not cover.",
+      "Document SQL result semantics and independent-oracle agreement, alongside a replay-only reproduction command that requires no API credentials.",
+      "Report reservation estimates separately from reconciled billed charges and unknown hardware explicitly.",
+      "State external validity limits: one model/provider, synthetic generators, small fixed corpus, restricted schema/task families, short adaptation, and no measured RL training.",
+      "Publish a timestamped prospective protocol and sealed-test manifest before new training; do not fill in unexecuted results.",
+      "Conclude inconclusive when intervals or budget do not resolve the prespecified effect margin; do not reframe an underpowered null result as safety."
+    ]
+  },
+  "sources": [
+    {
+      "id": "S1",
+      "title": "Improving Text-to-SQL Evaluation Methodology",
+      "url": "https://aclanthology.org/P18-1033.pdf",
+      "canonical_id": "acl:P18-1033",
+      "date": "2018-07",
+      "inspection": "Retrieved full 10-page paper; inspected abstract, introduction, data standardization, query deduplication, and query-based splitting rationale.",
+      "evidence": "Question-based splits can share SQL structures across train and test after entity substitution. The paper proposes a query-based split and shows a template baseline can appear competitive on conventional splits.",
+      "relevance": "Primary precedent for separating query generalization from paraphrase robustness. Family-disjoint evaluation must be defined beyond entity or schema renaming."
+    },
+    {
+      "id": "S2",
+      "title": "The Hitchhiker’s Guide to Testing Statistical Significance in Natural Language Processing",
+      "url": "https://aclanthology.org/P18-1128.pdf",
+      "canonical_id": "acl:P18-1128",
+      "date": "2018-07",
+      "inspection": "Retrieved full 10-page paper; inspected sections on paired tests, McNemar, paired bootstrap, and dependent observations.",
+      "evidence": "McNemar is presented for paired binary outcomes; the paper warns that independence assumptions are often violated in language datasets.",
+      "relevance": "Use the same task IDs across conditions and analyze paired correctness, while retaining dependence induced by repeated templates or tasks."
+    },
+    {
+      "id": "S3",
+      "title": "Statistical Comparisons of Classifiers over Multiple Data Sets",
+      "url": "https://jmlr.org/papers/volume7/demsar06a/demsar06a.pdf",
+      "canonical_id": "jmlr:v7:demsar06a",
+      "date": "2006-01",
+      "inspection": "Retrieved full 30-page paper; inspected introduction, distinction between datasets and within-dataset samples, and Holm multiple-comparison discussion.",
+      "evidence": "For comparisons across datasets, sample size refers to independent datasets, not the number of examples within each. The paper describes Holm step-down adjustment and its general use for controlling family-wise error.",
+      "relevance": "Four templates are not 200 independent samples of SQL families. Multiplicity must include planned family and policy comparisons."
+    },
+    {
+      "id": "S4",
+      "title": "On Over-fitting in Model Selection and Subsequent Selection Bias in Performance Evaluation",
+      "url": "https://jmlr.org/papers/volume11/cawley10a/cawley10a.pdf",
+      "canonical_id": "jmlr:v11:cawley10a",
+      "date": "2010-07",
+      "inspection": "Retrieved full 29-page paper; inspected abstract, introduction, model-selection variance and evaluation protocol argument.",
+      "evidence": "The variance of a finite-sample selection criterion allows overfitting during selection. Evaluation should compare combinations of learning algorithms and selection procedures; selection must occur inside the fitting protocol.",
+      "relevance": "Checkpoint Gate is a selection policy. Test performance after selecting on the same test is optimistically biased. Ordinary validation selection is established methodology."
+    },
+    {
+      "id": "S5",
+      "title": "Accounting for Variance in Machine Learning Benchmarks",
+      "url": "https://arxiv.org/pdf/2103.03098",
+      "canonical_id": "arxiv:2103.03098",
+      "date": "2021-03-01 (retrieved arXiv v1 date)",
+      "inspection": "Retrieved full PDF; inspected abstract, introduction, recommendations, and formal model of data, training, and hyperparameter variability. The PDF also contains a 2020 proceedings footer; this record uses its explicit arXiv version date rather than inferring a venue date.",
+      "evidence": "Data sampling, parameter initialization, and hyperparameter choices all contribute variance. Varying initialization alone leaves other variation unmeasured.",
+      "relevance": "Three training seeds are a minimum diagnostic replication, not a universal precision guarantee or an estimate of dataset/family variation."
+    },
+    {
+      "id": "S6",
+      "title": "Deep Reinforcement Learning at the Edge of the Statistical Precipice",
+      "url": "https://arxiv.org/pdf/2108.13264",
+      "canonical_id": "arxiv:2108.13264",
+      "date": "2021 conference paper; retrieved arXiv v4 dated 2022-01-05",
+      "inspection": "Retrieved full PDF including appendix; inspected introduction, evaluation formalism, few-run limitations, and stratified bootstrap recommendations.",
+      "evidence": "The paper recommends interval estimates and stratified bootstrap instead of point estimates alone. Its examples show that even conventional run counts can leave large uncertainty; it does not establish that three runs are sufficient universally.",
+      "relevance": "Report every seed and the family-by-seed matrix. Adapt resampling to this experiment’s crossed seed/task structure rather than copying RL software blindly."
+    },
+    {
+      "id": "S7",
+      "title": "Show Your Work: Improved Reporting of Experimental Results",
+      "url": "https://aclanthology.org/D19-1224.pdf",
+      "canonical_id": "acl:D19-1224",
+      "date": "2019-11",
+      "inspection": "Retrieved full 10-page paper; inspected abstract, introduction, expected validation performance versus computation budget, and reporting rationale.",
+      "evidence": "Model comparisons can change as hyperparameter-search budget changes; reporting only the final test score omits consequential selection effort.",
+      "relevance": "Release training/evaluation/search budgets and all considered checkpoints. Compare Gate with ordinary selection at the same candidate and evaluation budget."
+    },
+    {
+      "id": "S8",
+      "title": "Do ImageNet Classifiers Generalize to ImageNet?",
+      "url": "https://proceedings.mlr.press/v97/recht19a/recht19a.pdf",
+      "canonical_id": "pmlr:v97:recht19a",
+      "date": "2019",
+      "inspection": "Retrieved full paper; inspected abstract, introduction, fresh-test construction rationale, and decomposition into adaptivity, distribution, and sampling gaps.",
+      "evidence": "Freshly collected test sets produced substantial accuracy drops even when construction closely followed the original process. The authors specifically find adaptivity unlikely to explain their observed drops.",
+      "relevance": "New tests can change difficulty or distribution. This is precedent for fresh evaluation, not proof that Checkpoint Gate’s existing results are caused by contamination or adaptivity."
+    },
+    {
+      "id": "S9",
+      "title": "LoRA: Low-Rank Adaptation of Large Language Models",
+      "url": "https://arxiv.org/pdf/2106.09685",
+      "canonical_id": "arxiv:2106.09685",
+      "date": "2021-10-16 (retrieved arXiv v2 date)",
+      "inspection": "Retrieved full PDF; inspected abstract, introduction, low-rank parameterization, and adaptation objective.",
+      "evidence": "LoRA freezes pretrained weights and trains low-rank update matrices. Published quality and resource comparisons are specific to the authors’ tested models and configurations.",
+      "relevance": "Defines the intervention; does not establish that rank 8 is optimal or that this Baseten experiment has a particular memory, GPU, or throughput advantage."
+    },
+    {
+      "id": "S10",
+      "title": "Equivalence Tests: A Practical Primer for t Tests, Correlations, and Meta-Analyses",
+      "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC5502906/fullTextXML",
+      "canonical_id": "doi:10.1177/1948550617697177",
+      "date": "2017-05-05 (article XML publication date)",
+      "inspection": "Retrieved and parsed full-text XML from Europe PMC after the PMC HTML URL returned a challenge page; inspected equivalence, dependent means, power, bounds, and interpretation sections.",
+      "evidence": "A nonsignificant difference does not support absence of a meaningful effect. Equivalence requires prespecified meaningful bounds and sufficient precision; narrower bounds require larger samples.",
+      "relevance": "A regression gate cannot claim noninferiority because a harm test fails to reject. Use a justified absolute accuracy margin and an appropriate paired-binary interval, not this paper’s t-test formulas mechanically."
+    },
+    {
+      "id": "S11",
+      "title": "Time-uniform, nonparametric, nonasymptotic confidence sequences",
+      "url": "https://arxiv.org/pdf/1810.08240",
+      "canonical_id": "arxiv:1810.08240",
+      "date": "Retrieved arXiv v9 dated 2022-08-06; PDF title page 2022-08-09",
+      "inspection": "Retrieved full PDF; inspected introduction, uniform-coverage definition, stopping-rule properties, and fixed-time versus time-uniform interval illustration.",
+      "evidence": "Continuous monitoring with fixed-sample intervals can inflate error. Confidence sequences offer time-uniform coverage under stated assumptions and are generally wider.",
+      "relevance": "Use a fixed prospective test or a genuinely prespecified sequential method. Optional stopping over task clusters and training seeds requires the right statistical units."
+    },
+    {
+      "id": "S12",
+      "title": "Semantic Evaluation for Text-to-SQL with Distilled Test Suites",
+      "url": "https://aclanthology.org/2020.emnlp-main.29.pdf",
+      "canonical_id": "acl:2020.emnlp-main.29",
+      "date": "2020-11",
+      "inspection": "Retrieved full 16-page paper; inspected abstract, introduction, suite construction, neighbor-query coverage, and semantic-accuracy rationale.",
+      "evidence": "Single-database execution can accept semantically wrong SQL. The authors build suites using randomly generated databases and neighbor-query distinctions, then compare predicted and gold denotations. Finite suites approximate semantic correctness.",
+      "relevance": "Strong primary precedent for replaying SQL on perturbed databases. Eight hand-designed deterministic variants are a diagnostic suite, not a reproduction of the paper’s distillation procedure or a proof of semantic equivalence."
+    }
+  ],
+  "source_audit": {
+    "substantive_distinct_primary_sources_inspected": 12,
+    "retrieval_date": "2026-11-20",
+    "retrieval_method": "Direct HTTP retrieval of primary PDFs/full-text XML, saved under this track’s scratch directory. PDF text was extracted with bundled pypdf and relevant method/result sections were read. No source is based only on a search snippet.",
+    "counting_rule": "Count a paper once by canonical ID; arXiv/proceedings versions or alternative full-text hosts do not create extra sources. All 12 counted sources supplied substantive text.",
+    "access_failures": [
+      {
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5502906/",
+        "result": "HTTP response contained a Recaptcha challenge rather than the article. Not counted as inspected article text; replaced by Europe PMC fullTextXML for the same DOI."
+      }
+    ],
+    "extraction_limits": "pypdf warned that fontTools was absent for some embedded fonts; prose used for findings was legible. No statistical equations were transcribed from uncertain glyphs. Planning calculations were derived explicitly from the stated paired-binary approximation.",
+    "date_handling": "Dates identify the retrieved version where visible. Bouthillier’s arXiv v1 and proceedings footer differ, so no inferred publication chronology is used. Howard’s retrieved arXiv version is a later revision; the record states the observed version dates.",
+    "local_evidence_limits": "Existing experiment and hardware/budget facts were supplied by the task brief, not newly measured by this research track. Static-replay results were not yet available to this track. Literature findings are not evidence of effects in this exact Qwen/Baseten experiment.",
+    "scratch_location": "/Users/zeeshan8281/Documents/Codex/2026-11-19/can-you-x20/work/checkpoint-gate-study-research/study_design_and_inference"
+  },
+  "uncertain": [
+    "findings",
+    "recommended_design",
+    "implementation_checks",
+    "budget_and_feasibility",
+    "claim_boundaries"
+  ]
+}

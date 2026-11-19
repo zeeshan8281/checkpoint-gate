@@ -1,0 +1,38 @@
+{
+  "kind": "prospective_input_commitment",
+  "status": "inputs_frozen_no_model_calls",
+  "created_at_utc": "2026-11-19T21:40:15.602351+00:00",
+  "protocol_sha256": "106e297adacca23bff58b1306206df714adb2be2ad64de921866e0ac0348f836",
+  "dataset_sha256": "07e51c7a83e7f51fbe89eac0998e774164e7708d5d51847ad5031a5c88a4176a",
+  "training_turns_sha256": "77d5ea5a2b8e567ca4d9c3fd261e69c96b10c15ea5df8f0e5ea7ee12807682e1",
+  "schedule_sha256": "fe03b049ccf93e28031d077a67d45b9b51996df294e29a3360b732243c6d852c",
+  "code_sha256": {
+    "src/checkpoint_gate/__init__.py": "6c43c7ec943e57337517309a97cff58e16f501352dc812079756df05102bba8d",
+    "src/checkpoint_gate/baseten_backend.py": "106197d73636c2307143e30d3d7a46c2a566994dd1e4a39ff9a8365e92c82ba9",
+    "src/checkpoint_gate/campaign.py": "41fcdd0c8394290430416415852f35e1a025d51fe58f614fbcd6dc17cdc9f8af",
+    "src/checkpoint_gate/cli.py": "559359dba6836f92b54ec83352e6370d5cba8f3a7a0336989ad007e596e9c14d",
+    "src/checkpoint_gate/cloud.py": "cee46628dead889236f1be734e9be5855bbea7129bb85b75b66dca332fbd239f",
+    "src/checkpoint_gate/common.py": "fa3a73c0050021ec5f175ab88e7bc73b529e6d9d4ec3573f080df483ab5f2ca8",
+    "src/checkpoint_gate/dataset.py": "babfcc09784884bcb590a7fad8752a265d5dfaf0ad004054fb1b5a0b94f77af7",
+    "src/checkpoint_gate/evaluation.py": "66690bc30efaf7996619272741ea0778872d8bd22edfc993d615baaf1a39b474",
+    "src/checkpoint_gate/ledger.py": "2e98e4a8995ae18378b43601204b8cc856e1c7895f45e104c5a200b8a74212c6",
+    "src/checkpoint_gate/rollout.py": "302dec973d9297e5ecaf897b8b45fdf7587e8e88ac8f6e238ec7c91cbdc792d1",
+    "src/checkpoint_gate/verifier.py": "52cb7dd76b24a26bd5f981af2a83af2e35a96ff37d7bdc4f53b5a082ab65ab35",
+    "study/prepare.py": "2b4cd706c6edefbe502f422d683893a2dddce2ce5b819ac6b1a1f96568c426d9"
+  },
+  "training_seeds": [
+    17,
+    29,
+    43
+  ],
+  "planned_episodes": 1680,
+  "new_model_calls": 0,
+  "registry_preregistration": false,
+  "test_inputs_public": false,
+  "claims": "Fresh instances of existing known families. This commitment does not establish completed execution.",
+  "execution_blockers": [
+    "Trainer and sampler hardware provenance not yet verified for a new allocation.",
+    "Prior invoice reconciliation and current all-in budget headroom not confirmed.",
+    "Native execution adapter for this paired multi-seed schedule requires implementation and integration tests; the old pilot command does not implement this protocol."
+  ]
+}

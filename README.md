@@ -6,6 +6,13 @@ A verifier-driven SQL agent experiment with Baseten Loops and a Cloudflare evide
 
 **[Open the results and all held-out traces](https://checkpoint-gate-results.zeeshan8281.workers.dev)**
 
+**[Read the study and reproduce the SQL replay](study/STUDY.md)** — the completed
+single-seed pilot now includes an independent Python-oracle audit and 3,200 static
+SQL replays. The [three-seed follow-up](study/PROSPECTIVE.md) has frozen inputs but
+has not run. Physical GPU provenance remains undisclosed pending provider support.
+The [Hugging Face study release](https://huggingface.co/datasets/zeeshan8281/checkpoint-gate-study)
+contains the report, graph, raw outcomes, sources, and a complete code archive.
+
 ![Held-out results](web/heldout-results.png)
 
 The comparison uses 200 identical held-out tasks per condition, one training seed, rank-8 LoRA, 12 supervised updates, and 96 assistant-turn demonstrations. SFT versus base: **−38 percentage points**, paired task-level 95% interval **−45 to −31 points**. The elementary format/arithmetic/copy suite scored 54/100 after SFT versus 68/100 for base; it is not a broad forgetting benchmark.

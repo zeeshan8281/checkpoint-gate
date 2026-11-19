@@ -1,0 +1,711 @@
+{
+  "topic": {
+    "name": "Hardware and inference controls",
+    "category": "Systems methodology",
+    "decision": "Use serverless Loops to replicate checkpoint quality under the original service, and treat named-GPU or local MLX work as a separate, conditional systems follow-up. Build one auditable paired-evaluation runner with immutable provenance, complete attempt timelines, and a spend governor.",
+    "as_of_date": "2026-11-20",
+    "work_performed": "Research and local source inspection only. No training, inference calls, deployments, paid resource allocation, support contact, invoice access, or publication was performed."
+  },
+  "findings": {
+    "existing_experiment_not_new_measurements": [
+      "The user-provided record is Qwen/Qwen3.6-35B-A3B on Baseten Loops serverless, rank-8 LoRA, one seed, 12 SFT updates, and 96 assistant-turn demonstrations from 83 tasks.",
+      "On the now-public synthetic test, base was 188/200 and SFT was 112/200, with 78 regressions and two improvements. The four fixed templates scored 41/50 to 0/50, 49/50 to 13/50, 48/50 to 49/50, and 50/50 to 50/50.",
+      "All 18 groups of four RL rollouts succeeded, so zero RL parameter updates occurred. This is not evidence of a trained RL method's effectiveness.",
+      "The $0.889506 figure is a conservative reservation total supplied in the task, not a reconciled invoice. The stated local device is an Apple M5 Pro with 48 GiB unified memory; it was not independently inventoried in this research."
+    ],
+    "evidence_backed": [
+      {
+        "finding": "Serverless Loops uses shared capacity and token billing. Public dedicated-instance offerings do not reveal the serverless GPU.",
+        "implication": "The actual serverless GPU model, count, memory, tenancy, and utilization remain [uncertain] unknown. Support ticket #44313 is pending according to the user. Record unknown rather than infer it from a model, a platform catalog, or an empty allocation table.",
+        "sources": [
+          "S1",
+          "S2"
+        ]
+      },
+      {
+        "finding": "A saved Loops sampling client is pinned to its published checkpoint, and saved checkpoints have distinct paths. Deployment through Baseten can explicitly select GPU type and count.",
+        "implication": "Reusing the immutable sampler checkpoint is the lowest-change quality-replication route. Named-GPU deployment is plausible but not yet tested for this model, adapter, or memory envelope.",
+        "sources": [
+          "S3"
+        ]
+      },
+      {
+        "finding": "Public list prices make a short named-GPU pilot financially plausible: Baseten A100 80 GiB is $0.06667/minute; Lambda's 1x H100 PCIe 80 GB is $3.79/GPU-hour plus tax.",
+        "implication": "Provider labels become prospective configuration choices, not retrospective hardware facts. [uncertain] Actual inventory, supported runtime, tax, billable startup/shutdown boundaries, storage, minimum deposit, and account-specific quotes must be checked before provisioning.",
+        "sources": [
+          "S1",
+          "S4"
+        ]
+      },
+      {
+        "finding": "The Qwen card gives 35B total / 3B active parameters. Official metadata reports 35,951,822,704 BF16 parameters.",
+        "implication": "Arithmetic lower bound for those BF16 tensors is 66.97 GiB, larger than the whole stated 48 GiB Mac memory. A hypothetical four-bit representation has only a 16.74 GiB raw-weight lower bound, before scales, unquantized tensors, model state, activations, KV/recurrent caches, adapter, runtime, and OS. Neither the Mac nor one 80 GB GPU is a validated deployment.",
+        "sources": [
+          "S5",
+          "S6",
+          "S7"
+        ]
+      },
+      {
+        "finding": "MLX LM supports quantization and LoRA in general, while the Qwen card recommends a recent runtime and explicitly documents thinking, tool parsing, multimodal components, and long-context settings.",
+        "implication": "[uncertain] Cross-framework adapter target modules, tensor names, scaling, dtype, tokenizer/chat-template behavior, hybrid architecture support, and numerical parity remain unverified. Quantization, text-only loading, changing thinking mode, and truncating context are new conditions, not transparent portability.",
+        "sources": [
+          "S5",
+          "S6"
+        ]
+      },
+      {
+        "finding": "Standard endpoint tools already report latency, tokens, concurrency and warmup. GenAI-Perf now recommends AIPerf.",
+        "implication": "The engineering contribution should be the complete SQL-agent evaluation trace and provenance/cost contract, not a claim to invent TTFT, warmup, or goodput. A single request benchmark does not include the full multi-turn tool workflow.",
+        "sources": [
+          "S9",
+          "S10",
+          "S11",
+          "S12"
+        ]
+      }
+    ],
+    "plausible_hypotheses_not_results": [
+      "A shorter or prematurely terminated SFT response could appear faster while becoming less correct.",
+      "Queueing, changing co-tenancy, retries, dynamic batching, cache hits, endpoint routing, or service updates could explain apparent serverless latency differences.",
+      "Local quantized inference may fit and be useful on this Mac, but architecture and adapter support may fail or conversion may change quality.",
+      "Short-context text-only inference may fit on one 80 GB GPU, but the published eight-GPU long-context example neither proves nor disproves this."
+    ]
+  },
+  "recommended_design": {
+    "single_focused_engineering_contribution": {
+      "artifact": "A provenance-and-budget-aware paired SQL-agent evaluation runner.",
+      "contract": "A single run manifest plus append-only task/request/tool events links each correctness outcome to exact checkpoint identities, full wall-clock duration, terminal status, token usage, retries, and conservative cost reservations. An offline reducer produces the paired outcome table and success-by-deadline curve without dropping failures.",
+      "novelty_boundary": "This is a focused reproducibility contribution applying established methods. Novel research claims require subsequent evidence; no algorithmic, GPU-efficiency, or state-of-the-art novelty is established."
+    },
+    "stage_zero_no_cloud_cost": [
+      "Reconcile the existing provider invoice/usage export and all live or pending commitments; record billed versus estimated versus outstanding values separately. No new paid operation is eligible until the total-spend bound can be established.",
+      "Freeze code, tokenizer, prompt rendering, tool schema, database engine, data generator, scoring rules, timeout/retry policy, token limits, and existing checkpoint identifiers. Hash artifacts and inspect availability without running the models.",
+      "Use the public 200-test set only for harness development and historical replication. Design and freeze a genuinely new confirmation set before reading its outcomes, including broader task/schema/template variation rather than relabeling the same four templates.",
+      "Perform schema validation, fake-clock trace tests, failure/retry replay, and cost-bound checks locally; use no cloud calls. This research does not implement or run these checks."
+    ],
+    "quality_replication_primary": {
+      "recommended_route": "Continue with explicit scope='serverless' for the same base family and the immutable existing SFT checkpoint before introducing a hardware/runtime migration.",
+      "minimal_new_evidence": "A fresh paired evaluation on 200 tasks is a reasonable small-study target, with strata defined before evaluation. To examine training-seed sensitivity, prefer three independently trained SFT seeds with the same frozen recipe; each seed is evaluated on the same new tasks, and base is evaluated under the same task budget. The existing seed can support historical replication but is not a fresh independent training run.",
+      "count_and_scope": "An illustrative three-seed design has 200 base trajectories plus 600 SFT trajectories. Repeated tasks and seed runs do not create 800 independent task samples or many independent template families. Other study tracks must finalize data hierarchy and inferential analysis.",
+      "controls": [
+        "Record each seed's complete trained checkpoint separately. Pin base revision if the service exposes it; otherwise label the base implementation as a provider-managed version with unresolved exact weights.",
+        "Use paired randomized order within predeclared time blocks, with an order seed recorded before outcomes. Balance base-first and SFT-first within strata, and randomize task order.",
+        "Use identical task limits and decoding controls across arms, including thinking mode, stops, tool parsing and retry policy. If the provider ignores a parameter or cannot reproduce a seed, record it.",
+        "Warm each arm using a fixed, disjoint development workload; keep warmup tokens/cost in the ledger and exclude those requests from the prespecified steady-state measurement.",
+        "A small non-training repeat subset can estimate service/output nondeterminism, but repeated inference does not replace independent training seeds."
+      ],
+      "estimands": [
+        "Paired difference in exact task success under the same token, tool, call-count and wall-time budget, with per-family/stratum outcomes.",
+        "Success by deadline: for each deadline t, the fraction of all assigned tasks that are correct and complete by t.",
+        "Complete-trajectory cost and latency distributions across all attempts, including failures, with terminal statuses retained."
+      ],
+      "limits": "[uncertain] The originally used exact upstream revision, complete decoding settings, current checkpoint availability, and affordable per-task cap must be recovered from the experiment records. If those differ, label the evaluation as a modified-condition follow-up."
+    },
+    "hardware_recorded_pilot_secondary": {
+      "preferred_low_change_candidate": "One explicitly configured Baseten A100 80 GiB for at most 120 billable minutes, if the existing adapter and frozen runtime fit without changing weights/precision and if GPU type/count can be recorded.",
+      "alternative": "One Lambda H100 PCIe 80 GB for at most two hours is a published-price alternative when downloadable adapter compatibility is proven and a final quote fits. Do not start both alternatives.",
+      "sample_size": "A descriptive pilot of 24 preselected development tasks, six from each legacy family, with base and SFT in two randomized temporal blocks gives 96 trajectories. This is a harness/systems pilot, not new confirmation on unseen task families.",
+      "bounded_schedule": "An illustrative 45-second task timeout gives at most 72 minutes for 96 trajectories. Reserve at most 20 minutes for setup/compatibility, six minutes for warmups, two minutes for teardown, and the remaining 20 minutes of the 120-minute allocation as operational headroom. Stop rather than extend the allocation.",
+      "compatibility_gate": [
+        "Before deployment, inspect adapter manifest, target-module names/shapes, LoRA rank/scaling, base revision, total artifact sizes and engine support.",
+        "Within the setup allowance, record GPU model/count/memory and confirm model load, one known prompt, and correct adapter selection. Measure peak memory at the planned context/token cap.",
+        "If dynamic adapter selection cannot retain the same base runtime while randomizing arm order, do not conceal model reloads or alternate infrastructures. Stop the comparative pilot or preregister and label a different block design.",
+        "A test-only arbitrary adapter or a different quantized base does not validate this checkpoint."
+      ],
+      "analysis": "Report medians and broad quantiles, paired differences with task-level resampling within strata, and the two time blocks individually. At n=24 tasks, p95 is unstable and p99 is not a defensible reliability claim. A pilot cannot establish a small quality difference, statistical equivalence, or general GPU efficiency.",
+      "limits": "[uncertain] Both the deployment fit and completing useful work in 45 seconds are untested. If development calibration requires larger budgets, lower the predeclared pilot sample size or defer the hardware work before measuring; do not change caps after inspecting comparison outcomes."
+    },
+    "local_mlx_option": {
+      "role": "Optional local compatibility research and harness development, with zero new cloud charges; not the primary replication route.",
+      "required_gates": [
+        "Record actual macOS, chip/GPU-core inventory, installed RAM, free disk, process memory limits, MLX/MLX-LM versions, and thermal/power mode.",
+        "Use metadata to assess format and disk requirements first. Verify Qwen architecture and LoRA loading support in the pinned implementation before any large download or conversion.",
+        "If conversion is attempted later, preserve the original adapter and base, record quantization recipe and every new hash, and validate logits/output/tool behavior on a development set.",
+        "Use one worker/concurrency one and a predeclared context cap. Record memory pressure and swap; stop on OOM or sustained swapping. Do not raise system wired-memory limits merely to make the demonstration run.",
+        "Force completion of lazy MLX computations or await actual generated output before stopping timers. Report model loading/conversion separately from steady-state task latency."
+      ],
+      "limits": "[uncertain] Fit, adapter portability, speed, and output equivalence have not been measured. A quantized MLX result is a separate model/runtime condition and cannot isolate the hardware effect."
+    },
+    "stopping_rules": [
+      "Do not inspect fresh confirmation outcomes to decide sample size, timeout, checkpoint choice or continuation.",
+      "Stop before submission when worst-case charge reservation plus reconciled accrued spend plus outstanding commitments would exceed the stage cap or total $25 cap.",
+      "Stop on missing checkpoint identity, unexpected automatic dedicated allocation, GPU count above the quoted configuration, unsupported adapter, or inability to enforce/cancel task budgets.",
+      "An ambiguous timeout or lost response remains a potentially charged operation; retain its reservation until reconciled. Do not automatically resubmit costly training steps.",
+      "Use the fixed task count and temporal blocks when feasible. If capacity, budget or deployment failure prevents completion, release the partial status and limits rather than silently reporting only completed successes."
+    ]
+  },
+  "implementation_checks": {
+    "status": "Proposed checks and schemas only; [uncertain] repository-specific implementation and compatibility remain untested. This task did not edit the experiment code.",
+    "manifest_fields": [
+      "schema_version; experiment_id; run_id; UTC start/end; monotonic-clock origin; protocol hash; repository commit and dirty-diff hash; environment-lock hash",
+      "provider; service/product; region if disclosed; serverless/dedicated/local; declared and observed GPU model/count/memory; tenancy/MIG status; unknown_reason and evidence link",
+      "driver; CUDA/Metal; OS/kernel; Python; inference engine and commit; container image digest; SDK versions; CPU/RAM/disk; client/network location; concurrency and scheduler",
+      "base repository and full revision; downloaded tensor hashes; adapter/checkpoint path and id plus file hashes when available; optimizer/training seed/update count; LoRA rank/alpha/target modules; dtype/quantization",
+      "tokenizer files/revision; chat-template hash; system prompt/tool-schema hash; thinking mode and reasoning parser; tool-call parser; generation parameters; stop tokens; context and output caps; caching policy",
+      "dataset/generator/task/schema/database hashes; scoring commit; task strata; randomization seed/order; warmup policy; repeat/block ids; cost quote timestamp and category rates"
+    ],
+    "task_event_fields": [
+      "task_id; arm; checkpoint_id; training_seed; inference_seed if effective; block; order; task_start_ns; task_terminal_ns; verifier_start/end; terminal_status",
+      "request_attempt_id; request_start_ns; transport_send_ns if observable; first_nonempty_generated_chunk_ns if observable; final_response_ns; HTTP/provider status; retry cause/backoff; cancellation acknowledgement",
+      "tool_call_id; tool name; sanitized arguments hash; tool_start/end; SQL parse/execute status; result hash; database snapshot id",
+      "input_tokens; cached_input_tokens; output_tokens; reasoning/output/tool token separation if exposed; token_count_source; tokenizer revision; clipping/truncation and stop reason",
+      "reserved_usd; estimated_usd; actual_billed_usd when known; invoice/usage reference; billable_seconds and resource_id for dedicated runs; charge_reconciliation_status",
+      "correctness label; failure category; completed/timeout/error/cancelled; output and trace artifact hash; censorship/right-censor flag for timeouts"
+    ],
+    "measurement_definitions": {
+      "primary_task_latency": "Monotonic elapsed time from task admission before client prompt construction/tokenization to final user-facing answer or terminal failure/timeout. Include queueing, all model calls, network, backoff, agent parsing, and SQL/tool work. Separate offline ground-truth scoring from the agent timeline, while recording its duration.",
+      "request_latency": "SDK/API invocation through complete returned response, with narrower transport timing recorded only when observable. SDK queueing, polling and retries belong in user-observed request latency.",
+      "ttft": "Only for a genuinely streaming API: request send to first nonempty generated token/content event. Exclude HTTP headers, empty role messages and keepalives. Distinguish first reasoning token from first final-answer token. For a nonstreaming Loops sample call, TTFT is unavailable, not total call time.",
+      "itl_and_tpot": "Record chunk timestamps and token counts when exposed. A streaming chunk can contain multiple tokens; chunk spacing is not automatically per-token latency. If first-token timing exists, generation TPOT can be (last-first)/(output_tokens-1) for more than one generated token, with exact conventions stated.",
+      "cold_and_warm": "Report provisioning, artifact download, model load and first-request latency separately. Warmup uses fixed disjoint tasks/counts for every arm; billing includes warmup and setup. State prefix/prompt-cache state and do not quietly give only one arm warmed prompts.",
+      "success_by_deadline": "For all assigned tasks, compute mean(verified_correct AND task_completion_seconds <= t). Wrong fast outputs, timeouts and errors do not count as successful responses.",
+      "cost_per_success": "Total eligible cost of all attempted tasks, including failures/retries, divided by successful tasks. If there are no successes, report undefined/infinite, never zero.",
+      "tail_reporting": "Report all terminal-status counts and timeout censoring alongside latency. Do not drop timeouts, report latency only for successful tasks as the main result, or substitute a timer's upper cap for an observed completion.",
+      "hardware_efficiency": "No GPU efficiency metric for serverless while GPU model/count/time are unknown. Even a named device requires measured resource time and controlled runtime/workload for useful comparisons; dollars per successful task is a user-cost metric, not FLOP, utilization, energy, or hardware efficiency."
+    },
+    "local_verification_before_paid_use": [
+      "A fake-clock trace with client queueing, two model calls, one SQL call, retry and timeout reduces to the analytically known total duration without gaps or double counting.",
+      "An early wrong response and a slow correct response produce the correct success-by-deadline curve; a zero-success batch produces undefined cost-per-success.",
+      "A lost response keeps its reservation and records uncertain billing; retries cannot spend the same reservation twice.",
+      "Every randomized task/arm/block assignment has a terminal record, including failure and cancellation. Report all assigned and attempted counts.",
+      "A changed checkpoint, tokenizer, template, decoding cap, runtime image or dataset invalidates manifest equality rather than silently merging runs.",
+      "A provider-reported parameter/config mismatch fails provenance validation, and absent hardware prevents generated reports from claiming per-GPU efficiency."
+    ],
+    "shared_service_confounds_to_retain": [
+      "Unknown co-tenancy and effective batch size; hidden model placement/routing; service/runtime changes; cache hits; queueing and rate limits; network path and client load; startup/warmup; SDK retries and polling.",
+      "Randomized short time blocks and repeated baseline calls reduce temporal imbalance but cannot identify undisclosed GPU hardware or eliminate all shared-service confounding."
+    ]
+  },
+  "budget_and_feasibility": {
+    "current_spend_status": "[uncertain] Actual prior invoice and pending charges are not reconciled. $25 - $0.889506 = $24.110494 is a reservation-based planning remainder, not verified spendable cash.",
+    "observed_prices": {
+      "baseten_loops_qwen_promotion_usd_per_million": {
+        "prefill": 0.36,
+        "cached_prefill": 0.07,
+        "sample": 1.07,
+        "train": 1.71
+      },
+      "promotion_status": "Public page explicitly says 20% off for limited time; expiry and account applicability [uncertain]. Recheck immediately before any run. Do not divide by 0.8 and present the result as a verified future quote.",
+      "baseten_dedicated_a100_80_gib_usd_per_minute": 0.06667,
+      "lambda_one_h100_pcie_80_gb_usd_per_gpu_hour_before_tax": 3.79,
+      "sources": [
+        "S1",
+        "S4"
+      ]
+    },
+    "recommended_total_envelope": {
+      "rule": "No charges in this research. For a later authorized study, require reconciled accrued-plus-outstanding spend A <= $1.00 for the example below; otherwise reduce future commitments by A-$1.00. Never presume reservations equal A.",
+      "stage_caps_usd": {
+        "quality_replication_all_in": 10.0,
+        "one_hardware_pilot_all_in": 10.0,
+        "uncommitted_contingency": 4.0,
+        "maximum_example_prior_spend": 1.0
+      },
+      "sum_usd": 25.0,
+      "priority": "Use the quality stage first. The hardware pilot is optional and receives no automatic top-up from a failed quality run. Keep the $4 buffer uncommitted; all taxes, storage and billing uncertainty must fit under stage and total caps."
+    },
+    "bounded_quality_plan": {
+      "category_caps_across_the_entire_stage": {
+        "total_input_tokens_charged_at_uncached_rate": 10000000,
+        "sampled_tokens": 1600000,
+        "train_tokens": 1000000
+      },
+      "promotion_rate_arithmetic_usd": "10*0.36 + 1.6*1.07 + 1*1.71 = $7.022 before any additional fees/tax.",
+      "guard_rate_arithmetic_usd": "At conservative admission rates of at most $0.50/M input, $1.50/M sample and $2.25/M train, the same category caps cost at most $9.65 before other fees. These are chosen spend-governor ceilings, not verified provider prices.",
+      "task_envelope": "For 200 tasks and base plus three SFT seeds: 800 trajectories, each at most 12,000 summed input tokens and 1,900 summed generated tokens, uses at most 9.6M input and 1.52M sample tokens. The remaining 0.4M input and 0.08M sample allowances cover warmup/development/repeats and any other operations billed in those categories; 1M train tokens is a separate global allowance. Training prefill also consumes the global input cap when applicable. These are illustrative resource limits, not recommended changes to the original decoding protocol.",
+      "feasibility_gate": "[uncertain] This token envelope has not been tested against the original agent protocol. Use public development tasks to assess whether unchanged task limits fit before reserving confirmation runs. If original settings, training steps, hidden thinking tokens, retry policy or fees exceed these bounds, recompute or reduce a preregistered study stage; do not tighten held-out limits after seeing outcomes.",
+      "billing_gate": "Treat cached input as uncached for upper-bound reservations. Reserve every potential billable category from the provider's documented operation semantics. If hidden or ambiguous token billing prevents a reliable bound, stop until reconciled. The $10 all-in stage cap takes precedence over the illustrative sample count."
+    },
+    "bounded_hardware_plan": {
+      "baseten_a100": "120 minutes * $0.06667 = $8.0004 compute. A $10 all-in cap leaves $1.9996 for any other billable components/tax. The 120-minute cap includes billable setup, warmup, measurement, and shutdown, not only successful inference.",
+      "lambda_alternative": "One H100 PCIe * two hours * $3.79 = $7.58 compute before tax. Under a $10 all-in cap, $2.42 remains for other charges. This is an alternative to Baseten, not an additional run.",
+      "failure_budget": "At most 20 billed setup minutes on the Baseten A100 costs $1.3334 before extras; shut down if the compatibility gate fails. Do not spend the full two hours debugging a known unsupported adapter.",
+      "enforcement": "No automatic scale-out, no trainer plus sampler allocation unless both are quoted, no extra replica, no paid fallback. Require final resource count and rate before creation. Set both an external wall-time teardown and a local budget guard, and verify resources no longer bill after shutdown.",
+      "uncertainties": "[uncertain] Provisioning availability, instance minima/deposits, actual billing boundary, storage/network/tax, managed access to device provenance, single-GPU fit, and adapter support are unverified. If total exposure cannot be bounded before allocation, omit this stage."
+    },
+    "local_plan": {
+      "new_cloud_cost_usd": 0,
+      "limits": "Local development uses existing hardware and is not free in wall time, electricity, disk or memory. Do not count a possible quantized-weight fit as successful execution.",
+      "raw_memory_bounds_gib": {
+        "bf16_metadata_parameters_only": 66.9655,
+        "hypothetical_int4_same_parameters_only": 16.7414
+      },
+      "source": "S5 metadata arithmetic; runtime/cache/OS overhead excluded."
+    },
+    "invoice_accounting": [
+      "Keep reservations, provider usage, finalized invoice line items, credits/discounts, tax, exchange-rate/payment fees and paid amount as separate fields with timestamps.",
+      "Maintain run/request/checkpoint/resource identifiers so category token counts and live-GPU durations can be reconciled to invoice periods. Attribute shared billed items explicitly or mark them unattributed.",
+      "Count failed and retried requests, warmups, model downloads/loading where billed, storage persistence, idle dedicated time, training and rollout generation.",
+      "Do not use `baseten loops usage` to assert zero serverless spend. Do not use a client-side token estimate or conservative reservation as an actual invoice.",
+      "Release an itemized cash-cost table and a separate compute/usage table; retain unresolved amounts as [uncertain] until the provider record resolves them."
+    ]
+  },
+  "claim_boundaries": {
+    "valid_now": [
+      "The supplied experiment observed a 38-percentage-point task-success decrease for one 12-update SFT checkpoint on this now-public four-template test.",
+      "The current public docs establish token billing and shared capacity for Baseten serverless, list named dedicated GPU prices, and document possible deployment/MLX routes.",
+      "No new training, inference, hardware-fit, speed, invoice, or quality measurements were performed during this research."
+    ],
+    "valid_after_proposed_measurements": [
+      "A precisely scoped difference in task success, task-wall latency and cost for frozen checkpoints, budgets, task distribution and recorded service/runtime conditions.",
+      "Named-GPU observations only if GPU type/count, software stack and model provenance were actually recorded during the run.",
+      "Local quantized MLX results as a separately identified configuration if compatibility and quality were measured.",
+      "A released reproducible trace contract and runner, with limitations and failed/partial runs retained."
+    ],
+    "prohibited_overclaims": [
+      "No claim about the unknown serverless GPU model/count, GPU utilization, GPU-hours, energy, throughput per GPU, training efficiency, or hardware superiority.",
+      "No claim that 3B active parameters imply a 3B model memory footprint, or that a rank-8 adapter guarantees the full 35B model fits on the Mac.",
+      "No claim that an adapter which can be downloaded is automatically loadable in MLX/vLLM or numerically equivalent after conversion.",
+      "No claim that faster successful-only calls or shorter wrong answers improve end-to-end agent performance.",
+      "No claim of RL training gain when there were zero RL updates.",
+      "No claim that the public test is fresh confirmation, that hundreds of samples from four templates establish broad SQL generality, or that repeated inference creates independent training evidence.",
+      "No claim that the small pilot is MLPerf-compliant, has reliable p99 guarantees, or establishes statistical equivalence.",
+      "No assertion that the $25 budget was met until actual invoices and outstanding resources are reconciled."
+    ],
+    "external_validity": "Four fixed SQL templates, one original seed, a synthetic tool environment, low training exposure and one managed service restrict generality. A named-GPU migration changes runtime and possibly precision/cache/tool behavior. [uncertain] Generalization to broader SQL agents, larger training runs, other checkpoints, hardware or real production workloads remains untested."
+  },
+  "sources": [
+    {
+      "source_id": "S1",
+      "title": "Baseten pricing",
+      "url": "https://www.baseten.co/pricing/",
+      "canonical_id": "baseten:pricing",
+      "publication_or_revision_date": "[uncertain] Publication/update date not established from the inspected document.",
+      "retrieved_on": "2026-11-20",
+      "inspection": {
+        "method": "Retrieved the complete primary document over HTTPS; inspected substantive sections in the locally saved text, not search snippets.",
+        "sections_read": [
+          "Dedicated Inference / Compute pricing",
+          "Training / Serverless Loops token pricing"
+        ],
+        "local_evidence": [
+          {
+            "file": "/Users/zeeshan8281/Documents/Codex/2026-11-19/can-you-x20/work/checkpoint-gate-study-research/hardware_and_inference_controls/baseten_pricing.txt",
+            "sha256": "094d6ce5e5360aa18818caf77fcc7ba4954a2d01a7d6c09afd255426679d8e1d"
+          },
+          {
+            "file": "/Users/zeeshan8281/Documents/Codex/2026-11-19/can-you-x20/work/checkpoint-gate-study-research/hardware_and_inference_controls/baseten_pricing.clean.txt",
+            "sha256": "285bd5ed0b5335d9c08c13ccab68afca9fdc900ea1ea0d248dd6837d6247865a"
+          }
+        ]
+      },
+      "evidence_excerpt_or_observed_finding": [
+        "Qwen3.6 35B-A3B is shown as '20% off for limited time': prefill $0.36, cached prefill $0.07, sample $1.07, train $1.71, each per one million tokens.",
+        "Dedicated A100: 80 GiB VRAM, $0.06667/minute, approximately $4.00/hour. H100: 80 GiB VRAM, $0.10833/minute, approximately $6.50/hour.",
+        "These are public list/promotion prices; the page does not establish the user's actual invoice, tax, region capacity, or serverless GPU."
+      ],
+      "relevance": "Current price inputs and a same-provider named-GPU option. Training-compute prices must not be substituted for Loops token billing."
+    },
+    {
+      "source_id": "S2",
+      "title": "Serverless Loops",
+      "url": "https://docs.baseten.co/loops/availability-modes/serverless.md",
+      "canonical_id": "baseten:loops:serverless",
+      "publication_or_revision_date": "[uncertain] Publication/update date not established from the inspected document.",
+      "retrieved_on": "2026-11-20",
+      "inspection": {
+        "method": "Retrieved the complete primary document over HTTPS; inspected substantive sections in the locally saved text, not search snippets.",
+        "sections_read": [
+          "Start a serverless run",
+          "When a run cannot use serverless",
+          "When capacity is full",
+          "Billing",
+          "Usage and logs",
+          "Finish a run"
+        ],
+        "local_evidence": [
+          {
+            "file": "/Users/zeeshan8281/Documents/Codex/2026-11-19/can-you-x20/work/checkpoint-gate-study-research/hardware_and_inference_controls/loops_serverless.txt",
+            "sha256": "be33fa31c6a305d5446ffa764cfea469be1855ba3f2dfafbdedc55f6f78b3c5f"
+          }
+        ]
+      },
+      "evidence_excerpt_or_observed_finding": [
+        "'Runs use shared capacity, so you don't reserve GPUs before you start.'",
+        "Setting scope='serverless' makes creation fail instead of falling back to dedicated mode when serverless cannot take the run.",
+        "The default scope can choose dedicated mode for unsupported models, ranks, or sequence lengths.",
+        "Capacity saturation can produce HTTP 429; the SDK attempts a creation request up to ten times before LoopsCapacityError.",
+        "'baseten loops usage' reports dedicated GPU allocations; it does not report serverless token usage or spend.",
+        "Serverless bills separately for prefill, cached prefill, sample, and train tokens; idle time between operations does not bill. Saved checkpoints remain available to download, deploy, or start a new run."
+      ],
+      "relevance": "Establishes shared-service confounds, mandatory explicit serverless scope, and why a zero-GPU CLI readout is neither a hardware disclosure nor an invoice."
+    },
+    {
+      "source_id": "S3",
+      "title": "Train on a chat dataset with the Loops SDK",
+      "url": "https://docs.baseten.co/examples/sft-sdk-loop.md",
+      "canonical_id": "baseten:loops:sft-sdk-example",
+      "publication_or_revision_date": "[uncertain] Publication/update date not established from the inspected document.",
+      "retrieved_on": "2026-11-20",
+      "inspection": {
+        "method": "Retrieved the complete primary document over HTTPS; inspected substantive sections in the locally saved text, not search snippets.",
+        "sections_read": [
+          "Create client",
+          "Run the training loop",
+          "Save a resumable checkpoint",
+          "Sample from the checkpoint",
+          "Shut down the run",
+          "Deploy the checkpoint"
+        ],
+        "local_evidence": [
+          {
+            "file": "/Users/zeeshan8281/Documents/Codex/2026-11-19/can-you-x20/work/checkpoint-gate-study-research/hardware_and_inference_controls/loops_sft.txt",
+            "sha256": "fd7bcbf522f92b93f71a2f3fdff7ff9b723e94a843b36c40c6b0cbe2bbd73a9c"
+          }
+        ]
+      },
+      "evidence_excerpt_or_observed_finding": [
+        "save_state preserves resumable training and optimizer state; save_weights_for_sampler publishes adapter weights for sampling and deployment.",
+        "'The serverless client stays pinned to that checkpoint; publish again and create a new client to sample later weights.'",
+        "Returned checkpoint paths can have unique suffixes and should be retained rather than constructed.",
+        "The deployment loads the adapter on base weights and bills for its GPU while live. The CLI prompts for GPU type and GPU count.",
+        "The worked example trains GLM-5.3-Flash, not Qwen3.6; it establishes API semantics, not Qwen single-GPU fit."
+      ],
+      "relevance": "A concrete checkpoint-pinning and same-provider deployment route without assuming adapter format portability."
+    },
+    {
+      "source_id": "S4",
+      "title": "GPU cloud pricing: rent NVIDIA H100, H200, and B200 | Lambda",
+      "url": "https://lambda.com/pricing",
+      "canonical_id": "lambda:cloud-pricing",
+      "publication_or_revision_date": "[uncertain] Publication/update date not established from the inspected document.",
+      "retrieved_on": "2026-11-20",
+      "inspection": {
+        "method": "Retrieved the complete primary document over HTTPS; inspected substantive sections in the locally saved text, not search snippets.",
+        "sections_read": [
+          "Instances pricing, particularly the 1x table",
+          "Tax footnotes",
+          "Self-serve availability wording"
+        ],
+        "local_evidence": [
+          {
+            "file": "/Users/zeeshan8281/Documents/Codex/2026-11-19/can-you-x20/work/checkpoint-gate-study-research/hardware_and_inference_controls/lambda_pricing.txt",
+            "sha256": "dd7f00d33518efcbff218f52d2fb5a03a591fd77be8de2eda13a35a0b1b13c10"
+          },
+          {
+            "file": "/Users/zeeshan8281/Documents/Codex/2026-11-19/can-you-x20/work/checkpoint-gate-study-research/hardware_and_inference_controls/lambda_pricing.clean.txt",
+            "sha256": "68479e512c02fa2f293595351c4451fe5d4ea49f4fb22c92b415fd2915f90e54"
+          }
+        ]
+      },
+      "evidence_excerpt_or_observed_finding": [
+        "The 1x table lists NVIDIA H100 PCIe, 80 GB VRAM, 26 vCPUs, 225 GiB RAM, 1 TiB SSD at $3.79 per GPU-hour.",
+        "The 1x table also lists A6000 48 GB at $1.09/GPU-hour and A10 24 GB at $1.29/GPU-hour.",
+        "Prices are plus applicable sales tax/VAT/GST; instances are self-serve, first-come access.",
+        "Multi-GPU tables quote price per GPU-hour, so a table row must not be mistaken for a complete multi-GPU instance's hourly total."
+      ],
+      "relevance": "An independently named 80 GB hardware alternative, conditional on account, availability, billing rules, and adapter compatibility."
+    },
+    {
+      "source_id": "S5",
+      "title": "Qwen/Qwen3.6-35B-A3B model card and official repository metadata",
+      "url": "https://huggingface.co/Qwen/Qwen3.6-35B-A3B",
+      "canonical_id": "hf:model:Qwen/Qwen3.6-35B-A3B",
+      "publication_or_revision_date": "Official Hub metadata lastModified: 2026-11-07T04:41:52.000Z; this is repository metadata, not the original experiment date.",
+      "retrieved_on": "2026-11-20",
+      "inspection": {
+        "method": "Retrieved the complete primary document over HTTPS; inspected substantive sections in the locally saved text, not search snippets.",
+        "sections_read": [
+          "Model Overview",
+          "Deployment / SGLang / vLLM / Transformers",
+          "Sampling Parameters",
+          "Thinking and non-thinking modes",
+          "Official Hub API metadata"
+        ],
+        "local_evidence": [
+          {
+            "file": "/Users/zeeshan8281/Documents/Codex/2026-11-19/can-you-x20/work/checkpoint-gate-study-research/hardware_and_inference_controls/qwen_model.txt",
+            "sha256": "c4ddaa065649ff6352648f64747a16eda31726f3e34add94ce04abb461c77b75"
+          },
+          {
+            "file": "/Users/zeeshan8281/Documents/Codex/2026-11-19/can-you-x20/work/checkpoint-gate-study-research/hardware_and_inference_controls/qwen_metadata.txt",
+            "sha256": "e41902810b9c380a0deb4f717e5f717c160a479af32527b2dcb1e554147bde9c"
+          }
+        ]
+      },
+      "evidence_excerpt_or_observed_finding": [
+        "The model card describes a vision encoder plus language model, 35B total parameters and 3B activated, and a hybrid Gated DeltaNet/attention MoE architecture.",
+        "The card recommends vLLM >=0.19.0 and illustrates 262,144-token context using tensor parallelism across eight GPUs; a text-only flag skips the vision encoder and multimodal profiling.",
+        "Thinking is enabled by default; chat_template_kwargs enable_thinking=False changes this behavior.",
+        "The official Hub metadata retrieved from https://huggingface.co/api/models/Qwen/Qwen3.6-35B-A3B reports repository revision 345d467b117d1fd5eda9b879a5988de9ae5f47a7 and 35,951,822,704 BF16 safetensors parameters.",
+        "This currently retrieved Hub revision is NOT evidence that Baseten used that revision in the original experiment."
+      ],
+      "relevance": "Pins a discoverable upstream revision for prospective work and shows why 3B active does not mean 3B resident weights or establish 48 GiB local compatibility."
+    },
+    {
+      "source_id": "S6",
+      "title": "MLX LM README",
+      "url": "https://github.com/ml-explore/mlx-lm",
+      "canonical_id": "github:ml-explore/mlx-lm",
+      "publication_or_revision_date": "[uncertain] Publication/update date not established from the inspected document.",
+      "retrieved_on": "2026-11-20",
+      "inspection": {
+        "method": "Retrieved the complete primary document over HTTPS; inspected substantive sections in the locally saved text, not search snippets.",
+        "sections_read": [
+          "Features",
+          "Python API",
+          "Streaming",
+          "Sampling",
+          "Long Prompts and Generations",
+          "Supported Models",
+          "Large Models"
+        ],
+        "local_evidence": [
+          {
+            "file": "/Users/zeeshan8281/Documents/Codex/2026-11-19/can-you-x20/work/checkpoint-gate-study-research/hardware_and_inference_controls/mlx_lm.txt",
+            "sha256": "fc4dc67d70ca364ef8c2f94e84d170072d3c5f4fdfd2aa7a7be7a38a6b3d0008"
+          }
+        ]
+      },
+      "evidence_excerpt_or_observed_finding": [
+        "MLX LM supports text generation and low-rank/full fine-tuning on Apple silicon, including quantized models.",
+        "It documents conversion/quantization, streaming, prompt caching, a rotating KV cache, and configurable prefill step size.",
+        "The README warns that smaller rotating KV caches can worsen quality and that models large relative to RAM can be slow.",
+        "Memory wiring for large models requires macOS 15 or later; this is not a statement that all system memory is available to a model.",
+        "The README's general model support does not certify the existing Baseten adapter's format, target modules, multimodal/hybrid architecture, or numerical parity."
+      ],
+      "relevance": "Local MLX is a no-additional-cloud-cost candidate after a compatibility check; quantization and cache policies are model/quality changes requiring separate labels."
+    },
+    {
+      "source_id": "S7",
+      "title": "MLX README",
+      "url": "https://github.com/ml-explore/mlx",
+      "canonical_id": "github:ml-explore/mlx",
+      "publication_or_revision_date": "[uncertain] Publication/update date not established from the inspected document.",
+      "retrieved_on": "2026-11-20",
+      "inspection": {
+        "method": "Retrieved the complete primary document over HTTPS; inspected substantive sections in the locally saved text, not search snippets.",
+        "sections_read": [
+          "Framework properties",
+          "Installation"
+        ],
+        "local_evidence": [
+          {
+            "file": "/Users/zeeshan8281/Documents/Codex/2026-11-19/can-you-x20/work/checkpoint-gate-study-research/hardware_and_inference_controls/mlx.txt",
+            "sha256": "df7d58237b57e70595c5a19b72acb4053d28a47235033bd2cbfd66eea73e1c7d"
+          }
+        ]
+      },
+      "evidence_excerpt_or_observed_finding": [
+        "MLX is an Apple machine-learning-research array framework with lazy computation and shared/unified memory.",
+        "Operations can run on CPU or GPU and arrays can be shared without explicit data transfer.",
+        "The README provides macOS installation and separate Linux CUDA/CPU packages."
+      ],
+      "relevance": "A timer around lazy array construction does not by itself measure completed GPU execution; local benchmarking must wait for actual evaluated outputs."
+    },
+    {
+      "source_id": "S8",
+      "title": "Download files from the Hub",
+      "url": "https://huggingface.co/docs/huggingface_hub/guides/download",
+      "canonical_id": "huggingface:hub:download-guide",
+      "publication_or_revision_date": "[uncertain] Publication/update date not established from the inspected document.",
+      "retrieved_on": "2026-11-20",
+      "inspection": {
+        "method": "Retrieved the complete primary document over HTTPS; inspected substantive sections in the locally saved text, not search snippets.",
+        "sections_read": [
+          "From specific version",
+          "Download an entire repository",
+          "Dry-run download"
+        ],
+        "local_evidence": [
+          {
+            "file": "/Users/zeeshan8281/Documents/Codex/2026-11-19/can-you-x20/work/checkpoint-gate-study-research/hardware_and_inference_controls/hf_revisions.txt",
+            "sha256": "9dc82ca52cf273aa7aabc939282dc364a67bded346adaf172784ec88a93b5a30"
+          },
+          {
+            "file": "/Users/zeeshan8281/Documents/Codex/2026-11-19/can-you-x20/work/checkpoint-gate-study-research/hardware_and_inference_controls/hf_revisions.clean.txt",
+            "sha256": "5404347f5842bb380e9bcfb8b9985aefe70fafb6a3516f1990ac508e10051c06"
+          }
+        ]
+      },
+      "evidence_excerpt_or_observed_finding": [
+        "Downloads use the latest main branch by default; revision can specify a branch, tag, or full commit hash.",
+        "The guide explicitly says a commit hash must be full length, not a seven-character hash.",
+        "snapshot_download accepts a revision, and dry-run metadata includes file names, sizes, hashes/revisions, cache status, and whether a file would be downloaded."
+      ],
+      "relevance": "Supports immutable checkpoint provenance and a metadata-only disk/network feasibility check before provisioning a GPU."
+    },
+    {
+      "source_id": "S9",
+      "title": "vllm bench serve CLI reference",
+      "url": "https://docs.vllm.ai/en/latest/cli/bench/serve/",
+      "canonical_id": "vllm:bench-serve",
+      "publication_or_revision_date": "[uncertain] Publication/update date not established from the inspected document.",
+      "retrieved_on": "2026-11-20",
+      "inspection": {
+        "method": "Retrieved the complete primary document over HTTPS; inspected substantive sections in the locally saved text, not search snippets.",
+        "sections_read": [
+          "seed and num-prompts",
+          "max-concurrency",
+          "request-rate",
+          "num-warmups",
+          "percentile-metrics",
+          "goodput",
+          "LoRA assignment"
+        ],
+        "local_evidence": [
+          {
+            "file": "/Users/zeeshan8281/Documents/Codex/2026-11-19/can-you-x20/work/checkpoint-gate-study-research/hardware_and_inference_controls/vllm_bench.txt",
+            "sha256": "ce95ba41880751e38c99e98e2f50c0a3bbd973dae8299bfff2ef943334fd70bf"
+          },
+          {
+            "file": "/Users/zeeshan8281/Documents/Codex/2026-11-19/can-you-x20/work/checkpoint-gate-study-research/hardware_and_inference_controls/vllm_bench.clean.txt",
+            "sha256": "3da41f5b88a1e33e33d53fb0bfbe375ad660742c3ace96f7d7295a070acc6f89"
+          }
+        ]
+      },
+      "evidence_excerpt_or_observed_finding": [
+        "The CLI distinguishes request initiation rate from maximum concurrent requests; actual rate can fall below requested rate when concurrency limits bind.",
+        "It supports seeds, prompt counts, warmup requests, and output JSON.",
+        "Percentile metrics include TTFT, TPOT, ITL, end-to-end latency, client queue time, and end-to-end latency including client queue.",
+        "Goodput SLOs can be defined for TTFT, TPOT, and end-to-end latency; default percentile output is 99.",
+        "It supports random or round-robin LoRA assignment, but this alone does not prove this particular Qwen adapter is supported."
+      ],
+      "relevance": "Existing measurement capabilities to reuse; defaults and request-level metrics are not a complete multi-turn SQL-agent evaluation."
+    },
+    {
+      "source_id": "S10",
+      "title": "NVIDIA GenAI-Perf README",
+      "url": "https://github.com/triton-inference-server/perf_analyzer/tree/main/genai-perf",
+      "canonical_id": "github:triton-inference-server/perf_analyzer:genai-perf",
+      "publication_or_revision_date": "[uncertain] Publication/update date not established from the inspected document.",
+      "retrieved_on": "2026-11-20",
+      "inspection": {
+        "method": "Retrieved the complete primary document over HTTPS; inspected substantive sections in the locally saved text, not search snippets.",
+        "sections_read": [
+          "Deprecation notice",
+          "Workload options",
+          "Metrics"
+        ],
+        "local_evidence": [
+          {
+            "file": "/Users/zeeshan8281/Documents/Codex/2026-11-19/can-you-x20/work/checkpoint-gate-study-research/hardware_and_inference_controls/genai_perf.txt",
+            "sha256": "6845766e81a609e5508ed9d8e2974b491c1de1045fc335f43cbccc7b8293dcae"
+          }
+        ]
+      },
+      "evidence_excerpt_or_observed_finding": [
+        "The current README says GenAI-Perf is being phased out and recommends AIPerf for new performance benchmarking needs.",
+        "Request latency is request-send to final-response receipt; output-token throughput is benchmark output tokens divided by benchmark duration.",
+        "Its TTFT is request-send to first-response receipt. Its ITL divides intermediate response spacing by the generated-token count of the latter response.",
+        "It documents warmup request count, synthetic input/output lengths, tokenizer selection, and random seed."
+      ],
+      "relevance": "Transparent metric definitions and a warning not to propose a phased-out tool as the preferred new dependency."
+    },
+    {
+      "source_id": "S11",
+      "title": "NVIDIA AIPerf README",
+      "url": "https://github.com/ai-dynamo/aiperf",
+      "canonical_id": "github:ai-dynamo/aiperf",
+      "publication_or_revision_date": "[uncertain] Publication/update date not established from the inspected document.",
+      "retrieved_on": "2026-11-20",
+      "inspection": {
+        "method": "Retrieved the complete primary document over HTTPS; inspected substantive sections in the locally saved text, not search snippets.",
+        "sections_read": [
+          "Basic Usage",
+          "Example with Custom Configuration",
+          "Features",
+          "Supported APIs",
+          "Load Control and Timing",
+          "Workloads and Data"
+        ],
+        "local_evidence": [
+          {
+            "file": "/Users/zeeshan8281/Documents/Codex/2026-11-19/can-you-x20/work/checkpoint-gate-study-research/hardware_and_inference_controls/aiperf.txt",
+            "sha256": "b3b8955d1fbce86407004ab9bf28be7947f5b30dd3155dbbb30673d70efedfc2"
+          }
+        ]
+      },
+      "evidence_excerpt_or_observed_finding": [
+        "AIPerf supports OpenAI-style APIs, concurrency/request-rate modes, trace replay, endpoint/dataset plugins, and CSV/JSON performance exports.",
+        "The example output distinguishes TTFT, time to first output token, request latency, ITL, sequence lengths, output throughput, and request count.",
+        "The README points to warmup, cancellation, cache-reset hooks, reproducibility, multi-turn, raw-payload replay, and goodput guides.",
+        "The example explicitly warns that its CPU-only output is not an official benchmark."
+      ],
+      "relevance": "A current general-purpose implementation to reuse for an optional endpoint microbenchmark. The SQL correctness evaluator and complete agent timeline still require integration; linked tutorials were not assumed inspected."
+    },
+    {
+      "source_id": "S12",
+      "title": "MLPerf Inference Rules",
+      "url": "https://github.com/mlcommons/inference_policies/blob/master/inference_rules.adoc",
+      "canonical_id": "github:mlcommons/inference_policies:inference_rules",
+      "publication_or_revision_date": "[uncertain] Publication/update date not established from the inspected document.",
+      "retrieved_on": "2026-11-20",
+      "inspection": {
+        "method": "Retrieved the complete primary document over HTTPS; inspected substantive sections in the locally saved text, not search snippets.",
+        "sections_read": [
+          "Definitions",
+          "Scenarios and metrics",
+          "Reference implementation requirements",
+          "LoadGen operation and run procedure"
+        ],
+        "local_evidence": [
+          {
+            "file": "/Users/zeeshan8281/Documents/Codex/2026-11-19/can-you-x20/work/checkpoint-gate-study-research/hardware_and_inference_controls/mlperf_rules.txt",
+            "sha256": "94c69f01f1e0be24dc057180af6db878d1f5339fd31d54cbe5c386f8e198ce08"
+          }
+        ]
+      },
+      "evidence_excerpt_or_observed_finding": [
+        "A system under test is a defined set of hardware and software resources.",
+        "A benchmark run includes inference queries with pre- and post-processing, and satisfies quality and latency requirements for its scenario.",
+        "Latency is measured from when LoadGen was scheduled to pass a query to the system to receipt of a reply.",
+        "The rules distinguish single-stream, server/interactive, offline, and multistream scenarios and warn that small-query-count tail estimates have increased variance.",
+        "The procedure separates startup/readiness from the measured query period and waits for outstanding queries."
+      ],
+      "relevance": "Published precedents for system boundaries, quality gates, startup separation, and disciplined scenario reporting. The proposed small study is not an MLPerf submission or compliant MLPerf result."
+    }
+  ],
+  "source_audit": {
+    "distinct_substantive_primary_sources_inspected_and_cited": 12,
+    "search_snippet_sources": 0,
+    "primary_source_only": true,
+    "inspection_date": "2026-11-20",
+    "deduplication": [
+      "Baseten's pricing table is one source even though it lists serverless, dedicated and training products.",
+      "Qwen model card plus the official Hub API metadata are one canonical model-repository source; the API revision establishes current repository metadata only.",
+      "MLX and MLX LM are different maintained upstream repositories with different claims.",
+      "GenAI-Perf and AIPerf are different upstream tools; GenAI-Perf is cited for documented metric definitions and its explicit supersession notice.",
+      "HTML originals and locally stripped text are copies of the same source, not separate sources."
+    ],
+    "ancillary_retrievals_not_counted_as_substantive_sources": [
+      "Baseten llms.txt and reference index were used only to discover official documentation links.",
+      "Baseten sft-tool-calling.md and deploy-checkpoints.md were fetched to scratch but not substantively inspected or used for claims; relevant deployment semantics here come from the inspected SFT SDK example."
+    ],
+    "access_failures": [
+      {
+        "url": "https://docs.baseten.co/development/loops/overview",
+        "result": "HTTP 404; replaced with the current official Serverless Loops and SFT SDK documentation discovered from the docs index."
+      },
+      {
+        "url": "https://docs.lambda.ai/public-cloud/instance-management/instances/",
+        "result": "HTTP 403; no instance-management or billing-minimum claims inferred from this blocked source."
+      }
+    ],
+    "retrieval_notes": [
+      "https://lambda.ai/pricing redirected to https://lambda.com/pricing; the canonical URL is cited.",
+      "An initial local retrieval helper failed because requests was not installed; standard-library urllib then retrieved the cited documents successfully.",
+      "No screenshots, source search snippets, marketing benchmark numbers, authentication credentials, paid endpoints, or support messages were used.",
+      "Source content hashes are preserved in the citations. Most upstream URLs point to moving main/latest documentation; a content hash records what was read, not a promise of future stability."
+    ],
+    "uncertain_facts": [
+      "Original and current Baseten serverless GPU model/count/memory and backend revision.",
+      "The original exact base-weight revision and all checkpoint/software/configuration identities not supplied in the task.",
+      "Actual past and future billed amounts, outstanding charges, promotion expiry, applicable tax and resource availability.",
+      "Single-GPU and local MLX fit, architecture/adapter support, conversion parity, speed, and fair identical task-budget feasibility.",
+      "Publication/update dates for sources that did not expose them in the inspected text."
+    ],
+    "new_measurements": "None. Retrieved documentation/metadata and deterministic price/memory arithmetic are research evidence, not model or hardware experiments.",
+    "validation": "The required field-coverage validator is run after writing this file; its result is recorded in the owned scratch folder."
+  },
+  "uncertain": [
+    "findings",
+    "recommended_design",
+    "implementation_checks",
+    "budget_and_feasibility",
+    "claim_boundaries",
+    "sources",
+    "source_audit"
+  ]
+}
