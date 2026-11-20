@@ -3,6 +3,8 @@
 **Completed:** a single-seed model experiment and a retrospective SQL replay.
 **Pending:** the fresh three-seed replication in `protocol.json`.
 
+The [hardware preflight log](HARDWARE-PREFLIGHT.md) records the 20 November attempt: a one-H100 probe was prepared and its local gate tests passed, but Baseten rejected project creation with a Training Jobs authorization error. No new GPU allocation or model training occurred.
+
 Read [the full study](STUDY.md), [the prospective plan](PROSPECTIVE.md), and [the source catalog](SOURCES.md).
 
 ![Study overview](figures/study-overview.png)
